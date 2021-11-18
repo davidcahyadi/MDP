@@ -13,7 +13,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    def __init__(self,  name, email, password):
+    def __init__(self, name, email, password):
         self.email = email
         self.name = name
         self.password = generate_password_hash(password)
@@ -60,7 +60,9 @@ class Recipe(db.Model):
     rate = db.Column(db.DECIMAL, nullable=True)
     view = db.Column(db.Integer(), default=0)
     like = db.Column(db.Integer(), default=0)
-    duration = db.Column(db.Integer())  # in seconds
+    cook_duration = db.Column(db.Integer(), default=0)  # in minutes
+    cook_preparation = db.Column(db.Integer(), default=0)  # in minutes
+    serve_portion = db.Column(db.Integer(), default=0)
     description = db.Column(db.Text())
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
@@ -74,7 +76,9 @@ class Recipe(db.Model):
             "rate": self.rate,
             "view": self.view,
             "like": self.like,
-            "duration": self.duration,
+            "cook_duration": self.cook_duration,
+            "cook_preparation": self.cook_preparation,
+            "serve_portion": self.serve_portion,
             "description": self.description,
             "created_at": self.created_at,
             "updated_at": self.updated_at,

@@ -60,8 +60,7 @@ def login():
 
 @auth.post("/token/refresh")
 def issued_refresh_token():
-    print("Auth: ", request.headers["Auth"])
-    result = validate_token(request.authorization)
+    result = validate_token(request.headers["x-api-key"])
     if result["code"] == SUCCESS:
         if result["mode"] == REFRESH:
             return jsonify({"refresh": generate_token(result["sub"], REFRESH, 30 * 24 * 3600)}), HTTP_200_OK
@@ -72,13 +71,11 @@ def issued_refresh_token():
 
 
 @auth.post("/token/access")
-@token_required
 def issued_access_token():
-    print(request.authorization)
-    result = validate_token(request.authorization)
+    result = validate_token(request.headers["x-api-key"])
     if result["code"] == SUCCESS:
-        if result["mode"] == ACCESS:
-            return jsonify({"access": generate_token(result["sub"], REFRESH, 300)}), HTTP_200_OK
+        if result["mode"] == REFRESH:
+            return jsonify({"access": generate_token(result["sub"], ACCESS, 300)}), HTTP_200_OK
         else:
             return jsonify({"error": {"token": "wrong mode"}}), HTTP_403_FORBIDDEN
     else:

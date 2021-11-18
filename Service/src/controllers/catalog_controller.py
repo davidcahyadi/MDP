@@ -8,29 +8,29 @@ from src.models.models import User
 from src.models.database import db
 from src.services.security import validate_token, generate_token, token_required
 
-review = Blueprint("review", __name__, url_prefix="/api/v1/catalog")
+catalog = Blueprint("catalog", __name__, url_prefix="/api/v1/catalog")
 
 
-@review.get("/add")
-def add_review():
+@catalog.get("/popular")
+def catalog_popular():
     pass
 
 
-@review.get("/replies")
-def review_replies():
+@catalog.get("/like")
+def catalog_like():
     pass
 
 
-@review.get("/replies/add")
-def replies_add():
+@catalog.get("/newest")
+def catalog_newest():
     pass
 
 
-@review.get("/search")
+@catalog.get("/search")
 def catalog_search():
     pass
 
 
-@review.post("/recommendation")
+@catalog.post("/recommendation")
 def catalog_recommendation():
     pass

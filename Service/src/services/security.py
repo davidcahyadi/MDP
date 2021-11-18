@@ -25,7 +25,7 @@ def generate_token(user_id, mode, expired):
 
 def validate_token(token):
     try:
-        payload = jwt.decode(token, os.environ.get("SECRET_KEY"))
+        payload = jwt.decode(token, os.environ.get("SECRET_KEY"),algorithms="HS256")
         return {"sub": payload["sub"], "mode": payload["mode"], "code": SUCCESS}
     except jwt.ExpiredSignatureError:
         return {"code": EXPIRED}
@@ -45,10 +45,9 @@ def token_required(f):
             return jsonify({"error": {"token": "token is missing"}}), HTTP_403_FORBIDDEN
 
         result = validate_token(token)
-        if result["code"] != SUCCESS:
-            return result
-        elif result["mode"] != ACCESS:
-            return result
+        if result["code"] != SUCCESS or result["mode"] != ACCESS:
+            return jsonify({"error": {"token": "invalid" if result["code"] == INVALID else "expired"}}), HTTP_403_FORBIDDEN
+
         return f(result["sub"], *args, **kwargs)
 
     return decorator

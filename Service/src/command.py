@@ -16,7 +16,10 @@ def register_command(app: Flask):
 
 
 @command.cli.command('migrate')
-def migrate():
+@click.argument("param", required=False)
+def migrate(param):
+    if param is not None and param == "fresh":
+        db.drop_all()
     db.create_all()
     print("Database migration done")
 
