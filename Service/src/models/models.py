@@ -61,7 +61,7 @@ class Recipe(db.Model):
     view = db.Column(db.Integer(), default=0)
     like = db.Column(db.Integer(), default=0)
     cook_duration = db.Column(db.Integer(), default=0)  # in minutes
-    cook_preparation = db.Column(db.Integer(), default=0)  # in minutes
+    prep_duration = db.Column(db.Integer(), default=0)  # in minutes
     serve_portion = db.Column(db.Integer(), default=0)
     description = db.Column(db.Text())
     created_at = db.Column(db.DateTime, default=datetime.now())
@@ -77,7 +77,7 @@ class Recipe(db.Model):
             "view": self.view,
             "like": self.like,
             "cook_duration": self.cook_duration,
-            "cook_preparation": self.cook_preparation,
+            "prep_duration": self.prep_duration,
             "serve_portion": self.serve_portion,
             "description": self.description,
             "created_at": self.created_at,
