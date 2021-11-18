@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy import ForeignKey
-from src import db
+from src.models.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model):
@@ -12,8 +13,23 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    def __repr__(self):
-        return f'User>>> {self.username}'
+    def __init__(self,  name, email, password):
+        self.email = email
+        self.name = name
+        self.password = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "password": self.password,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
 
 
 class Photo(db.Model):
@@ -24,6 +40,16 @@ class Photo(db.Model):
     type = db.Column(db.Integer())  # 0 for introduction, 1 for steps
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "recipe_id": self.recipe_id,
+            "url": self.url,
+            "type": self.type,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at
+        }
 
 
 class Recipe(db.Model):
@@ -40,6 +66,21 @@ class Recipe(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
     deleted_at = db.Column(db.DateTime)
 
+    def raw(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "user_id": self.user_id,
+            "rate": self.rate,
+            "view": self.view,
+            "like": self.like,
+            "duration": self.duration,
+            "description": self.description,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "deleted_at": self.deleted_at,
+        }
+
 
 class Review(db.Model):
     __tablename__ = "reviews"
@@ -52,6 +93,17 @@ class Review(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
 
+    def raw(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "rate": self.rate,
+            "description": self.description,
+            "review_id": self.review_id,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at,
+        }
+
 
 class IngredientType(db.Model):
     __tablename__ = "ingredient_types"
@@ -59,6 +111,15 @@ class IngredientType(db.Model):
     name = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "rate": self.rate,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at,
+        }
 
 
 class Ingredient(db.Model):
@@ -70,11 +131,34 @@ class Ingredient(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
 
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "icon_url": self.icon_url,
+            "type_id": self.type_id,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at,
+        }
+
 
 class Measurement(db.Model):
     __tablename__ = "measurements"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    abbr = db.Column(db.String(3))
+
+    def create(self, record):
+        self.id = record["id"]
+        self.name = record["name"]
+        self.abbr = record["abbr"]
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "abbr": self.abbr,
+        }
 
 
 class Conversion(db.Model):
@@ -83,6 +167,20 @@ class Conversion(db.Model):
     from_measurement = db.Column(db.Integer(), ForeignKey("measurements.id"))
     to_measurement = db.Column(db.Integer(), ForeignKey("measurements.id"))
     amount = db.Column(db.DECIMAL)
+
+    def create(self, record):
+        self.id = record["id"]
+        self.from_measurement = record["from_measurement"]
+        self.to_measurement = record["to_measurement"]
+        self.amount = record["amount"]
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.from_measurement,
+            "abbr": self.to_measurement,
+            "amount": self.amount,
+        }
 
 
 class Step(db.Model):
@@ -99,6 +197,34 @@ class Step(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
     deleted_at = db.Column(db.DateTime)
 
+    def create(self, record):
+        self.id = record["id"]
+        self.recipe_id = record["recipe_id"]
+        self.order = record["order"]
+        self.title = record["title"]
+        self.description = record["description"]
+        self.url = record["url"]
+        self.duration = record["duration"]
+        self.type_id = record["type_id"]
+        self.created_at = record["created_at"]
+        self.updated_at = record["updated_at"]
+        self.deleted_at = record["deleted_at"]
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "recipe_id": self.recipe_id,
+            "order": self.order,
+            "title": self.title,
+            "description": self.description,
+            "url": self.url,
+            "duration": self.duration,
+            "type_id": self.type_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "deleted_at": self.deleted_at,
+        }
+
 
 class RecipeIngredient(db.Model):
     __tablename__ = "recipe_ingredients"
@@ -110,3 +236,29 @@ class RecipeIngredient(db.Model):
     recipe_id = db.Column(db.Integer(), ForeignKey("recipes.id"))
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "ingredient_id": self.ingredient_id,
+            "measurement_id": self.measurement_id,
+            "amount": self.amount,
+            "recipe_id": self.recipe_id,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at,
+        }
+
+
+model_list = {
+    "conversions": Conversion,
+    "ingredient_types": IngredientType,
+    "ingredients": Ingredient,
+    "measurements": Measurement,
+    "photos": Photo,
+    "recipe_ingredients": RecipeIngredient,
+    "recipes": Recipe,
+    "reviews": Review,
+    "steps": Step,
+    "users": User
+}
