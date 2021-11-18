@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/detail_summary"
+        android:icon="@drawable/ic_baseline_article_24"
+        android:title="Summary" />
+    <item
+        android:id="@+id/detail_ingredient"
+        android:icon="@drawable/ic_baseline_fastfood_24"
+        android:title="Ingredients" />
+    <item
+        android:id="@+id/detail_review"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="Reviews" />
+    <item
+        android:id="@+id/detail_lets_cook"
+        android:icon="@drawable/ic_baseline_navigate_next_24"
+        android:title="Let's Cook!" />
+</menu>
