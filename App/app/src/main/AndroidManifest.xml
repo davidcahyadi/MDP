@@ -10,7 +10,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity
-            android:name=".MainActivity"
+            android:name=".home.ActivityReview"
+            android:exported="true" />
+        <activity
+            android:name=".steps.ActivityStep"
+            android:exported="true" />
+        <activity
+            android:name=".recipes.ActivityAddIngredient"
+            android:exported="true" />
+        <activity
+            android:name=".recipes.ActivityAddStep"
+            android:exported="true" />
+        <activity
+            android:name=".recipes.ActivityAddRecipe"
+            android:exported="true" />
+        <activity
+            android:name=".home.ActivityHome"
+            android:exported="true" />
+        <activity
+            android:name=".auth.ActivityRegister"
+            android:exported="true" />
+        <activity
+            android:name=".auth.ActivityHome"
+            android:exported="true" />
+        <activity
+            android:name=".auth.ActivityLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
