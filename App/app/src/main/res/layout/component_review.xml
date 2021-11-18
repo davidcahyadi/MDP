@@ -2,35 +2,131 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@drawable/linear_layout_shadow"
+    android:gravity="right"
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
 
         <androidx.cardview.widget.CardView
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            app:cardCornerRadius="250dp"
-            app:cardBackgroundColor="@color/white">
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="250dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                app:cardCornerRadius="250dp"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                app:cardCornerRadius="250dp">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:id="@+id/displayPictureImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/john_xina" />
             </androidx.cardview.widget.CardView>
 
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/displayNameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="John Xina"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reviewScoreTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="4.5"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/star1Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+
+                <ImageView
+                    android:id="@+id/star2Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+
+                <ImageView
+                    android:id="@+id/star3Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+
+                <ImageView
+                    android:id="@+id/star4Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+
+                <ImageView
+                    android:id="@+id/star5Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/reviewContentTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="0"
+        android:text="TextView"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/countCommentsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/gradient_rounded"
+        android:gravity="end"
+        android:padding="8dp"
+        android:text="6 COMMENTS"
+        android:textColor="@color/white" />
 </LinearLayout>
