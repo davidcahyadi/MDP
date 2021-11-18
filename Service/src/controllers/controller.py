@@ -1,4 +1,4 @@
-from .auth import auth
+from .auth_controller import auth
 
 # registering controller
 # this file for list
