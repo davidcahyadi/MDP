@@ -32,15 +32,25 @@ def seed(tables):
     else:
         tables = []
     files = glob(str(pathlib.Path().resolve()) + "/load_data/*.csv")
+
+    seeders = []
     for file in files:
         table_name = file.split("\\")[-1].replace(".csv","")
+        table_name = table_name.split("-")[1]
         if table_name in tables or len(tables) == 0:
-            print("Start Seeding Table "+table_name)
-            start_time = time.time()
-            seeder = Seeder(file)
-            seeder.down()
-            seeder.up()
-            print("Finish Seeding Table " + table_name + " in " + str(time.time()-start_time)+"s")
+            seeders.append(Seeder(file))
+
+    start_time = time.time()
+    size = len(seeders)
+    for i in range(size):
+        idx = size - i - 1
+        print("Drop Instance for table " + seeders[idx].name)
+        seeders[idx].down()
+
+    for i in range(size):
+        seeders[i].up()
+        print("Insert Instance for table " + seeders[i].name)
+    print("Finish Seeding Tables in " + str(time.time() - start_time) + "s")
 
 
 @command.cli.command('dump')

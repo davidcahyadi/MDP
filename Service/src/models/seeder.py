@@ -7,6 +7,7 @@ class Seeder:
     def __init__(self, filepath):
         self.filename = filepath
         self.name = self.filename.split("\\")[-1].replace(".csv", "")
+        self.name = self.name.split("-")[1]
         self.model = model_list[self.name]
 
     def up(self):
