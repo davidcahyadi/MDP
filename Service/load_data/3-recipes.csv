@@ -1,4 +1,4 @@
-id,title,user_id,rate,view,like,cook_duration,cook_preparation,serve_portion,description,created_at,updated_at,deleted_at
+id,title,user_id,rate,view,like,cook_duration,prep_duration,serve_portion,description,created_at,updated_at,deleted_at
 1,Perfect Pumpkin Pie,2,4.669997145304025,0,3503,55,15,0,The one and only! EAGLE BRAND® makes this traditional dessert the perfect ending to a Thanksgiving feast. ,,,
 2,Taco Seasoning I,2,4.823213600920363,0,7823,0,1,0,"Depending on how spicy you and your family like your dishes, use as little or as much as you want. ",,,
 3,Hamburger Steak with Onions and Gravy,2,4.613703339882122,0,4072,25,15,0,"An easy-to-make classic featuring tasty hamburger 'steaks' smothered in gravy and onions. Traditionally served with hot white rice or potatoes, it's a great way to dress up a pound of ground beef and you probably have all the ingredients on hand! ",,,

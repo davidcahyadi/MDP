@@ -51,6 +51,14 @@ class Photo(db.Model):
             "deleted_at": self.deleted_at
         }
 
+    def create(self,record):
+        self.id = record["id"]
+        self.recipe_id = record["recipe_id"]
+        self.url = record["url"]
+        self.type = record["type"]
+        self.created_at = record["created_at"]
+        self.deleted_at = record["deleted_at"]
+
 
 class Recipe(db.Model):
     __tablename__ = "recipes"
@@ -85,6 +93,21 @@ class Recipe(db.Model):
             "deleted_at": self.deleted_at,
         }
 
+    def create(self,record):
+        self.id = record["id"]
+        self.title = record["title"]
+        self.user_id = record["user_id"]
+        self.rate = record["rate"]
+        self.view = record["view"]
+        self.like = record["like"]
+        self.cook_duration = record["cook_duration"]
+        self.prep_duration = record["prep_duration"]
+        self.serve_portion = record["serve_portion"]
+        self.description = record["description"]
+        self.created_at = record["created_at"]
+        self.updated_at = record["updated_at"]
+        self.deleted_at = record["deleted_at"]
+
 
 class Review(db.Model):
     __tablename__ = "reviews"
@@ -108,6 +131,16 @@ class Review(db.Model):
             "deleted_at": self.deleted_at,
         }
 
+    def create(self,record):
+        self.id = record["id"]
+        self.user_id = record["user_id"]
+        self.recipe_id = record["recipe_id"]
+        self.rate = record["rate"]
+        self.description = record["description"]
+        self.review_id = record["review_id"]
+        self.created_at = record["created_at"]
+        self.deleted_at = record["deleted_at"]
+
 
 class IngredientType(db.Model):
     __tablename__ = "ingredient_types"
@@ -124,6 +157,12 @@ class IngredientType(db.Model):
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
         }
+
+    def create(self,record):
+        self.id = record["id"]
+        self.name = record["name"]
+        self.created_at = record["created_at"]
+        self.deleted_at = record["deleted_at"]
 
 
 class Ingredient(db.Model):
@@ -145,6 +184,13 @@ class Ingredient(db.Model):
             "deleted_at": self.deleted_at,
         }
 
+    def create(self,record):
+        self.id = record["id"]
+        self.name = record["name"]
+        self.icon_url = record["icon_url"]
+        self.type_id = record["type_id"]
+        self.created_at = record["created_at"]
+        self.deleted_at = record["deleted_at"]
 
 class Measurement(db.Model):
     __tablename__ = "measurements"
@@ -252,6 +298,16 @@ class RecipeIngredient(db.Model):
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
         }
+
+    def create(self,record):
+        self.id = record["id"]
+        self.name = record["name"]
+        self.ingredient_id = record["ingredient_id"]
+        self.measurement_id = record["measurement_id"]
+        self.amount = record["amount"]
+        self.recipe_id = record["recipe_id"]
+        self.created_at = record["created_at"]
+        self.deleted_at = record["deleted_at"]
 
 
 model_list = {
