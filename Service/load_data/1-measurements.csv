@@ -1,0 +1,14 @@
+id,name,abbr
+0,General,gen
+1,Table Spoon,tbsp
+2,Tea Spoon,tsp
+3,Cup,C
+4,Fluid Ounces,fo
+5,Pint,pt
+6,Quart,qt
+7,Sticks,st
+8,Gram,g
+9,Kilogram,kg
+10,Milli Liter,mL
+11,Liter,L
+12,Gallon,gal
