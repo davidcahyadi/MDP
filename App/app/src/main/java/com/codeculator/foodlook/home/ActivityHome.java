@@ -7,11 +7,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class ActivityHome extends AppCompatActivity {
+public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     NavigationView leftNav;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
@@ -33,13 +34,36 @@ public class ActivityHome extends AppCompatActivity {
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        leftNav = findViewById(R.id.leftNav);
+        leftNav.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.item1){
+            Toast.makeText(getBaseContext(), "Item 1", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == R.id.item2){
+            Toast.makeText(getBaseContext(), "Item 2", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == R.id.item3){
+            Toast.makeText(getBaseContext(), "Item 3", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == R.id.item4){
+            Toast.makeText(getBaseContext(), "Item 4", Toast.LENGTH_SHORT).show();
+        }else if(item.getItemId() == R.id.item5){
+            Toast.makeText(getBaseContext(), "Item 5", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 }
