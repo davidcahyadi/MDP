@@ -13,7 +13,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    def __init__(self, name, email, password):
+    def make(self,name,email,password):
         self.email = email
         self.name = name
         self.password = generate_password_hash(password)
@@ -30,6 +30,14 @@ class User(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+
+    def create(self,record):
+        self.id = record["id"]
+        self.name = record["name"]
+        self.email = record["email"]
+        self.password = record["password"]
+        self.created_at = record["created_at"]
+        self.updated_at = record["updated_at"]
 
 
 class Photo(db.Model):
@@ -51,7 +59,7 @@ class Photo(db.Model):
             "deleted_at": self.deleted_at
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.recipe_id = record["recipe_id"]
         self.url = record["url"]
@@ -93,7 +101,7 @@ class Recipe(db.Model):
             "deleted_at": self.deleted_at,
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.title = record["title"]
         self.user_id = record["user_id"]
@@ -131,7 +139,7 @@ class Review(db.Model):
             "deleted_at": self.deleted_at,
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.user_id = record["user_id"]
         self.recipe_id = record["recipe_id"]
@@ -153,12 +161,11 @@ class IngredientType(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "rate": self.rate,
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.name = record["name"]
         self.created_at = record["created_at"]
@@ -184,13 +191,14 @@ class Ingredient(db.Model):
             "deleted_at": self.deleted_at,
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.name = record["name"]
         self.icon_url = record["icon_url"]
         self.type_id = record["type_id"]
         self.created_at = record["created_at"]
         self.deleted_at = record["deleted_at"]
+
 
 class Measurement(db.Model):
     __tablename__ = "measurements"
@@ -205,7 +213,7 @@ class Measurement(db.Model):
 
     def raw(self):
         return {
-            "id": self.id,
+            "id": int(self.id),
             "name": self.name,
             "abbr": self.abbr,
         }
@@ -216,7 +224,7 @@ class Conversion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     from_measurement = db.Column(db.Integer(), ForeignKey("measurements.id"))
     to_measurement = db.Column(db.Integer(), ForeignKey("measurements.id"))
-    amount = db.Column(db.DECIMAL)
+    amount = db.Column(db.Float())
 
     def create(self, record):
         self.id = record["id"]
@@ -226,9 +234,9 @@ class Conversion(db.Model):
 
     def raw(self):
         return {
-            "id": self.id,
-            "name": self.from_measurement,
-            "abbr": self.to_measurement,
+            "id": int(self.id),
+            "from_measurement": self.from_measurement,
+            "to_measurement": self.to_measurement,
             "amount": self.amount,
         }
 
@@ -299,7 +307,7 @@ class RecipeIngredient(db.Model):
             "deleted_at": self.deleted_at,
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.name = record["name"]
         self.ingredient_id = record["ingredient_id"]
@@ -322,3 +330,16 @@ model_list = {
     "steps": Step,
     "users": User
 }
+
+model_order = [
+    "users",
+    "ingredient_types",
+    "ingredients",
+    "measurements",
+    "conversions",
+    "recipes",
+    "photos",
+    "recipe_ingredients",
+    "steps",
+    "reviews"
+]

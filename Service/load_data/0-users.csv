@@ -1,0 +1,4 @@
+id,name,email,password,created_at,updated_at
+1,member,member@gmail.com,pbkdf2:sha256:260000$wPkPAK0qEQijDQK5$b2bfe5b71bd2f266027a8e4ed8a1749b89221c4341ba7a74deaed9453245d7e5,2021-11-19 10:13:09,
+2,All Recipe,allrecipes@gmail.com,pbkdf2:sha256:260000$qZTUGp2Yc3jRVB75$78b5725fcf7e21d13a730977a105dd5d32b0d224b5f726806e777b093d2a7b68,2021-11-19 10:13:09,
+3,David Cahyadi,david@gmail.com,pbkdf2:sha256:260000$7eomPQIoxVeT5yoK$d84ca3354014dd773a2effa2781bb78f52bbcf93ba1223b84b74ad70fec74d86,2021-11-19 10:13:09,

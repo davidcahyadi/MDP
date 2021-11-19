@@ -87,3 +87,9 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+
+# service
+
+Scrapper/scrapper
+Service/service

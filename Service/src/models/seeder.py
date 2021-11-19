@@ -12,6 +12,7 @@ class Seeder:
 
     def up(self):
         df = pd.read_csv(self.filename)
+        print("Insert Instance for table " + self.name)
         for index, record in df.iterrows():
             model = self.model()
             model.create(record)
@@ -21,4 +22,4 @@ class Seeder:
     def down(self):
         db.session.query(self.model).delete()
         db.session.commit()
-        print("Drop record in table "+ self.name)
+        print("Drop record in table " + self.name)

@@ -5,7 +5,7 @@ import click
 import pandas as pd
 from src.models.database import db
 from src.models.seeder import Seeder
-from src.models.models import model_list
+from src.models.models import model_list, model_order
 from flask import Blueprint, Flask
 
 command = Blueprint('db', __name__)
@@ -44,12 +44,10 @@ def seed(tables):
     size = len(seeders)
     for i in range(size):
         idx = size - i - 1
-        print("Drop Instance for table " + seeders[idx].name)
         seeders[idx].down()
 
     for i in range(size):
         seeders[i].up()
-        print("Insert Instance for table " + seeders[i].name)
     print("Finish Seeding Tables in " + str(time.time() - start_time) + "s")
 
 
@@ -72,4 +70,5 @@ def dump(tables):
 
             df = pd.DataFrame(data, columns=col)
             df = df.set_index("id")
-            df.to_csv(str(pathlib.Path().resolve()) + "/dump/"+table_name + ".csv")
+            index = model_order.index(table_name)
+            df.to_csv(str(pathlib.Path().resolve()) + "/dump/"+str(index)+"-"+table_name + ".csv")
