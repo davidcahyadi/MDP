@@ -1,27 +1,24 @@
-package com.codeculator.foodlook.home;
+package com.codeculator.foodlook.steps;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codeculator.foodlook.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentRecipeDetail#newInstance} factory method to
+ * Use the {@link FragmentPlainTextStep#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentRecipeDetail extends Fragment {
+public class FragmentPlainTextStep extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,12 +28,9 @@ public class FragmentRecipeDetail extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ImageView detailFoodImage;
-    BottomNavigationView summaryNavigation;
-    TextView detailTitleTv;
-    RecyclerView recipeDetailRecycler;
+    TextView stepTextTv;
 
-    public FragmentRecipeDetail() {
+    public FragmentPlainTextStep() {
         // Required empty public constructor
     }
 
@@ -46,11 +40,11 @@ public class FragmentRecipeDetail extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentRecipeDetail.
+     * @return A new instance of fragment FragmentPlainTextStep.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentRecipeDetail newInstance(String param1, String param2) {
-        FragmentRecipeDetail fragment = new FragmentRecipeDetail();
+    public static FragmentPlainTextStep newInstance(String param1, String param2) {
+        FragmentPlainTextStep fragment = new FragmentPlainTextStep();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,15 +65,13 @@ public class FragmentRecipeDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+        return inflater.inflate(R.layout.fragment_plain_text_step, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        detailFoodImage = view.findViewById(R.id.detailFoodImage);
-        summaryNavigation = view.findViewById(R.id.summaryNavigation);
-        detailTitleTv = view.findViewById(R.id.detailTitleTv);
-        recipeDetailRecycler = view.findViewById(R.id.recipeDetailRecycler);
+
+        stepTextTv = view.findViewById(R.id.stepContentTv);
     }
 }

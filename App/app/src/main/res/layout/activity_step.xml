@@ -4,6 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_non_rounded"
     tools:context=".steps.ActivityStep">
 
+    <FrameLayout
+        android:id="@+id/stepLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/prevBtn"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:onClick="goPrev"
+            android:text="PREVIOUS"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:onClick="goNext"
+            android:text="NEXT"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:iconGravity="end" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

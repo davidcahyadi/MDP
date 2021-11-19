@@ -12,4 +12,7 @@
     <string name="DB_USERNAME">root</string>
     <string name="DB_PASSWORD"></string>
     <string name="DB_DATABASE">foodlook</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>
