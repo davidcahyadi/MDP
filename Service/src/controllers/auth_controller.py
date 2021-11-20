@@ -27,7 +27,8 @@ def register():
         password = form.password.data
         name = form.name.data
 
-        user = User().make(name, email, password)
+        user = User()
+        user.make(name, email, password)
         db.session.add(user)
         db.session.commit()
         return "success", HTTP_200_OK
@@ -48,7 +49,7 @@ def login():
         if user:
             if user.verify_password(form.password.data):
                 return jsonify({"refresh": generate_token(user.id, REFRESH, 30 * 24 * 3600),
-                                "access": generate_token(user.id, ACCESS, 300)
+                                "access": generate_token(user.id, ACCESS, 3000)
                                 }), HTTP_200_OK
             else:
                 return jsonify({"error": {"login": "Wrong password"}}), HTTP_403_FORBIDDEN

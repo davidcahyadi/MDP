@@ -20,16 +20,16 @@ def recipe_details(id):
 @recipe.get("/<id>/summary")
 def recipe_summary(id):
     r = Recipe.query.filter(Recipe.id == id).first()
-    return jsonify(r.steps())
+    return jsonify(r.steps_raw())
 
 
 @recipe.get("/<id>/ingredients")
 def recipe_ingredients(id):
     r = Recipe.query.filter(Recipe.id == id).first()
-    return jsonify(r.ingredients())
+    return jsonify(r.ingredients_raw())
 
 
 @recipe.get("/<id>/reviews")
 def recipe_reviews(id):
     r = Recipe.query.filter(Recipe.id == id).first()
-    return jsonify(r.reviews())
+    return jsonify(r.reviews_raw())

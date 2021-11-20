@@ -4,14 +4,15 @@ from wtforms.validators import DataRequired, email, EqualTo, Length
 from flask_wtf import FlaskForm
 from src.constant.http_status_codes import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_201_CREATED, HTTP_200_OK
 from src.constant.secure_codes import ACCESS, REFRESH, EXPIRED, SUCCESS, INVALID
+from src.helper.dictHelper import iterateModel
 from src.models.models import User, Review
 from src.models.database import db
 from src.services.security import validate_token, generate_token, token_required
 
-review = Blueprint("review", __name__, url_prefix="/api/v1/reviews")
+review = Blueprint("review", __name__, url_prefix="/api/v1/review")
 
 
-@review.get("/add")
+@review.post("/add")
 @token_required
 def add_review(user_id):
     recipe_id = request.args.get("recipe")
@@ -23,13 +24,20 @@ def add_review(user_id):
     return jsonify("OK"), HTTP_200_OK
 
 
+@review.post("/<id>/replies/add")
+@token_required
+def replies_add(user_id, id):
+    description = request.form.get("description")
+    r = Review().make(user_id=user_id, review_id=id, rate=0, description=description)
+    db.session.add(r)
+    db.session.commit()
+    return jsonify("OK"), HTTP_200_OK
+
+
 @review.get("/<id>/replies")
-def review_replies():
-    pass
+def review_replies(id):
+    replies = Review.query.filter(Review.review_id == id).all()
+    return jsonify(iterateModel(replies))
 
-
-@review.get("/<id>/replies/add")
-def replies_add():
-    pass
 
 

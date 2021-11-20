@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import numpy as np
 from sqlalchemy import ForeignKey
 
 from src.helper.dictHelper import iterateModel
@@ -15,7 +17,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    def make(self,name,email,password):
+    def make(self, name, email, password):
         self.email = email
         self.name = name
         self.password = generate_password_hash(password)
@@ -34,13 +36,13 @@ class User(db.Model):
             "updated_at": self.updated_at
         }
 
-    def create(self,record):
+    def create(self, record):
         self.id = record["id"]
         self.name = record["name"]
         self.email = record["email"]
         self.password = record["password"]
         self.created_at = record["created_at"]
-        self.updated_at = record["updated_at"]
+        self.updated_at = record["updated_at"] if not np.isnan(record["updated_at"]) else datetime.now()
 
 
 class Photo(db.Model):
@@ -50,7 +52,7 @@ class Photo(db.Model):
     url = db.Column(db.Text(), nullable=False)
     type = db.Column(db.Integer())  # 0 for introduction, 1 for steps
     created_at = db.Column(db.DateTime, default=datetime.now())
-    deleted_at = db.Column(db.DateTime)
+    deleted_at = db.Column(db.DateTime, nullable=True)
 
     def raw(self):
         return {
@@ -67,16 +69,21 @@ class Photo(db.Model):
         self.recipe_id = record["recipe_id"]
         self.url = record["url"]
         self.type = record["type"]
-        self.created_at = record["created_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not np.isnan(record["created_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not np.isnan(record["deleted_at"]) else self.deleted_at
+
+    def make(self, url, type=0):
+        self.url = url
+        self.type = type
+        return self
 
 
 class Recipe(db.Model):
     __tablename__ = "recipes"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80))
+    title = db.Column(db.String(128))
     user_id = db.Column(db.Integer(), ForeignKey("users.id"))
-    rate = db.Column(db.DECIMAL, nullable=True)
+    rate = db.Column(db.Float(), default=0)
     view = db.Column(db.Integer(), default=0)
     like = db.Column(db.Integer(), default=0)
     cook_duration = db.Column(db.Integer(), default=0)  # in minutes
@@ -84,8 +91,8 @@ class Recipe(db.Model):
     serve_portion = db.Column(db.Integer(), default=0)
     description = db.Column(db.Text())
     created_at = db.Column(db.DateTime, default=datetime.now())
-    updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    deleted_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now(), default=datetime.now())
+    deleted_at = db.Column(db.DateTime, nullable=True)
     # one to many relations
     _steps = db.relationship("Step", backref='step')
     _ingredients = db.relationship("RecipeIngredient", backref='ingredient')
@@ -93,6 +100,10 @@ class Recipe(db.Model):
     _photos = db.relationship("Photo", backref="photo")
 
     def raw(self):
+        photo = "https://cdn2.vectorstock.com/i/thumb-large/23/81/default-avatar-profile-icon-vector-18942381.jpg"
+        if len(self.photos_raw()) > 0:
+            photo = self.photos_raw()[0]["url"]
+
         return {
             "id": self.id,
             "title": self.title,
@@ -107,6 +118,7 @@ class Recipe(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "deleted_at": self.deleted_at,
+            "photo": photo
         }
 
     def create(self, record):
@@ -120,21 +132,45 @@ class Recipe(db.Model):
         self.prep_duration = record["prep_duration"]
         self.serve_portion = record["serve_portion"]
         self.description = record["description"]
-        self.created_at = record["created_at"]
-        self.updated_at = record["updated_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not np.isnan(record["created_at"]) else datetime.now()
+        self.updated_at = record["updated_at"] if not np.isnan(record["updated_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not np.isnan(record["deleted_at"]) else None
 
-    def steps(self):
+    def steps_raw(self):
         return iterateModel(self._steps)
 
-    def ingredients(self):
+    def ingredients_raw(self):
         return iterateModel(self._ingredients)
 
-    def reviews(self):
+    def reviews_raw(self):
         return iterateModel(self._reviews)
 
-    def photos(self):
+    def photos_raw(self):
         return iterateModel(self._photos)
+
+    def make(self, title, user_id, cook_duration, prep_duration, serve_portion, description):
+        self.title = title
+        self.user_id = user_id
+        self.cook_duration = cook_duration
+        self.prep_duration = prep_duration
+        self.serve_portion = serve_portion
+        self.description = description
+        self.like = 0
+        self.view = 0
+        self.rate = 0
+        return self
+
+    @property
+    def photos(self):
+        return self._photos
+
+    @property
+    def steps(self):
+        return self._steps
+
+    @property
+    def ingredients(self):
+        return self._ingredients
 
 
 class Review(db.Model):
@@ -146,17 +182,17 @@ class Review(db.Model):
     description = db.Column(db.Text())
     review_id = db.Column(db.Integer(), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now())
-    deleted_at = db.Column(db.DateTime)
+    deleted_at = db.Column(db.DateTime, nullable=True)
 
-    def make(self,user_id,recipe_id,rate,description):
+    def make(self, user_id, rate, description, recipe_id=None, review_id=None):
         self.user_id = user_id
         self.recipe_id = recipe_id
         self.rate = rate
         self.description = description
-        self.review_id = None
+        self.review_id = review_id
         return self
 
-    def make_reply(self,user_id,recipe_id,review_id,description):
+    def make_reply(self, user_id, recipe_id, review_id, description):
         self.user_id = user_id
         self.recipe_id = recipe_id
         self.review_id = review_id
@@ -173,6 +209,7 @@ class Review(db.Model):
             "review_id": self.review_id,
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
+
         }
 
     def create(self, record):
@@ -182,8 +219,8 @@ class Review(db.Model):
         self.rate = record["rate"]
         self.description = record["description"]
         self.review_id = record["review_id"]
-        self.created_at = record["created_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not np.isnan(record["created_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not np.isnan(record["deleted_at"]) else None
 
 
 class IngredientType(db.Model):
@@ -204,8 +241,9 @@ class IngredientType(db.Model):
     def create(self, record):
         self.id = record["id"]
         self.name = record["name"]
-        self.created_at = record["created_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not record["created_at"] and np.isnan(
+            record["created_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not record["deleted_at"] and np.isnan(record["deleted_at"]) else None
 
 
 class Ingredient(db.Model):
@@ -232,8 +270,9 @@ class Ingredient(db.Model):
         self.name = record["name"]
         self.icon_url = record["icon_url"]
         self.type_id = record["type_id"]
-        self.created_at = record["created_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not record["created_at"] and np.isnan(
+            record["created_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not record["deleted_at"] and np.isnan(record["deleted_at"]) else None
 
 
 class Measurement(db.Model):
@@ -300,9 +339,11 @@ class Step(db.Model):
         self.url = record["url"]
         self.duration = record["duration"]
         self.type_id = record["type_id"]
-        self.created_at = record["created_at"]
-        self.updated_at = record["updated_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not record["created_at"] and np.isnan(
+            record["created_at"]) else datetime.now()
+        self.updated_at = record["updated_at"] if not record["updated_at"] and np.isnan(
+            record["updated_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not record["deleted_at"] and np.isnan(record["deleted_at"]) else None
 
     def raw(self):
         return {
@@ -318,6 +359,29 @@ class Step(db.Model):
             "updated_at": self.updated_at,
             "deleted_at": self.deleted_at,
         }
+
+    def makeText(self, order, title, description):
+        self.order = order
+        self.title = title
+        self.description = description
+        self.type_id = 0
+        return self
+
+    def makePhoto(self, order, title, description, url):
+        self.order = order
+        self.title = title
+        self.description = description
+        self.type_id = 1
+        self.url = url
+        return self
+
+    def makeTimer(self, order, title, description, duration):
+        self.order = order
+        self.title = title
+        self.description = description
+        self.duration = duration
+        self.type_id = 2
+        return self
 
 
 class RecipeIngredient(db.Model):
@@ -350,8 +414,15 @@ class RecipeIngredient(db.Model):
         self.measurement_id = record["measurement_id"]
         self.amount = record["amount"]
         self.recipe_id = record["recipe_id"]
-        self.created_at = record["created_at"]
-        self.deleted_at = record["deleted_at"]
+        self.created_at = record["created_at"] if not np.isnan(record["created_at"]) else datetime.now()
+        self.deleted_at = record["deleted_at"] if not np.isnan(record["deleted_at"]) else None
+
+    def make(self, name, ingredient_id, measurement_id, amount):
+        self.name = name
+        self.ingredient_id = ingredient_id
+        self.measurement_id = measurement_id
+        self.amount = amount
+        return self
 
 
 model_list = {

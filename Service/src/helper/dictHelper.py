@@ -1,3 +1,5 @@
+from flask import jsonify
+
 
 def iterateModel(models):
     res = []
