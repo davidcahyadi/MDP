@@ -21,19 +21,32 @@ def catalog_popular(page):
     return make_response(jsonify(result))
 
 
-@catalog.get("/like")
-def catalog_like():
-    pass
+@catalog.get("/like/<page>")
+def catalog_like(page):
+    results = Recipe.query.order_by(desc(Recipe.like)).paginate(page=int(page), max_per_page=10).items
+    result = []
+    for res in results:
+        result.append(res.raw())
+    return make_response(jsonify(result))
 
 
-@catalog.get("/newest")
-def catalog_newest():
-    pass
+@catalog.get("/newest/<page>")
+def catalog_newest(page):
+    results = Recipe.query.order_by(desc(Recipe.created_at)).paginate(page=int(page), max_per_page=10).items
+    result = []
+    for res in results:
+        result.append(res.raw())
+    return make_response(jsonify(result))
 
 
 @catalog.get("/search")
 def catalog_search():
-    pass
+    search = "%{}%".format(request.args.get("q"))
+    fetch = Recipe.query.filter(Recipe.title.like(search)).all()
+    results = []
+    for result in fetch:
+        results.append(result.raw())
+    return make_response(jsonify(results))
 
 
 @catalog.post("/recommendation")

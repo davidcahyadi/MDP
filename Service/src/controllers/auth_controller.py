@@ -27,7 +27,7 @@ def register():
         password = form.password.data
         name = form.name.data
 
-        user = User(name, email, password)
+        user = User().make(name, email, password)
         db.session.add(user)
         db.session.commit()
         return "success", HTTP_200_OK

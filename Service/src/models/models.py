@@ -1,5 +1,7 @@
 from datetime import datetime
 from sqlalchemy import ForeignKey
+
+from src.helper.dictHelper import iterateModel
 from src.models.database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -17,6 +19,7 @@ class User(db.Model):
         self.email = email
         self.name = name
         self.password = generate_password_hash(password)
+        return self
 
     def verify_password(self, password):
         return check_password_hash(self.password, password)
@@ -83,6 +86,11 @@ class Recipe(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
     deleted_at = db.Column(db.DateTime)
+    # one to many relations
+    _steps = db.relationship("Step", backref='step')
+    _ingredients = db.relationship("RecipeIngredient", backref='ingredient')
+    _reviews = db.relationship("Review", backref="review")
+    _photos = db.relationship("Photo", backref="photo")
 
     def raw(self):
         return {
@@ -116,6 +124,18 @@ class Recipe(db.Model):
         self.updated_at = record["updated_at"]
         self.deleted_at = record["deleted_at"]
 
+    def steps(self):
+        return iterateModel(self._steps)
+
+    def ingredients(self):
+        return iterateModel(self._ingredients)
+
+    def reviews(self):
+        return iterateModel(self._reviews)
+
+    def photos(self):
+        return iterateModel(self._photos)
+
 
 class Review(db.Model):
     __tablename__ = "reviews"
@@ -127,6 +147,22 @@ class Review(db.Model):
     review_id = db.Column(db.Integer(), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
+
+    def make(self,user_id,recipe_id,rate,description):
+        self.user_id = user_id
+        self.recipe_id = recipe_id
+        self.rate = rate
+        self.description = description
+        self.review_id = None
+        return self
+
+    def make_reply(self,user_id,recipe_id,review_id,description):
+        self.user_id = user_id
+        self.recipe_id = recipe_id
+        self.review_id = review_id
+        self.description = description
+        self.rate = None
+        return self
 
     def raw(self):
         return {
