@@ -28,14 +28,16 @@
             android:name=".home.ActivityHome"
             android:exported="true" />
         <activity
-            android:name=".auth.ActivityRegister"
-            android:exported="true" />
-        <activity
             android:name=".auth.ActivityHome"
             android:exported="true" />
         <activity
+            android:name=".auth.ActivityRegister"
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
             android:name=".auth.ActivityLogin"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

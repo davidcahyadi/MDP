@@ -7,5 +7,5 @@
     android:background="@drawable/login_register_background"
     android:orientation="vertical"
     tools:context=".auth.ActivityRegister">
-
+    
 </LinearLayout>
