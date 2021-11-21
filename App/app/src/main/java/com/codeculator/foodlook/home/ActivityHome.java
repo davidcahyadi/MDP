@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.google.android.material.navigation.NavigationView;
 
 public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +37,10 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
         leftNav = findViewById(R.id.leftNav);
         leftNav.setNavigationItemSelectedListener(this);
+
+        // TODO: hapus setelah berhasil
+        PrefHelper prefHelper = new PrefHelper(this);
+        Toast.makeText(this, prefHelper.getAccess(), Toast.LENGTH_SHORT).show();
     }
 
 

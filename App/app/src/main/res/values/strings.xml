@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">App</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">App</string>
 
     <string name="MODE">DEV</string>
     <string name="SECRET_KEY">*C^n@^u6KjNzSf4iNSDuk4CDbXsc6%Vt</string>
     <string name="APP_HOST">localhost</string>
     <string name="APP_PORT">3000</string>
+    <string name="APP_URL">http://192.168.1.19:5000/api/v1</string>
 
     <string name="DB_HOST">localhost</string>
     <string name="DB_USERNAME">root</string>
