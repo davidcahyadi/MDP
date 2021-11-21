@@ -13,16 +13,17 @@ import android.widget.Toast;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.home.ActivityHome;
-import com.codeculator.foodlook.services.AuthService;
-import com.codeculator.foodlook.services.ResponseInterface;
+import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class ActivityLogin extends AppCompatActivity {
     EditText etEmail, etPassword;
     Button btnLogin;
     TextView tvRegister;
-    AuthService authService;
+    HTTPRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class ActivityLogin extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
 
-        authService = new AuthService(this);
+        request = new HTTPRequest(this);
 
         btnLogin.setOnClickListener(v->{
             login();
@@ -47,28 +48,26 @@ public class ActivityLogin extends AppCompatActivity {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
-        authService.setResponse(new ResponseInterface() {
-            @Override
-            public void onSuccess(JSONObject res) {
-                try{
-                    PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
-                    prefHelper.setAccess(res.getString("access"));
-                    prefHelper.setAccess(res.getString("refresh"));
+        HashMap<String,String> data = new HashMap<>();
+        data.put("email",email);
+        data.put("password",password);
 
-                    Intent i = new Intent(ActivityLogin.this, ActivityHome.class);
-                    startActivity(i);
-                }
-                catch (Exception e){
-                    Log.e("error",e.toString());
-                    Toast.makeText(ActivityLogin.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
+        HTTPRequest.Response response = new HTTPRequest.Response();
 
-            @Override
-            public void onError() {
-                Toast.makeText(ActivityLogin.this, "Error", Toast.LENGTH_SHORT).show();
+        response.onError(e->{});
+
+        response.onSuccess(res->{
+            try{
+                JSONObject json = new JSONObject(res);
+                PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
+                prefHelper.setAccess(json.getString("access"));
+                prefHelper.setRefresh(json.getString("refresh"));
+                Intent i = new Intent(ActivityLogin.this, ActivityHome.class);
+                startActivity(i);
             }
+            catch (Exception e){}
         });
-        authService.login(email,password);
+
+        request.post(getString(R.string.APP_URL)+"/auth/login",data,response);
     }
 }
