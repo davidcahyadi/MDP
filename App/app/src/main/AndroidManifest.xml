@@ -16,7 +16,11 @@
             android:exported="true" />
         <activity
             android:name=".steps.ActivityStep"
-            android:exported="true" />
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".steps.SubmitActivity"
+            android:exported="true"/>
         <activity
             android:name=".recipes.ActivityAddIngredient"
             android:exported="true" />

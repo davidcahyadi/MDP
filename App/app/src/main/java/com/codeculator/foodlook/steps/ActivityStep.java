@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -59,7 +60,11 @@ public class ActivityStep extends AppCompatActivity{
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sliderView.setCurrentItem(mCurrentPage + 1);
+                if(mCurrentPage == mDots.length - 1){
+                    Intent i = new Intent(getBaseContext(), SubmitActivity.class);
+                    startActivity(i);
+                }else
+                    sliderView.setCurrentItem(mCurrentPage + 1);
             }
         });
         prevBtn.setOnClickListener(new View.OnClickListener() {
