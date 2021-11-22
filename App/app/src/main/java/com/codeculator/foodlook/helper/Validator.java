@@ -108,6 +108,33 @@ public class Validator {
             return Validate.this;
         }
 
+        public Validate confirmed(View view){
+            if(this.view instanceof EditText && view instanceof EditText){
+                EditText et = (EditText) this.view;
+                if(
+                        !((EditText) this.view).getText().toString().
+                        equals(((EditText) view).getText().toString())
+                ){
+                    if(layout == null){
+                        et.setError(
+                                setMessage((String) et.getError(),
+                                et.getHint() + " not same with " +
+                                        ((EditText) view).getHint()));
+                    }
+                    else{
+                        TextInputLayout l = (TextInputLayout) layout;
+                        l.setError(setMessage(
+                                (String) et.getError(),
+                                et.getHint() + " not same with " +
+                                        ((EditText) view).getHint()));
+                        et.setError(null);
+                    }
+                    valid = false;
+                }
+            }
+            return Validate.this;
+        }
+
         private String setMessage(String old,String current){
             if(old == null || old.isEmpty()){
                 return current;

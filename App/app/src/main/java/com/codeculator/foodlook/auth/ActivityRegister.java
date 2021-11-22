@@ -54,8 +54,8 @@ public class ActivityRegister extends AppCompatActivity {
         Validator validator = new Validator();
         validator.validate(binding.email,binding.emailLayout).required();
         validator.validate(binding.name,binding.namelayout).required();
-        validator.validate(binding.password,binding.passwordLayout).required().min(6);
-        validator.validate(binding.confirm,binding.confirmLayout).required().min(6);
+        validator.validate(binding.password,binding.passwordLayout)
+                .required().min(6).confirmed(binding.confirm);
 
         if(validator.isValid()){
             HashMap<String,String> data = new HashMap<>();
