@@ -24,4 +24,7 @@ def create_app(test_config=None):
 
     # register blueprint (controllers)
     init_controller(app)
+
+
     return app
+
