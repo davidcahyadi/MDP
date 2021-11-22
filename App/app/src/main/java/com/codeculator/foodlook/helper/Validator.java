@@ -1,5 +1,7 @@
 package com.codeculator.foodlook.helper;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -11,7 +13,7 @@ public class Validator {
     boolean valid;
 
     public Validator(){
-
+        valid = true;
     }
 
     public Validate validate(View view){
@@ -45,10 +47,29 @@ public class Validator {
 
         private void clear(){
             if(view instanceof EditText){
-                ((EditText) view).setError("");
+                ((EditText) view).setError(null);
+                ((EditText) view).addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if(layout instanceof TextInputLayout){
+                            ((TextInputLayout)layout).setErrorEnabled(false);
+                            ((TextInputLayout)layout).setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
             }
             if(layout != null && layout instanceof TextInputLayout){
-                ((TextInputLayout)layout).setError("");
+                ((TextInputLayout)layout).setError(null);
             }
         }
 
@@ -62,7 +83,9 @@ public class Validator {
                     else{
                         TextInputLayout l = (TextInputLayout) layout;
                         l.setError(setMessage((String) l.getError(),l.getHint() + " is empty !"));
+                        et.setError(null);
                     }
+                    valid = false;
                 }
             }
             return Validate.this;
@@ -77,7 +100,9 @@ public class Validator {
                     else{
                         TextInputLayout l = (TextInputLayout) layout;
                         l.setError(setMessage((String) l.getError(),et.getHint() + " digits below "+ num));
+                        et.setError(null);
                     }
+                    valid = false;
                 }
             }
             return Validate.this;

@@ -38,6 +38,15 @@ public class ActivityLogin extends AppCompatActivity {
         binding.button.setOnClickListener(v->{
             login();
         });
+
+        binding.register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ActivityLogin.this, ActivityRegister.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
 
