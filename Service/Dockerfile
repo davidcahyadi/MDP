@@ -1,10 +1,13 @@
-FROM python:3.9-alpine
-RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk add --update --no-cache py3-numpy py3-pandas@testing mariadb-dev
-ENV PYTHONPATH=/usr/lib/python3.8/site-packages
-COPY requirements.txt /app
+FROM python:3.9.7-slim-bullseye
+WORKDIR /app
+ADD requirements.txt /app
+RUN apt-get update && \
+    apt-get install -y gcc python3-dev libmariadb3 libmariadb-dev --no-install-recommends && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+RUN pip install mariadb numpy pandas
 RUN pip install -r requirements.txt
 COPY . /app
-WORKDIR /app
 CMD ["flask", "run"]
 
