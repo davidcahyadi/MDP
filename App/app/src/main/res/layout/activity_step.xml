@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,25 +7,22 @@
     android:background="@drawable/gradient_background_non_rounded"
     tools:context=".steps.ActivityStep">
 
-    <FrameLayout
-        android:id="@+id/stepLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/slideViewer"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_marginBottom="96dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:id="@+id/sliderNavigation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/prevBtn"
@@ -33,10 +30,18 @@
             android:layout_height="96dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="goPrev"
-            android:text="PREVIOUS"
+            android:text="BACK"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:icon="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <LinearLayout
+            android:id="@+id/dotsLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:orientation="horizontal"></LinearLayout>
 
         <Button
             android:id="@+id/nextButton"
@@ -44,10 +49,9 @@
             android:layout_height="96dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="goNext"
             android:text="NEXT"
             android:textStyle="bold"
             app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
             app:iconGravity="end" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -73,7 +73,7 @@ public class FragmentPictureStep extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        stepContentTv = view.findViewById(R.id.stepContentTv);
-        stepImage = view.findViewById(R.id.stepImage);
+//        stepContentTv = view.findViewById(R.id.stepContentTv);
+//        stepImage = view.findViewById(R.id.stepImage);
     }
 }
