@@ -2,3 +2,4 @@ foodlook
 .idea
 src/**/__pycache__
 docker-compose.yaml
+.env

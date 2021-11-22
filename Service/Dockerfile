@@ -10,3 +10,4 @@ RUN pip install mariadb numpy pandas
 RUN pip install -r requirements.txt
 COPY . /app
 CMD ["flask", "run"]
+
