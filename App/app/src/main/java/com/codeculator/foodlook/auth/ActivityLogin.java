@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.databinding.ActivityLoginBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.Validator;
 import com.codeculator.foodlook.home.ActivityHome;
@@ -21,25 +22,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class ActivityLogin extends AppCompatActivity {
-    EditText etEmail, etPassword;
-    Button btnLogin;
-    TextView tvRegister;
     HTTPRequest request;
 
+    private ActivityLoginBinding binding;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
-
-        btnLogin = findViewById(R.id.btnLogin);
-        tvRegister = findViewById(R.id.tvRegister);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         request = new HTTPRequest(this);
 
-        btnLogin.setOnClickListener(v->{
+        binding.button.setOnClickListener(v->{
             login();
         });
     }
@@ -47,12 +43,12 @@ public class ActivityLogin extends AppCompatActivity {
 
     public void login(){
         Validator validator = new Validator();
-        validator.validate(etEmail).required();
-        validator.validate(etPassword).required().min(6);
+        validator.validate(binding.email,binding.emailLayout).required();
+        validator.validate(binding.password,binding.passwordLayout).required().min(6);
 
         if(validator.isValid()){
-            String email = etEmail.getText().toString();
-            String password = etPassword.getText().toString();
+            String email = binding.email.getText().toString();
+            String password = binding.password.getText().toString();
             HashMap<String,String> data = new HashMap<>();
             data.put("email",email);
             data.put("password",password);
@@ -75,12 +71,5 @@ public class ActivityLogin extends AppCompatActivity {
 
             request.post(getString(R.string.APP_URL)+"/auth/login",data,response);
         }
-        else{
-            Toast.makeText(this, validator.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
     }
 }

@@ -3,45 +3,66 @@ package com.codeculator.foodlook.helper;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 
 public class Validator {
-    ArrayList<String> messages;
+    boolean valid;
 
     public Validator(){
-        messages = new ArrayList<>();
+
     }
 
     public Validate validate(View view){
         return new Validate(view);
     }
 
+    public Validate validate(View view,View layout){
+        return new Validate(view,layout);
+    }
+
 
     public boolean isValid(){
-        return messages.size() == 0;
+        return valid;
     }
 
-    public String getMessage(){
-        String message = "";
-        for(String m : messages){
-            message += m + ", ";
-        }
-        message = message.substring(0,message.length()-2);
-        return message;
-    }
 
     public class Validate{
         View view;
+        View layout;
+
+        public Validate(View view,View layout){
+            this.view = view;
+            this.layout = layout;
+            clear();
+        }
 
         public Validate(View view){
             this.view = view;
+            clear();
         }
+
+        private void clear(){
+            if(view instanceof EditText){
+                ((EditText) view).setError("");
+            }
+            if(layout != null && layout instanceof TextInputLayout){
+                ((TextInputLayout)layout).setError("");
+            }
+        }
+
 
         public Validate required(){
             if(view instanceof EditText){
                 EditText et = (EditText) view;
                 if(et.getText().toString().length() == 0){
-                    Validator.this.messages.add(et.getHint() + " is empty !");
+                    if(layout == null)
+                        et.setError(setMessage((String) et.getError(),et.getHint() + " is empty !"));
+                    else{
+                        TextInputLayout l = (TextInputLayout) layout;
+                        l.setError(setMessage((String) l.getError(),l.getHint() + " is empty !"));
+                    }
                 }
             }
             return Validate.this;
@@ -51,10 +72,24 @@ public class Validator {
             if(view instanceof EditText){
                 EditText et = (EditText) view;
                 if(et.getText().toString().length() < num){
-                    Validator.this.messages.add(et.getHint() + " digits below "+ num);
+                    if(layout == null)
+                        et.setError(setMessage((String) et.getError(),et.getHint() + " digits below "+ num));
+                    else{
+                        TextInputLayout l = (TextInputLayout) layout;
+                        l.setError(setMessage((String) l.getError(),et.getHint() + " digits below "+ num));
+                    }
                 }
             }
             return Validate.this;
+        }
+
+        private String setMessage(String old,String current){
+            if(old == null || old.isEmpty()){
+                return current;
+            }
+            else {
+                return old+ ", "+ current;
+            }
         }
     }
 }
