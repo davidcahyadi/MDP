@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1dp</item>
+        <!-- border color -->
         <item name="boxStrokeColor">@color/white</item>
-        <item name="boxStrokeWidth">2dp</item>
+        <!-- The color of the label when it is collapsed and the text field is active -->
+        <item name="hintTextColor">@color/white</item>
+        <!-- The color of the label in all other text field states (such as resting and disabled) -->
         <item name="android:textColorHint">@color/white</item>
+        <item name="passwordToggleTint">@color/white</item>
+        <item name="passwordToggleDrawable">@drawable/password_eye</item>
+
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 </resources>
