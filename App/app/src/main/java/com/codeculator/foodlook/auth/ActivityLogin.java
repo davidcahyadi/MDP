@@ -72,7 +72,7 @@ public class ActivityLogin extends AppCompatActivity {
                     PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
                     prefHelper.setAccess(json.getString("access"));
                     prefHelper.setRefresh(json.getString("refresh"));
-                    Intent i = new Intent(ActivityLogin.this, ActivityHome.class);
+                    Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
                     startActivity(i);
                 }
                 catch (Exception e){}

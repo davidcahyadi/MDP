@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.codeculator.foodlook.R;
-import com.codeculator.foodlook.local.Step;
-import com.codeculator.foodlook.steps.AlarmReceiver;
-import com.codeculator.foodlook.steps.DatePickerFragment;
-import com.codeculator.foodlook.steps.TimePickerFragment;
+import com.codeculator.foodlook.model.Step;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.codeculator.foodlook.model.Step;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
