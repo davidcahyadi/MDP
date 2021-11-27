@@ -2,7 +2,6 @@ package com.codeculator.foodlook.steps;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,17 +14,12 @@ import android.widget.TextView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.StepSliderAdapter;
-import com.codeculator.foodlook.auth.ActivityLogin;
-import com.codeculator.foodlook.databinding.ActivityStepBinding;
-import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.local.AddStep;
 import com.codeculator.foodlook.local.DeleteAllStep;
 import com.codeculator.foodlook.local.FetchCallback;
 import com.codeculator.foodlook.local.LoadStep;
-import com.codeculator.foodlook.local.Step;
-import com.codeculator.foodlook.local.Step;
+import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.local.StoreCallback;
-import com.codeculator.foodlook.recipes.ActivityAddStep;
 import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONArray;

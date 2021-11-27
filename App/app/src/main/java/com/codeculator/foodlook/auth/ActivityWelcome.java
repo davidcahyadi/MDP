@@ -2,15 +2,20 @@ package com.codeculator.foodlook.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
-import com.codeculator.foodlook.databinding.ActivityRegisterBinding;
+import com.codeculator.foodlook.adapter.OnClickListener;
+import com.codeculator.foodlook.adapter.WelcomeCardAdapter.*;
+import com.codeculator.foodlook.adapter.WelcomeCardAdapter;
 import com.codeculator.foodlook.databinding.ActivityWelcomeBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
+import com.codeculator.foodlook.model.WelcomeCard;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ActivityWelcome extends AppCompatActivity {
 
@@ -28,14 +33,26 @@ public class ActivityWelcome extends AppCompatActivity {
 
         launcher = new ResultLauncherHelper(this);
 
-        binding.login.setOnClickListener(v -> {
-            Intent i = new Intent(ActivityWelcome.this, ActivityLogin.class);
-            launcher.launch(i);
+        WelcomeCardAdapter adapter = new WelcomeCardAdapter(this,createWelcomeCards());
+        adapter.setOnClickListener(new OnClickListener<WelcomeCard>() {
+            @Override
+            public void onClick(WelcomeCard data) {
+                if(data.getCode() == 1){
+                    Toast.makeText(ActivityWelcome.this, "Food", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(ActivityWelcome.this, "Search", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
+        binding.viewPager.setAdapter(adapter);
 
-        binding.register.setOnClickListener(v -> {
-            Intent i = new Intent(ActivityWelcome.this, ActivityRegister.class);
-            launcher.launch(i);
-        });
+    }
+
+    private List<WelcomeCard> createWelcomeCards(){
+        List<WelcomeCard> cards = new LinkedList<>();
+        cards.add(new WelcomeCard("Food Catalog",R.raw.food,1));
+        cards.add(new WelcomeCard("Search Food",R.raw.search,2));
+        return cards;
     }
 }

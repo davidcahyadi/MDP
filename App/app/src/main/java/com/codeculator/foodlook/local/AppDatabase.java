@@ -24,7 +24,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.codeculator.foodlook.local.Step;
+import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.model.StepDAO;
 
 @Database(entities={Step.class},version=1)
 public abstract class AppDatabase extends RoomDatabase {
