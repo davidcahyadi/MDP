@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.codeculator.foodlook.R;
@@ -46,6 +47,8 @@ public class ActivityStep extends AppCompatActivity{
     Button prevBtn, nextBtn;
     private int mCurrentPage;
 
+    ProgressBar loadingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class ActivityStep extends AppCompatActivity{
         mDotLayout = findViewById(R.id.dotsLayout);
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextButton);
+        loadingBar = findViewById(R.id.loadingBar);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +128,8 @@ public class ActivityStep extends AppCompatActivity{
                                         sliderView.setAdapter(stepAdapter);
                                         addDotsIndicator(0);
                                         sliderView.addOnPageChangeListener(viewListener);
+
+                                        loadingBar.setVisibility(View.INVISIBLE);
                                     }
                                 }).execute();
                             }
@@ -134,6 +140,7 @@ public class ActivityStep extends AppCompatActivity{
                 });
                 HashMap<String,String> data = new HashMap<>();
                 request.get("https://fl.codeculator.com/api/v1/recipe/1/summary",data,response);
+                loadingBar.setVisibility(View.VISIBLE);
             }
         }).execute();
         System.out.println("just called request");

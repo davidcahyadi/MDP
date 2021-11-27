@@ -3,10 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/checked_ingredient_background.xml" value="0.3828125" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/gradient_background_non_rounded.xml" value="0.3828125" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/gradient_rounded.xml" value="0.3828125" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/orange_rounded_background.xml" value="0.3828125" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/rounded_light_gray.xml" value="0.3828125" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/drawable/rounded_light_white_transparent.xml" value="0.3828125" />
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/activity_home.xml" value="0.2015625" />
-        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/activity_step.xml" value="0.32563405797101447" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/activity_step.xml" value="0.3162393162393162" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/activity_submit.xml" value="0.36666666666666664" />
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/fragment_picture_step.xml" value="0.32563405797101447" />
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/fragment_plain_text_step.xml" value="0.32563405797101447" />
+        <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/layout/step_slider.xml" value="0.36666666666666664" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/drawable/checked_ingredient_background.xml" value="0.3828125" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/drawable/gradient_rounded.xml" value="0.3828125" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/drawable/ic_baseline_article_24.xml" value="0.3828125" />
@@ -44,7 +52,6 @@
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/drawable/orange_rounded_background.xml" value="0.2993960310612597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/drawable/password_eye.xml" value="0.2993960310612597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/drawable/shadow.xml" value="0.2993960310612597" />
-        <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/activity_home.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/activity_login.xml" value="0.26833477135461603" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/activity_main.xml" value="0.29936594202898553" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/activity_register.xml" value="0.2825711820534944" />

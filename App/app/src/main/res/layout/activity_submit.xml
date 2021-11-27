@@ -90,11 +90,20 @@
             android:padding="8dp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/ratingSubmitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_light_white_transparent"
             android:text="SUBMIT" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/rounded_light_white_transparent"
+            android:text="MAYBE NEXT TIME" />
 
 
     </LinearLayout>

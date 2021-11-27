@@ -16,6 +16,7 @@ import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.local.Step;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class StepSliderAdapter extends PagerAdapter {
 
@@ -49,6 +50,17 @@ public class StepSliderAdapter extends PagerAdapter {
         TextView stepContentTv = (TextView) view.findViewById(R.id.stepContentTv);
 
         stepContentTv.setText(steps.get(position).description);
+
+        if(steps.get(position).url.equalsIgnoreCase("")){
+            int[] randomIcon = new int[3];
+            randomIcon[0] = R.drawable.ic_random_icon_1;
+            randomIcon[1] = R.drawable.ic_random_icon_2;
+            randomIcon[2] = R.drawable.ic_random_icon_3;
+            Random rand = new Random();
+            int doRand = rand.nextInt(3);
+            stepImage.setImageResource(randomIcon[doRand]);
+        }
+
         container.addView(view);
         return view;
     }

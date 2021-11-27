@@ -14,7 +14,9 @@
 
         android:layout_height="match_parent"
         android:layout_marginBottom="96dp"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck" >
+
+    </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:id="@+id/sliderNavigation"
@@ -54,4 +56,13 @@
             app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
             app:iconGravity="end" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
 </RelativeLayout>
