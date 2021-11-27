@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">FoodLook</string>
     <string name="hello_blank_fragment">App</string>
 
     <string name="MODE">DEV</string>

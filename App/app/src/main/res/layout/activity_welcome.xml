@@ -8,15 +8,20 @@
     android:orientation="vertical"
     tools:context=".home.ActivityHome" >
 
-    <TextView
-        android:id="@+id/tv_home_gotologin"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="right"
-        android:text="Login Here"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:gravity="right">
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="right"
+            android:text="Login Here"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView4"
@@ -50,15 +55,28 @@
             app:iconTint="@color/white" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_home_gotoregister"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="Don't Have Account ? Register Here"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Don't Have Account ?"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+        W<TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Register Here"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView4"

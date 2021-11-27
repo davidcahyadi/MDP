@@ -4,32 +4,38 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.databinding.ActivityRegisterBinding;
+import com.codeculator.foodlook.databinding.ActivityWelcomeBinding;
+import com.codeculator.foodlook.helper.ResultLauncherHelper;
 
 public class ActivityWelcome extends AppCompatActivity {
 
-    TextView tv_home_gotoregister, tv_home_gotologin;
+    ActivityWelcomeBinding binding;
+    ResultLauncherHelper launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        tv_home_gotoregister = findViewById(R.id.tv_home_gotoregister);
-        tv_home_gotologin = findViewById(R.id.tv_home_gotologin);
+        binding = ActivityWelcomeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        tv_home_gotologin.setOnClickListener(view -> {
+        launcher = new ResultLauncherHelper(this);
+
+        binding.login.setOnClickListener(v -> {
             Intent i = new Intent(ActivityWelcome.this, ActivityLogin.class);
-            startActivity(i);
-            finish();
+            launcher.launch(i);
         });
 
-        tv_home_gotoregister.setOnClickListener(view -> {
+        binding.register.setOnClickListener(v -> {
             Intent i = new Intent(ActivityWelcome.this, ActivityRegister.class);
-            startActivity(i);
-            finish();
+            launcher.launch(i);
         });
     }
 }

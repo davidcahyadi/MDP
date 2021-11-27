@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity
@@ -35,7 +35,14 @@
             android:exported="true" />
         <activity
             android:name=".auth.ActivityWelcome"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".auth.ActivityRegister"
             android:exported="true"
@@ -44,11 +51,6 @@
             android:name=".auth.ActivityLogin"
             android:exported="true"
             android:theme="@style/Theme.App.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

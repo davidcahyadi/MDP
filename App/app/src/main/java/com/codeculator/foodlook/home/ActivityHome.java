@@ -14,6 +14,7 @@ import com.codeculator.foodlook.helper.PrefHelper;
 import com.google.android.material.navigation.NavigationView;
 
 public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     NavigationView leftNav;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
@@ -38,9 +39,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         leftNav = findViewById(R.id.leftNav);
         leftNav.setNavigationItemSelectedListener(this);
 
-        // TODO: hapus setelah berhasil
-        PrefHelper prefHelper = new PrefHelper(this);
-        Toast.makeText(this, prefHelper.getAccess(), Toast.LENGTH_SHORT).show();
     }
 
 
