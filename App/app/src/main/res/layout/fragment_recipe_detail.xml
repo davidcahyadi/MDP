@@ -1,32 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".home.FragmentRecipeDetail">
 
-    <ImageView
-        android:id="@+id/detailFoodImage"
+    <RelativeLayout
+        android:id="@+id/relativeContainer"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:src="@drawable/holomyth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/detailFoodImage"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:src="@drawable/holomyth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/linear_transparent"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="@string/long_desc"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/summaryNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/orange_rounded_background"
-        app:layout_constraintTop_toBottomOf="@+id/detailFoodImage"
-        app:menu="@menu/recipe_detail_menu">
+        app:itemIconTint="@drawable/mid_navigation_color"
+        app:layout_constraintTop_toBottomOf="@+id/relativeContainer"
+        app:menu="@menu/recipe_detail_menu"
+        app:itemTextColor="@color/white"
+        android:layout_marginTop="-30dp"
+        android:layout_marginHorizontal="10dp">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <TableLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        >
+        <TableRow
+            android:layout_marginVertical="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="Cook Duration: "/>
+            <TextView
+                android:id="@+id/cookDuration"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="10m"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="Prep Duration:"/>
+            <TextView
+                android:id="@+id/prepDuration"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="20m"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginVertical="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="Serve Portion: "/>
+            <TextView
+                android:id="@+id/servePortion"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="Ratings: "/>
+            <TextView
+                android:id="@+id/rating"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="-"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginVertical="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="Like: "/>
+            <TextView
+                android:id="@+id/like"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="0"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:text="View: "/>
+            <TextView
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="0"/>
+        </TableRow>
+    </TableLayout>
 
     <TextView
         android:id="@+id/detailTitleTv"
@@ -43,7 +168,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeDetailRecycler"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
@@ -52,4 +177,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailTitleTv" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

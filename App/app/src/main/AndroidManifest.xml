@@ -12,20 +12,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity
-            android:name=".home.ActivityReview"
-            android:exported="true" />S
-        <activity
-            android:name=".steps.ActivityStep"
-            android:exported="true">
+            android:name=".auth.ActivitySplash"
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".home.ActivityReview"
+            android:exported="true" />
+        <activity
+            android:name=".steps.ActivityStep"
+            android:exported="true" />
+        <activity
             android:name=".steps.SubmitActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".recipes.ActivityAddIngredient"
             android:exported="true" />
@@ -41,22 +44,15 @@
         <activity
             android:name=".auth.ActivityWelcome"
             android:exported="true"
-            android:theme="@style/Theme.App.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".auth.ActivityRegister"
             android:exported="true"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".auth.ActivityLogin"
             android:exported="true"
-            android:theme="@style/Theme.App.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.App.NoActionBar" />
     </application>
 
 </manifest>
