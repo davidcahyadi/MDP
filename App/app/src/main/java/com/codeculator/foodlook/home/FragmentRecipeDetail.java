@@ -1,20 +1,41 @@
 package com.codeculator.foodlook.home;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.adapter.SummaryStepAdapter;
+import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
+import com.codeculator.foodlook.helper.FetchImage;
+import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.services.HTTPRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,38 +43,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * create an instance of this fragment.
  */
 public class FragmentRecipeDetail extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    ImageView detailFoodImage;
-    BottomNavigationView summaryNavigation;
-    TextView detailTitleTv;
-    RecyclerView recipeDetailRecycler;
+    FragmentRecipeDetailBinding binding;
+    HTTPRequest httpRequest;
+    FetchImage fetchImage;
+    int recipeID;
 
     public FragmentRecipeDetail() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentRecipeDetail.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentRecipeDetail newInstance(String param1, String param2) {
+    public static FragmentRecipeDetail newInstance() {
         FragmentRecipeDetail fragment = new FragmentRecipeDetail();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,25 +62,128 @@ public class FragmentRecipeDetail extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        Log.i("CREATE","Fragment Recipe Detail");
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            recipeID = bundle.getInt("ID");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+        binding = FragmentRecipeDetailBinding.inflate(inflater,container,false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        detailFoodImage = view.findViewById(R.id.detailFoodImage);
-        summaryNavigation = view.findViewById(R.id.summaryNavigation);
-        detailTitleTv = view.findViewById(R.id.detailTitleTv);
-        recipeDetailRecycler = view.findViewById(R.id.recipeDetailRecycler);
+        binding.summaryNavigation.setOnItemSelectedListener(this::onNavigationChange);
+
+        httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
+        fetchImage = new FetchImage(httpRequest);
+
+        binding.recipeDetailRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        changeToSummary();
+        Log.i("CREATED","VIEW");
+        loadRecipe();
     }
+
+
+    private void loadRecipe(){
+        HTTPRequest.Response<String> resp = new HTTPRequest.Response<>();
+        resp.onSuccess(res -> {
+            try{
+                JSONObject obj = new JSONObject(res);
+                String title = obj.getString("title");
+                String description = obj.getString("description");
+                binding.title.setText(title);
+                binding.description.setText(description);
+                fetchImage.fetch(obj.getString("photo"),binding.detailFoodImage);
+                binding.cookDuration.setText(obj.getString("cook_duration")+"m");
+                binding.prepDuration.setText(obj.getString("prep_duration")+"m");
+                binding.servePortion.setText(obj.getString("serve_portion"));
+                binding.rating.setText(obj.getString("rate"));
+                binding.like.setText(obj.getString("like"));
+                binding.view.setText(obj.getString("view"));
+            }
+            catch (Exception e){}
+        });
+        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/details",new HashMap<>(),resp);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    private boolean onNavigationChange(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.detail_summary:
+                changeToSummary();
+                return true;
+            case R.id.detail_ingredient:
+                changeToIngredient();
+                return true;
+            case R.id.detail_review:
+                changeToReview();
+                return true;
+            case R.id.detail_lets_cook:
+                changeToLetsCook();
+                return true;
+        }
+        return false;
+    }
+
+    private void changeToSummary(){
+        binding.detailLayout.setVisibility(View.VISIBLE);
+        binding.detailTitleTv.setText("Summary");
+
+        HTTPRequest.Response<String> stepResponse = new HTTPRequest.Response<>();
+        stepResponse.onSuccess(res->{
+            try{
+                ArrayList<Step> steps = new ArrayList<>();
+
+                JSONArray arr = new JSONArray(res);
+                int i = 0;
+                while(!arr.isNull(i)){
+                    JSONObject obj = arr.getJSONObject(i);
+
+                    Step step = new Step(
+                            obj.getInt("id"),
+                            obj.getInt("order"),
+                            obj.getString("title"),
+                            obj.getString("url"),
+                            obj.getString("description").substring(0,120)+"..."
+                    );
+                    steps.add(step);
+                    i++;
+                }
+                SummaryStepAdapter adapter = new SummaryStepAdapter(getActivity(),steps);
+                binding.recipeDetailRecycler.setAdapter(adapter);
+            }
+            catch (Exception e){
+                Log.e("ERROR",e.getMessage());
+            }
+        });
+
+        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/summary",new HashMap<>(),
+                stepResponse);
+    }
+
+    private void changeToIngredient(){
+        binding.detailLayout.setVisibility(View.GONE);
+        binding.detailTitleTv.setText("Ingredients");
+    }
+
+    private void changeToReview(){
+        binding.detailLayout.setVisibility(View.GONE);
+        binding.detailTitleTv.setText("Reviews");
+    }
+
+    private void changeToLetsCook(){
+        binding.detailTitleTv.setText("Lets Cook");
+    }
+
+
+
 }
