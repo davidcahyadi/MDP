@@ -22,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
+import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -142,7 +144,6 @@ public class FragmentRecipeDetail extends Fragment {
         stepResponse.onSuccess(res->{
             try{
                 ArrayList<Step> steps = new ArrayList<>();
-
                 JSONArray arr = new JSONArray(res);
                 int i = 0;
                 while(!arr.isNull(i)){
@@ -173,6 +174,38 @@ public class FragmentRecipeDetail extends Fragment {
     private void changeToIngredient(){
         binding.detailLayout.setVisibility(View.GONE);
         binding.detailTitleTv.setText("Ingredients");
+
+        HTTPRequest.Response<String> resp = new HTTPRequest.Response<>();
+        resp.onSuccess(res->{
+            try{
+                ArrayList<Ingredient> ingredients = new ArrayList<>();
+                JSONArray arr = new JSONArray(res);
+                int i = 0;
+                while(!arr.isNull(i)){
+                    JSONObject obj = arr.getJSONObject(i);
+
+                    Ingredient ingredient = new Ingredient(
+                            obj.getInt("id"),
+                            obj.getDouble("amount"),
+                            obj.getString("name"),
+                            obj.getInt("recipe_id"),
+                            obj.getInt("ingredient_id"),
+                            obj.getInt("measurement_id")
+                    );
+                    ingredients.add(ingredient);
+                    i++;
+                }
+
+                IngredientBarAdapter adapter = new IngredientBarAdapter(getActivity(),ingredients);
+                binding.recipeDetailRecycler.setAdapter(adapter);
+            }
+            catch (Exception e){}
+
+        });
+
+        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/ingredients",new HashMap<>(),
+                resp);
+
     }
 
     private void changeToReview(){
