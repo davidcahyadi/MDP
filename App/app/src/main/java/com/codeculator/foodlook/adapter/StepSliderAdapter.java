@@ -18,6 +18,9 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.steps.AlarmReceiver;
+import com.codeculator.foodlook.steps.DatePickerFragment;
+import com.codeculator.foodlook.steps.TimePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +29,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class StepSliderAdapter extends PagerAdapter implements DatePickerFragment.DialogDateListener, TimePickerFragment.DialogTimeListener{
+public class StepSliderAdapter extends PagerAdapter{
 
     Context context;
     public ArrayList<Step> steps = new ArrayList<>();
-    String DATE_PICKER_TAG = "DatePicker";
-    String TIME_PICKER_ONCE_TAG = "TimePickerOnce";
-    String TIME_PICKER_REPEAT_TAG = "TimePickerRepeat";
-    AlarmReceiver alarmReceiver;
+//    String DATE_PICKER_TAG = "DatePicker";
+//    String TIME_PICKER_ONCE_TAG = "TimePickerOnce";
+//    String TIME_PICKER_REPEAT_TAG = "TimePickerRepeat";
+//    AlarmReceiver alarmReceiver;
 
     LayoutInflater layoutInflater;
 
@@ -74,74 +77,61 @@ public class StepSliderAdapter extends PagerAdapter implements DatePickerFragmen
         }
 
 
+//        SINGLE NOTIFICATION
+//        EditText edtOnceMessage;
+//
+//        Button btnSetOnce = view.findViewById(R.id.btn_set_once_alarm);
+//        edtOnceMessage = view.findViewById(R.id.edt_once_message);
+//        Button cancelAlarmBtn = view.findViewById(R.id.cancelAlarmBtn);
+//
+//        alarmReceiver = new AlarmReceiver();
+//
+//        btnSetOnce.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar cal = Calendar.getInstance();
+//
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//                String onceDate = formatter.format(cal.getTime());
+//
+//                cal.add(Calendar.SECOND, 2);
+//                formatter = new SimpleDateFormat("HH:mm:ss");
+//                String onceTime = formatter.format(cal.getTime());
+//
+//                String onceMessage = edtOnceMessage.getText().toString();
+//                alarmReceiver.setOneTimeAlarm(context, AlarmReceiver.TYPE_ONE_TIME,
+//                        onceDate,
+//                        onceTime,
+//                        onceMessage);
+//            }
+//        });
+//        cancelAlarmBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                alarmReceiver.stopLoopingNotifSound(context);
+//            }
+//        });
+//        SINGLE NOTIFICATION
 
-        EditText edtOnceMessage;
-
-        ImageButton btnOnceDate = view.findViewById(R.id.btn_once_date);
-        ImageButton btnOnceTime = view.findViewById(R.id.btn_once_time);
-        Button btnSetOnce = view.findViewById(R.id.btn_set_once_alarm);
-        edtOnceMessage = view.findViewById(R.id.edt_once_message);
-
-        alarmReceiver = new AlarmReceiver();
-
-        btnOnceDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerFragment datePickerFragment = new DatePickerFragment();
-
-                datePickerFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), DATE_PICKER_TAG);
-            }
-        });
-        btnOnceTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerFragment timePickerFragmentOne = new TimePickerFragment();
-                timePickerFragmentOne.show(((FragmentActivity)context).getFragmentManager(), TIME_PICKER_ONCE_TAG);
-            }
-        });
-        btnSetOnce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                String onceDate = formatter.format(cal.getTime());
-
-                cal.add(Calendar.SECOND, 2);
-                formatter = new SimpleDateFormat("HH:mm:ss");
-                String onceTime = formatter.format(cal.getTime());
-
-                String onceMessage = edtOnceMessage.getText().toString();
-                alarmReceiver.setOneTimeAlarm(context, AlarmReceiver.TYPE_ONE_TIME,
-                        onceDate,
-                        onceTime,
-                        onceMessage);
-            }
-        });
-
+//        REPEATING NOTIFICATION
+//        alarmReceiver = new AlarmReceiver();
+//        Button btnSetRepeating = view.findViewById(R.id.btn_set_repeating_alarm);
+//        EditText edtRepeatingMessage = view.findViewById(R.id.edt_repeating_message);
+//
+//        btnSetRepeating.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String repeatMessage = edtRepeatingMessage.getText().toString();
+//                Calendar cal = Calendar.getInstance();
+//                cal.add(Calendar.SECOND, 2);
+//                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//                String repeatTime = formatter.format(cal.getTime());
+//                alarmReceiver.setRepeatingAlarm(context, AlarmReceiver.TYPE_REPEATING,
+//                        repeatTime, repeatMessage);
+//            }
+//        });
+//        REPEATING NOTIFICATION
         container.addView(view);
         return view;
-    }
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((ConstraintLayout) object);
-    }
-
-    @Override
-    public void onDialogDateSet(String tag, int year, int month, int dayOfMonth) {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, dayOfMonth);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-    }
-
-    @Override
-    public void onDialogTimeSet(String tag, int hourOfDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     }
 }

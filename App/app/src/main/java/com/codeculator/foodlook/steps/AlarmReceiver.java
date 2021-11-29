@@ -34,6 +34,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     private final int ID_ONETIME = 100;
     private final int ID_REPEATING = 101;
 
+    String DATE_FORMAT = "yyyy-MM-dd";
+    String TIME_FORMAT = "HH:mm:ss";
+
+    Notification notification;
+    NotificationManager notificationManagerCompat;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String type = intent.getStringExtra(EXTRA_TYPE);
@@ -46,8 +52,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public void setOneTimeAlarm(Context context, String type, String date, String time, String message) {
-        String DATE_FORMAT = "yyyy-MM-dd";
-        String TIME_FORMAT = "HH:mm:ss";
         if (isDateInvalid(date, DATE_FORMAT) || isDateInvalid(time, TIME_FORMAT)) return;
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -74,6 +78,32 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context, "One time alarm set up", Toast.LENGTH_SHORT).show();
     }
 
+    public void setRepeatingAlarm(Context context, String type, String time, String message) {
+
+        if (isDateInvalid(time, TIME_FORMAT)) return;
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_TYPE, type);
+        Log.e("REPEATING", time);
+        String timeArray[] = time.split(":");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]));
+        calendar.set(Calendar.SECOND, 0);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ID_REPEATING, intent, 0);
+        if (alarmManager != null) {
+            System.out.println("Setting inexact repeating");
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 2, pendingIntent);
+        }
+
+        Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show();
+    }
+
     public boolean isDateInvalid(String date, String format) {
         try {
             DateFormat df = new SimpleDateFormat(format, Locale.getDefault());
@@ -88,15 +118,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     private void showAlarmNotification(Context context, String title, String message, int notifId) {
         String CHANNEL_ID = "Channel_1";
         String CHANNEL_NAME = "AlarmManager channel";
-        NotificationManager notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_access_time_24)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setColor(ContextCompat.getColor(context, android.R.color.transparent))
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                .setVibrate(new long[]{0, 100, 1000})
                 .setSound(alarmSound);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
@@ -110,10 +141,18 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         }
 
-        Notification notification = builder.build();
+        notification = builder.build();
+        notification.flags |= Notification.FLAG_INSISTENT;
+
         if (notificationManagerCompat != null) {
             notificationManagerCompat.notify(notifId, notification);
         }
+    }
+
+
+    public void stopLoopingNotifSound(Context context) {
+        notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerCompat.cancelAll();
     }
 }
 

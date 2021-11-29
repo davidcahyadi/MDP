@@ -24,7 +24,9 @@ import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONArray;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class ActivityStep extends AppCompatActivity{
@@ -43,6 +45,8 @@ public class ActivityStep extends AppCompatActivity{
 
     ProgressBar loadingBar;
 
+    AlarmReceiver alarmReceiver = new AlarmReceiver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,16 +62,23 @@ public class ActivityStep extends AppCompatActivity{
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopRinging();
                 if(mCurrentPage == mDots.length - 1){
                     Intent i = new Intent(getBaseContext(), SubmitActivity.class);
                     startActivity(i);
-                }else
+                }else{
+                    if(steps.get(mCurrentPage).duration == 0)
+                        startTimer(steps.get(mCurrentPage).duration);
                     sliderView.setCurrentItem(mCurrentPage + 1);
+                }
             }
         });
         prevBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopRinging();
+                if(steps.get(mCurrentPage).duration == 0)
+                    startTimer(steps.get(mCurrentPage).duration);
                 sliderView.setCurrentItem(mCurrentPage - 1);
             }
         });
@@ -138,6 +149,21 @@ public class ActivityStep extends AppCompatActivity{
             }
         }).execute();
         System.out.println("just called request");
+    }
+
+    public void startTimer(int seconds){
+        System.out.println("ringing");
+        String repeatMessage = "Time's Up!";
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, seconds);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        String repeatTime = formatter.format(cal.getTime());
+        alarmReceiver.setRepeatingAlarm(getBaseContext(), AlarmReceiver.TYPE_REPEATING,
+                repeatTime, repeatMessage);
+    }
+
+    public void stopRinging(){
+        alarmReceiver.stopLoopingNotifSound(getBaseContext());
     }
 
     public void addDotsIndicator(int pos){
