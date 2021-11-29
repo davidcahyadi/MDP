@@ -15,12 +15,11 @@ def init_db(app):
     app.config["SQLALCHEMY_DATABASE_URI"] = f'mariadb+mariadbconnector://{username}:{password}@{host}/{db}'
     # app.config["SQLALCHEMY_ECHO"] = True
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_size": 30
+    }
 
-    db = SQLAlchemy()
-    db.init_app(app)
 
-    # remove session when not used
-    @app.teardown_appcontext
-    def shutdown_session(exception=None):
-        db.session.remove()
+    db = SQLAlchemy(app)
+
 

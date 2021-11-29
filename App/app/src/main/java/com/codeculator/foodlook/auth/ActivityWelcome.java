@@ -2,16 +2,17 @@ package com.codeculator.foodlook.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.OnClickListener;
-import com.codeculator.foodlook.adapter.WelcomeCardAdapter.*;
 import com.codeculator.foodlook.adapter.WelcomeCardAdapter;
 import com.codeculator.foodlook.databinding.ActivityWelcomeBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
+import com.codeculator.foodlook.home.ActivityHome;
 import com.codeculator.foodlook.model.WelcomeCard;
 
 import java.util.LinkedList;
@@ -38,7 +39,8 @@ public class ActivityWelcome extends AppCompatActivity {
             @Override
             public void onClick(WelcomeCard data) {
                 if(data.getCode() == 1){
-                    Toast.makeText(ActivityWelcome.this, "Food", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActivityWelcome.this, ActivityHome.class);
+                    launcher.launch(i);
                 }
                 else{
                     Toast.makeText(ActivityWelcome.this, "Search", Toast.LENGTH_SHORT).show();

@@ -37,6 +37,7 @@ def replies_add(user_id, id):
 @review.get("/<id>/replies")
 def review_replies(id):
     replies = Review.query.filter(Review.review_id == id).all()
+    db.session.commit()
     return jsonify(iterateModel(replies))
 
 

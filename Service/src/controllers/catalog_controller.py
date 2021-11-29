@@ -15,6 +15,7 @@ catalog = Blueprint("catalog", __name__, url_prefix="/api/v1/catalog")
 @catalog.get("/popular/<page>")
 def catalog_popular(page):
     results = Recipe.query.order_by(desc(Recipe.view)).paginate(page=int(page),max_per_page=10).items
+    db.session.commit()
     result = []
     for res in results:
         result.append(res.raw())
@@ -24,6 +25,7 @@ def catalog_popular(page):
 @catalog.get("/like/<page>")
 def catalog_like(page):
     results = Recipe.query.order_by(desc(Recipe.like)).paginate(page=int(page), max_per_page=10).items
+    db.session.commit()
     result = []
     for res in results:
         result.append(res.raw())
@@ -33,6 +35,7 @@ def catalog_like(page):
 @catalog.get("/newest/<page>")
 def catalog_newest(page):
     results = Recipe.query.order_by(desc(Recipe.created_at)).paginate(page=int(page), max_per_page=10).items
+    db.session.commit()
     result = []
     for res in results:
         result.append(res.raw())
@@ -43,6 +46,7 @@ def catalog_newest(page):
 def catalog_search():
     search = "%{}%".format(request.args.get("q"))
     fetch = Recipe.query.filter(Recipe.title.like(search)).all()
+    db.session.commit()
     results = []
     for result in fetch:
         results.append(result.raw())

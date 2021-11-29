@@ -15,4 +15,6 @@
 
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+
+    <string name="long_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
 </resources>

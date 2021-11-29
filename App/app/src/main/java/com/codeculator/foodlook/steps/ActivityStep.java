@@ -84,7 +84,7 @@ public class ActivityStep extends AppCompatActivity{
         });
 
         request = new HTTPRequest(this);
-        HTTPRequest.Response response = new HTTPRequest.Response();
+        HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
         new DeleteAllStep(ActivityStep.this, new StoreCallback() {
             @Override
             public void preProcess() {

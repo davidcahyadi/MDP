@@ -64,7 +64,7 @@ public class ActivityRegister extends AppCompatActivity {
             data.put("confirm_password",binding.confirm.getText().toString());
             data.put("name",binding.name.getText().toString());
 
-            HTTPRequest.Response response = new HTTPRequest.Response();
+            HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
             response.onError(e->{
                 Toast.makeText(this, "Register Error", Toast.LENGTH_SHORT).show();

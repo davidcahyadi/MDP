@@ -7,39 +7,88 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
-import com.codeculator.foodlook.helper.PrefHelper;
+import com.codeculator.foodlook.databinding.ActivityHomeBinding;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView leftNav;
-    public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    ActivityHomeBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+        // drawerLayout = findViewById(R.id.my_drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.myDrawerLayout, R.string.nav_open, R.string.nav_close);
 
         // pass the Open and Close toggle for the drawer layout listener
         // to toggle the button
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        binding.myDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
         // to make the Navigation drawer icon always appear on the action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        binding.leftNav.setNavigationItemSelectedListener(this);
 
+        binding.navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return bottomNavSelected(item);
+            }
+        });
+
+        binding.navigation.setSelectedItemId(R.id.menu_catalog);
         leftNav = findViewById(R.id.leftNav);
         leftNav.setNavigationItemSelectedListener(this);
-
+        getSupportFragmentManager().addFragmentOnAttachListener(new FragmentOnAttachListener() {
+            @Override
+            public void onAttachFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment) {
+                if(fragment instanceof FragmentMyRecipe){
+                    FragmentMyRecipe f = (FragmentMyRecipe) fragment;
+                    f.setFmrl(new FragmentMyRecipe.FragmentMyRecipeListener() {
+                        @Override
+                        public void gotoDetail() {
+                            //todo gotodetail
+                        }
+                    });
+                }
+            }
+        });
     }
+
+    @SuppressLint("NonConstantResourceId")
+    private boolean bottomNavSelected(@NonNull MenuItem item){
+        Fragment f;
+        switch (item.getItemId()){
+            case R.id.menu_catalog:
+                f = new FragmentCatalog();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                return true;
+            case R.id.menu_my_review:
+                f = new FragmentMyReview();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                return true;
+            case R.id.menu_my_recipe:
+                f = new FragmentMyRecipe();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                return true;
+        }
+        return false;
+    }
+
 
 
     @Override

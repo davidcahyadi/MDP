@@ -14,7 +14,6 @@ import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityLoginBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.Validator;
-import com.codeculator.foodlook.home.ActivityHome;
 import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONObject;
@@ -53,7 +52,7 @@ public class ActivityLogin extends AppCompatActivity {
     public void login(){
         Validator validator = new Validator();
         validator.validate(binding.email,binding.emailLayout).required();
-        validator.validate(binding.password,binding.passwordLayout).required().min(6);
+        validator.validate(binding.password,binding.passwordLayout).required();
 
         if(validator.isValid()){
             String email = binding.email.getText().toString();
@@ -62,7 +61,7 @@ public class ActivityLogin extends AppCompatActivity {
             data.put("email",email);
             data.put("password",password);
 
-            HTTPRequest.Response response = new HTTPRequest.Response();
+            HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
             response.onError(e->{});
 
