@@ -16,10 +16,8 @@ def init_db(app):
     # app.config["SQLALCHEMY_ECHO"] = True
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_size": 30
+        "pool_size": 400
     }
-
-
     db = SQLAlchemy(app)
 
 
