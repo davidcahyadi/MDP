@@ -46,6 +46,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+        db.session.commit()
         if user:
             if user.verify_password(form.password.data):
                 return jsonify({"refresh": generate_token(user.id, REFRESH, 30 * 24 * 3600),

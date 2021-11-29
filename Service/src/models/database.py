@@ -19,8 +19,4 @@ def init_db(app):
     db = SQLAlchemy()
     db.init_app(app)
 
-    # remove session when not used
-    @app.teardown_appcontext
-    def shutdown_session(exception=None):
-        db.session.remove()
 
