@@ -161,6 +161,7 @@ public class FragmentCatalog extends Fragment {
     {
         HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
         catalogResponse.onError(e->{
+            Log.e("ERROR",e.getMessage());
             Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
         });
 
@@ -184,8 +185,8 @@ public class FragmentCatalog extends Fragment {
                             obj.getInt("prep_duration"),
                             obj.getInt("serve_portion"),
                             obj.getString("description"),
-                            getDate(obj.getString("created_at")),
-                            getDate(obj.getString("updated_at")),
+                            obj.getString("created_at"),
+                            obj.getString("updated_at"),
                             obj.getString("photo")
                     );
                     recipes.add(recipe);
