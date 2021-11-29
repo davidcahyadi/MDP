@@ -1,6 +1,7 @@
 package com.codeculator.foodlook.services;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +75,15 @@ public class HTTPRequest {
     public static class Response<T>{
         ResponseError rError;
         ResponseSuccess<T> rSuccess;
+
+        public Response(){
+            rError = new ResponseError() {
+                @Override
+                public void onError(Exception e) {
+                    Log.e("ERROR","Error");
+                }
+            };
+        }
 
 
         public void onSuccess(ResponseSuccess<T> response){

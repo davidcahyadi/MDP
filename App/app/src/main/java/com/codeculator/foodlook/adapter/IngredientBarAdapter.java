@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,15 +49,27 @@ public class IngredientBarAdapter extends RecyclerView.Adapter<IngredientBarAdap
     }
 
     public class IngredientBarHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
+        TextView tvName,tvOption;
 
         public IngredientBarHolder(@NonNull View iv) {
             super(iv);
             tvName = iv.findViewById(R.id.name);
+            tvOption = iv.findViewById(R.id.option);
         }
 
         public void bind(Ingredient ingredient){
             tvName.setText(ingredient.name);
+            tvOption.setOnClickListener(view -> {
+                PopupMenu popupMenu = new PopupMenu(context,tvOption);
+                popupMenu.inflate(R.menu.ingredient_menu);
+                popupMenu.setOnMenuItemClickListener(item->{
+                    if(item.getItemId() == R.id.ingredient_change){
+                        Toast.makeText(context, "Change", Toast.LENGTH_SHORT).show();
+                    }
+                    return false;
+                });
+                popupMenu.show();
+            });
         }
     }
 }
