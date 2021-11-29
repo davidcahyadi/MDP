@@ -11,11 +11,10 @@ import java.util.List;
 @Dao
 public interface RecipeDAO {
     @Query("SELECT * FROM recipe")
-    List<Step> getAllRecipe();
+    List<Recipe> getAllRecipe();
 
     @Query("SELECT * FROM recipe WHERE id = :id")
     Recipe getRecipeById(int id);
-
 
     @Insert
     void insert(Recipe recipe);
