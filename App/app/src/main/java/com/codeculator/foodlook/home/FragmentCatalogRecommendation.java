@@ -2,13 +2,29 @@ package com.codeculator.foodlook.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.adapter.RecommendationAdapter;
+import com.codeculator.foodlook.adapter.SummaryStepAdapter;
+import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.services.HTTPRequest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +41,9 @@ public class FragmentCatalogRecommendation extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    RecyclerView rvRecommendation;
+    RecommendationAdapter adapter;
+    ArrayList<Recipe> recipes = new ArrayList<>();
 
     public FragmentCatalogRecommendation() {
         // Required empty public constructor
@@ -62,5 +81,47 @@ public class FragmentCatalogRecommendation extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_catalog_recommendation, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rvRecommendation = view.findViewById(R.id.rvRecommendation);
+
+        // get recipes
+//        HTTPRequest.Response<String> stepResponse = new HTTPRequest.Response<>();
+//        stepResponse.onSuccess(res->{
+//            try{
+//                ArrayList<Step> steps = new ArrayList<>();
+//
+//                JSONArray arr = new JSONArray(res);
+//                int i = 0;
+//                while(!arr.isNull(i)){
+//                    JSONObject obj = arr.getJSONObject(i);
+//
+//                    Step step = new Step(
+//                            obj.getInt("id"),
+//                            obj.getInt("order"),
+//                            obj.getString("title"),
+//                            obj.getString("url"),
+//                            obj.getString("description").substring(0,120)+"..."
+//                    );
+//                    steps.add(step);
+//                    i++;
+//                }
+//                SummaryStepAdapter adapter = new SummaryStepAdapter(getActivity(),steps);
+//                binding.recipeDetailRecycler.setAdapter(adapter);
+//            }
+//            catch (Exception e){
+//                Log.e("ERROR",e.getMessage());
+//            }
+//        });
+//
+//        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/summary",new HashMap<>(),
+//                stepResponse);
+
+        adapter = new RecommendationAdapter(getContext(), recipes);
+        rvRecommendation.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        rvRecommendation.setAdapter(adapter);
     }
 }
