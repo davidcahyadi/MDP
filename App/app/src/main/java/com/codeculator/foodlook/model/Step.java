@@ -35,7 +35,8 @@ public class Step {
         this.id = id;
         this.order = order;
         this.title = title;
-        this.url = url;
+        if(url.equals("0")) this.url = "";
+        else this.url = url;
         this.description = description;
         this.duration = duration;
     }

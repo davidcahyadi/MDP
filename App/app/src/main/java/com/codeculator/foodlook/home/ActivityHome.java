@@ -16,8 +16,10 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityHomeBinding;
+import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,6 +29,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
     public ActionBarDrawerToggle actionBarDrawerToggle;
     ActivityHomeBinding binding;
+    ResultLauncherHelper launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        launcher = new ResultLauncherHelper(this);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer

@@ -1,6 +1,7 @@
 package com.codeculator.foodlook.home;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -26,9 +27,11 @@ import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
+import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.steps.ActivityStep;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -87,7 +90,6 @@ public class FragmentRecipeDetail extends Fragment {
 
         httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
         fetchImage = new FetchImage(httpRequest);
-
         binding.recipeDetailRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         changeToSummary();
         Log.i("CREATED","VIEW");
@@ -148,14 +150,16 @@ public class FragmentRecipeDetail extends Fragment {
                 int i = 0;
                 while(!arr.isNull(i)){
                     JSONObject obj = arr.getJSONObject(i);
-
+                    String description = obj.getString("description");
+                    if(description.length() > 120){
+                        description = description.substring(0,120)+"...";
+                    }
                     Step step = new Step(
                             obj.getInt("id"),
                             obj.getInt("order"),
                             obj.getString("title"),
                             obj.getString("url"),
-                            obj.getString("description").substring(0,120)+"...",
-                            obj.getInt("duration")
+                            description
                     );
                     steps.add(step);
                     i++;
@@ -164,6 +168,7 @@ public class FragmentRecipeDetail extends Fragment {
                 binding.recipeDetailRecycler.setAdapter(adapter);
             }
             catch (Exception e){
+
                 Log.e("ERROR",e.getMessage());
             }
         });
@@ -216,6 +221,9 @@ public class FragmentRecipeDetail extends Fragment {
 
     private void changeToLetsCook(){
         binding.detailTitleTv.setText("Lets Cook");
+        Intent i = new Intent(getActivity(), ActivityStep.class);
+        i.putExtra(ActivityStep.RECIPE_ID,recipeID);
+        ((ActivityHome)getActivity()).launcher.launch(i);
     }
 
 

@@ -32,7 +32,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class ActivityStep extends AppCompatActivity{
+    public static String RECIPE_ID = "recipe";
 
+    private int recipeID;
     private ViewPager sliderView;
     private LinearLayout sliderNavigation, mDotLayout;
 
@@ -44,7 +46,6 @@ public class ActivityStep extends AppCompatActivity{
 
     Button prevBtn, nextBtn;
     private int mCurrentPage;
-
     ProgressBar loadingBar;
 
     AlarmReceiver alarmReceiver = new AlarmReceiver();
@@ -60,6 +61,8 @@ public class ActivityStep extends AppCompatActivity{
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextButton);
         loadingBar = findViewById(R.id.loadingBar);
+
+        recipeID = getIntent().getIntExtra(RECIPE_ID,0);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +144,7 @@ public class ActivityStep extends AppCompatActivity{
                     }
                 });
                 HashMap<String,String> data = new HashMap<>();
-                request.get("https://fl.codeculator.com/api/v1/recipe/34/summary",data,response);
+                request.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/summary",data,response);
                 loadingBar.setVisibility(View.VISIBLE);
             }
         }).execute();
