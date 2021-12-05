@@ -10,8 +10,10 @@ import androidx.fragment.app.FragmentOnAttachListener;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
@@ -100,6 +102,16 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem menuItem = menu.findItem(R.id.item_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+//        searchView.getQueryHint("Type here to search");
+//        searchView.setOnQueryTextListener(new );
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

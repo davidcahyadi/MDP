@@ -7,12 +7,8 @@
     <string name="APP_HOST">localhost</string>
     <string name="APP_PORT">3000</string>
 <!--    <string name="APP_URL">http://192.168.1.19:5000/api/v1</string>-->
-    <string name="APP_URL">http://192.168.0.22:5000/api/v1</string>
-
-    <string name="DB_HOST">localhost</string>
-    <string name="DB_USERNAME">root</string>
-    <string name="DB_PASSWORD"></string>
-    <string name="DB_DATABASE">foodlook</string>
+<!--    <string name="APP_URL">http://192.168.0.22:5000/api/v1</string>-->
+    <string name="APP_URL">https://fl.codeculator.com/api/v1</string>
 
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>

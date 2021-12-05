@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
+    android:layout_marginStart="5dp"
     android:layout_marginTop="20dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginEnd="5dp"
     android:orientation="vertical"
     android:scaleX="1">
 
@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:alpha="0.8"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/linear_gradient_bnw" />
+                app:srcCompat="@drawable/linear_transparent" />
 
             <TextView
                 android:id="@+id/tvRecipeName2"

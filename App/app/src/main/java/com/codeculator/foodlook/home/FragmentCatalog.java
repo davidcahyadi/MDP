@@ -19,12 +19,8 @@ import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.RecommendationAdapter;
-import com.codeculator.foodlook.adapter.SummaryStepAdapter;
-import com.codeculator.foodlook.databinding.ActivityHomeBinding;
 import com.codeculator.foodlook.databinding.FragmentCatalogBinding;
-import com.codeculator.foodlook.helper.FetchImage;
 import com.codeculator.foodlook.model.Recipe;
-import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONArray;
@@ -36,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -81,15 +76,6 @@ public class FragmentCatalog extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
-
-        binding.btnTest.setOnClickListener(v->{
-            FragmentManager fm = getParentFragmentManager();
-            Fragment f = new FragmentRecipeDetail();
-            Bundle b = new Bundle();
-            b.putInt("ID",1);
-            f.setArguments(b);
-            fm.beginTransaction().replace(R.id.container,f).commit();
-        });
 
         binding.tvMostPopular.setOnClickListener(v -> {
             if(filter != 0){
@@ -161,7 +147,7 @@ public class FragmentCatalog extends Fragment {
     {
         HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
         catalogResponse.onError(e->{
-            Log.e("ERROR",e.getMessage());
+            Log.e("ERROR",e.toString());
             Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
         });
 
@@ -193,7 +179,7 @@ public class FragmentCatalog extends Fragment {
                     i++;
                 }
                 Log.i("size", recipes.size()+"");
-                RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes);
+                RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
                 binding.rvRecipeCatalog.setAdapter(adapter);
                 binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
             }
