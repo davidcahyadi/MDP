@@ -31,12 +31,13 @@ public class Step {
     @ColumnInfo(name = "type_id")
     public int typeId;
 
-    public Step(int id, int order, String title, String url, String description){
+    public Step(int id, int order, String title, String url, String description, int duration){
         this.id = id;
         this.order = order;
         this.title = title;
         this.url = url;
         this.description = description;
+        this.duration = duration;
     }
 }
 

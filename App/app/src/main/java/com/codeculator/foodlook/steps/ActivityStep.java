@@ -1,5 +1,6 @@
 package com.codeculator.foodlook.steps;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -62,13 +64,10 @@ public class ActivityStep extends AppCompatActivity{
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopRinging();
                 if(mCurrentPage == mDots.length - 1){
                     Intent i = new Intent(getBaseContext(), SubmitActivity.class);
                     startActivity(i);
                 }else{
-                    if(steps.get(mCurrentPage).duration == 0)
-                        startTimer(steps.get(mCurrentPage).duration);
                     sliderView.setCurrentItem(mCurrentPage + 1);
                 }
             }
@@ -76,9 +75,6 @@ public class ActivityStep extends AppCompatActivity{
         prevBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopRinging();
-                if(steps.get(mCurrentPage).duration == 0)
-                    startTimer(steps.get(mCurrentPage).duration);
                 sliderView.setCurrentItem(mCurrentPage - 1);
             }
         });
@@ -107,7 +103,8 @@ public class ActivityStep extends AppCompatActivity{
                                     json.getJSONObject(i).getInt("order"),
                                     json.getJSONObject(i).getString("title"),
                                     json.getJSONObject(i).getString("url"),
-                                    json.getJSONObject(i).getString("description")));
+                                    json.getJSONObject(i).getString("description"),
+                                    json.getJSONObject(i).getInt("duration")));
                         }
                         new AddStep(ActivityStep.this, new StoreCallback() {
                             @Override
@@ -144,26 +141,11 @@ public class ActivityStep extends AppCompatActivity{
                     }
                 });
                 HashMap<String,String> data = new HashMap<>();
-                request.get("https://fl.codeculator.com/api/v1/recipe/1/summary",data,response);
+                request.get("https://fl.codeculator.com/api/v1/recipe/34/summary",data,response);
                 loadingBar.setVisibility(View.VISIBLE);
             }
         }).execute();
         System.out.println("just called request");
-    }
-
-    public void startTimer(int seconds){
-        System.out.println("ringing");
-        String repeatMessage = "Time's Up!";
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, seconds);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String repeatTime = formatter.format(cal.getTime());
-        alarmReceiver.setRepeatingAlarm(getBaseContext(), AlarmReceiver.TYPE_REPEATING,
-                repeatTime, repeatMessage);
-    }
-
-    public void stopRinging(){
-        alarmReceiver.stopLoopingNotifSound(getBaseContext());
     }
 
     public void addDotsIndicator(int pos){
@@ -193,6 +175,9 @@ public class ActivityStep extends AppCompatActivity{
             addDotsIndicator(position);
 
             mCurrentPage = position;
+            stopRinging();
+            if(steps.get(mCurrentPage).duration > 0)
+                startTimer(steps.get(mCurrentPage).duration);
             if(mCurrentPage == 0){
                 nextBtn.setEnabled(true);
                 nextBtn.setText("NEXT");
@@ -220,4 +205,19 @@ public class ActivityStep extends AppCompatActivity{
         }
     };
 
+
+    public void startTimer(int seconds){
+        System.out.println("ringing");
+        String repeatMessage = "Time's Up!";
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, seconds);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        String repeatTime = formatter.format(cal.getTime());
+        alarmReceiver.setRepeatingAlarm(getBaseContext(), AlarmReceiver.TYPE_REPEATING,
+                repeatTime, repeatMessage);
+    }
+
+    public void stopRinging(){
+        alarmReceiver.stopLoopingNotifSound(getBaseContext());
+    }
 }

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.steps.AlarmReceiver;
@@ -52,7 +55,7 @@ public class StepSliderAdapter extends PagerAdapter{
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == (ConstraintLayout) object;
+        return view == (LinearLayout) object;
     }
 
     @NonNull
@@ -61,8 +64,17 @@ public class StepSliderAdapter extends PagerAdapter{
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.step_slider, container, false);
 
-        ImageView stepImage = (ImageView) view.findViewById(R.id.stepImage);
-        TextView stepContentTv = (TextView) view.findViewById(R.id.stepContentTv);
+        ImageView stepImage = view.findViewById(R.id.stepImage);
+        TextView stepContentTv = view.findViewById(R.id.stepContentTv);
+        LottieAnimationView animation = view.findViewById(R.id.timerAnimation);
+        if(steps.get(position).duration > 0){
+            stepImage.setVisibility(View.INVISIBLE);
+            animation.setAnimation(R.raw.timer);
+            animation.setSpeed(steps.get(position).duration);
+        }else{
+            stepImage.setVisibility(View.VISIBLE);
+            animation.setVisibility(View.INVISIBLE);
+        }
 
         stepContentTv.setText(steps.get(position).description);
 
@@ -75,7 +87,6 @@ public class StepSliderAdapter extends PagerAdapter{
             int doRand = rand.nextInt(3);
             stepImage.setImageResource(randomIcon[doRand]);
         }
-
 
 //        SINGLE NOTIFICATION
 //        EditText edtOnceMessage;
@@ -133,5 +144,10 @@ public class StepSliderAdapter extends PagerAdapter{
 //        REPEATING NOTIFICATION
         container.addView(view);
         return view;
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((LinearLayout)object);
     }
 }
