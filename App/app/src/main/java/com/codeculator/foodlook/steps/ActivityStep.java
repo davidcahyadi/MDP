@@ -70,6 +70,7 @@ public class ActivityStep extends AppCompatActivity{
                 if(mCurrentPage == mDots.length - 1){
                     Intent i = new Intent(getBaseContext(), SubmitActivity.class);
                     startActivity(i);
+                    finish();
                 }else{
                     sliderView.setCurrentItem(mCurrentPage + 1);
                 }

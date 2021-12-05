@@ -11,8 +11,10 @@ import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.OnClickListener;
 import com.codeculator.foodlook.adapter.WelcomeCardAdapter;
 import com.codeculator.foodlook.databinding.ActivityWelcomeBinding;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.home.ActivityHome;
+import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.model.WelcomeCard;
 
 import java.util.LinkedList;
@@ -33,6 +35,16 @@ public class ActivityWelcome extends AppCompatActivity {
         setContentView(view);
 
         launcher = new ResultLauncherHelper(this);
+        launcher.addListener(User.LOGOUT, new ResultLauncherHelper.LauncherListener() {
+            @Override
+            public void listen(Intent data) {
+                System.out.println("LOGOUT");
+                PrefHelper prefHelper = new PrefHelper(ActivityWelcome.this);
+                prefHelper.deleteTokens();
+                finish();
+                ActivityWelcome.this.startActivity(new Intent(ActivityWelcome.this,ActivityLogin.class));
+            }
+        });
 
         WelcomeCardAdapter adapter = new WelcomeCardAdapter(this,createWelcomeCards());
         adapter.setOnClickListener(new OnClickListener<WelcomeCard>() {

@@ -21,19 +21,25 @@
             android:name=".auth.ActivitySplash"
             android:exported="true"
             android:theme="@style/Theme.App.NoActionBar">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".home.ActivityReview"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".steps.ActivityStep"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar">
 
         </activity>
         <activity
             android:name=".steps.SubmitActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar"/>
         <activity
             android:name=".recipes.ActivityAddIngredient"
             android:exported="true" />

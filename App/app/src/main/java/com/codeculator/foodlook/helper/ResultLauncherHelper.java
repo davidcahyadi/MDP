@@ -35,7 +35,7 @@ public class ResultLauncherHelper {
         launcher.launch(i);
     }
 
-    interface LauncherListener{
+    public interface LauncherListener{
         void listen(Intent data);
     }
 }

@@ -159,7 +159,8 @@ public class FragmentRecipeDetail extends Fragment {
                             obj.getInt("order"),
                             obj.getString("title"),
                             obj.getString("url"),
-                            description
+                            description,
+                            obj.getInt("duration")
                     );
                     steps.add(step);
                     i++;

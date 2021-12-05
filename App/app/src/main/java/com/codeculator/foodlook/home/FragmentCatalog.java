@@ -154,7 +154,6 @@ public class FragmentCatalog extends Fragment {
         catalogResponse.onSuccess(res-> {
             try{
                 ArrayList<Recipe> recipes = new ArrayList<>();
-
                 JSONArray arr = new JSONArray(res);
                 int i = 0;
                 while(!arr.isNull(i)){
@@ -182,11 +181,13 @@ public class FragmentCatalog extends Fragment {
                 RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
                 binding.rvRecipeCatalog.setAdapter(adapter);
                 binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                binding.loading.setVisibility(View.GONE);
             }
             catch (Exception e){
                 Log.e("ERROR",e.getMessage());
             }
         });
+        binding.loading.setVisibility(View.VISIBLE);
 
         httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
                 catalogResponse);

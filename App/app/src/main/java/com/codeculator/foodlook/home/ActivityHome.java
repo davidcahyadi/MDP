@@ -3,12 +3,12 @@ package com.codeculator.foodlook.home;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentOnAttachListener;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,10 +16,11 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.L;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityHomeBinding;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
+import com.codeculator.foodlook.model.User;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -123,17 +124,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         if(item.getItemId() == R.id.item1){
             Toast.makeText(getBaseContext(), "Item 1", Toast.LENGTH_SHORT).show();
         }
-        else if(item.getItemId() == R.id.item2){
-            Toast.makeText(getBaseContext(), "Item 2", Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId() == R.id.item3){
-            Toast.makeText(getBaseContext(), "Item 3", Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId() == R.id.item4){
-            Toast.makeText(getBaseContext(), "Item 4", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.item5){
-            Toast.makeText(getBaseContext(), "Item 5", Toast.LENGTH_SHORT).show();
+        else if(item.getItemId() == R.id.sidebar_menu_logout){
+            logout();
         }
         return false;
+    }
+
+    private void logout(){
+        setResult(User.LOGOUT,new Intent());
+        finish();
     }
 }
