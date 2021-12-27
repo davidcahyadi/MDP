@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_non_rounded"
+    android:background="@color/white"
     tools:context=".steps.SubmitActivity">
 
     <LinearLayout
@@ -74,7 +74,7 @@
             android:layout_marginTop="72dp"
             android:layout_marginBottom="8dp"
             android:text="Say something about the recipe"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -87,7 +87,8 @@
             android:background="@drawable/rounded_light_black_transparent"
             android:gravity="top"
             android:inputType="text|textMultiLine"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/ratingSubmitBtn"
@@ -95,7 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_light_white_transparent"
-            android:text="SUBMIT" />
+            android:text="SUBMIT"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/cancelBtn"
@@ -103,7 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:background="@drawable/rounded_light_white_transparent"
-            android:text="MAYBE NEXT TIME" />
+            android:text="MAYBE NEXT TIME"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>
