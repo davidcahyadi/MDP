@@ -10,6 +10,13 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="My Reviews" />
     <item
+        android:id="@+id/menu_placeholder"
+        android:title="" />
+    <item
+        android:id="@+id/menu_bookmarks"
+        android:icon="@drawable/ic_bookmark_border"
+        android:title="Bookmarks" />
+    <item
         android:id="@+id/menu_my_recipe"
         android:icon="@drawable/ic_sharp_info_24"
         android:title="My Recipes" />

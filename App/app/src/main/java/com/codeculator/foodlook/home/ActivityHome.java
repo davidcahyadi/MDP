@@ -60,6 +60,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 return bottomNavSelected(item);
             }
         });
+        binding.navigation.setBackground(null);
+        binding.navigation.getMenu().getItem(2).setEnabled(false);
 
         binding.navigation.setSelectedItemId(R.id.menu_catalog);
         getSupportFragmentManager().addFragmentOnAttachListener(new FragmentOnAttachListener() {
@@ -89,6 +91,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             case R.id.menu_my_review:
                 f = new FragmentMyReview();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
+                return true;
+            case R.id.menu_bookmarks:
+                //TODO: implement Fragments
                 return true;
             case R.id.menu_my_recipe:
                 f = new FragmentMyRecipe();
