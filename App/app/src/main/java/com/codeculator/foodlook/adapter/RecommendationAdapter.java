@@ -19,6 +19,7 @@ import com.codeculator.foodlook.helper.FetchImage;
 import com.codeculator.foodlook.home.FragmentRecipeDetail;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -73,7 +74,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             tvRating.setText(r.rate+"");
             tvTime.setText((r.prep_duration + r.cook_duration)+"");
             tvViewCount.setText(r.view+"");
-            fetchImage.fetch(r.photo, imageViewDisplayRecipe3);
+            Picasso.get().load(r.photo).into(imageViewDisplayRecipe3);
             itemView.setOnClickListener(v -> {
                 Fragment f = new FragmentRecipeDetail();
                 Bundle b = new Bundle();
