@@ -2,7 +2,6 @@ package com.codeculator.foodlook.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,30 +9,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
-import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.model.Ingredient;
+import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 import com.codeculator.foodlook.steps.ActivityStep;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +35,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,25 +96,30 @@ public class FragmentRecipeDetail extends Fragment {
 
 
     private void loadRecipe(){
-        HTTPRequest.Response<String> resp = new HTTPRequest.Response<>();
-        resp.onSuccess(res -> {
-            try{
-                JSONObject obj = new JSONObject(res);
-                String title = obj.getString("title");
-                String description = obj.getString("description");
-                binding.title.setText(title);
-                binding.description.setText(description);
-                fetchImage.fetch(obj.getString("photo"),binding.detailFoodImage);
-                binding.cookDuration.setText(obj.getString("cook_duration")+"m");
-                binding.prepDuration.setText(obj.getString("prep_duration")+"m");
-                binding.servePortion.setText(obj.getString("serve_portion"));
-                binding.rating.setText(obj.getString("rate"));
-                binding.like.setText(obj.getString("like"));
-                binding.view.setText(obj.getString("view"));
+        Call<Recipe> call = RetrofitApi.getInstance().getRecipeService().getRecipeDetail(recipeID);
+        call.enqueue(new Callback<Recipe>() {
+            @Override
+            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                if(response.isSuccessful()){
+                    Recipe recipe = response.body();
+                    assert recipe != null;
+                    binding.title.setText(recipe.title);
+                    binding.description.setText(recipe.description);
+                    Picasso.get().load(recipe.photo).into(binding.detailFoodImage);
+                    binding.cookDuration.setText(recipe.cook_duration+"m");
+                    binding.prepDuration.setText(recipe.prep_duration+"m");
+                    binding.servePortion.setText(recipe.serve_portion+"");
+                    binding.rating.setText(recipe.rate+"");
+                    binding.like.setText(recipe.like+"");
+                    binding.view.setText(recipe.view+"");
+                }
             }
-            catch (Exception e){}
+
+            @Override
+            public void onFailure(Call<Recipe> call, Throwable t) {
+
+            }
         });
-        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/details",new HashMap<>(),resp);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -142,77 +145,41 @@ public class FragmentRecipeDetail extends Fragment {
         binding.detailLayout.setVisibility(View.VISIBLE);
         binding.detailTitleTv.setText("Summary");
 
-        HTTPRequest.Response<String> stepResponse = new HTTPRequest.Response<>();
-        stepResponse.onSuccess(res->{
-            try{
-                ArrayList<Step> steps = new ArrayList<>();
-                JSONArray arr = new JSONArray(res);
-                int i = 0;
-                while(!arr.isNull(i)){
-                    JSONObject obj = arr.getJSONObject(i);
-                    String description = obj.getString("description");
-                    if(description.length() > 120){
-                        description = description.substring(0,120)+"...";
-                    }
-                    Step step = new Step(
-                            obj.getInt("id"),
-                            obj.getInt("order"),
-                            obj.getString("title"),
-                            obj.getString("url"),
-                            description,
-                            obj.getInt("duration")
-                    );
-                    steps.add(step);
-                    i++;
+        Call<ArrayList<Step>> call = RetrofitApi.getInstance().getRecipeService().getRecipeSummary(recipeID);
+        call.enqueue(new Callback<ArrayList<Step>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Step>> call, Response<ArrayList<Step>> response) {
+                if(response.isSuccessful()){
+                    SummaryStepAdapter adapter = new SummaryStepAdapter(getActivity(),response.body());
+                    binding.recipeDetailRecycler.setAdapter(adapter);
                 }
-                SummaryStepAdapter adapter = new SummaryStepAdapter(getActivity(),steps);
-                binding.recipeDetailRecycler.setAdapter(adapter);
             }
-            catch (Exception e){
 
-                Log.e("ERROR",e.getMessage());
+            @Override
+            public void onFailure(Call<ArrayList<Step>> call, Throwable t) {
             }
         });
-
-        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/summary",new HashMap<>(),
-                stepResponse);
     }
 
     private void changeToIngredient(){
         binding.detailLayout.setVisibility(View.GONE);
         binding.detailTitleTv.setText("Ingredients");
 
-        HTTPRequest.Response<String> resp = new HTTPRequest.Response<>();
-        resp.onSuccess(res->{
-            try{
-                ArrayList<Ingredient> ingredients = new ArrayList<>();
-                JSONArray arr = new JSONArray(res);
-                int i = 0;
-                while(!arr.isNull(i)){
-                    JSONObject obj = arr.getJSONObject(i);
-
-                    Ingredient ingredient = new Ingredient(
-                            obj.getInt("id"),
-                            obj.getDouble("amount"),
-                            obj.getString("name"),
-                            obj.getInt("recipe_id"),
-                            obj.getInt("ingredient_id"),
-                            obj.getInt("measurement_id")
-                    );
-                    ingredients.add(ingredient);
-                    i++;
+        Call<ArrayList<Ingredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(recipeID);
+        call.enqueue(new Callback<ArrayList<Ingredient>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Ingredient>> call, Response<ArrayList<Ingredient>> response) {
+                if(response.isSuccessful()){
+                    IngredientBarAdapter adapter = new IngredientBarAdapter(getActivity(),response.body());
+                    binding.recipeDetailRecycler.setAdapter(adapter);
                 }
-
-                IngredientBarAdapter adapter = new IngredientBarAdapter(getActivity(),ingredients);
-                binding.recipeDetailRecycler.setAdapter(adapter);
             }
-            catch (Exception e){}
 
+            @Override
+            public void onFailure(Call<ArrayList<Ingredient>> call, Throwable t) {
+
+            }
         });
-
-        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/ingredients",new HashMap<>(),
-                resp);
-
     }
 
     private void changeToReview(){
@@ -226,7 +193,4 @@ public class FragmentRecipeDetail extends Fragment {
         i.putExtra(ActivityStep.RECIPE_ID,recipeID);
         ((ActivityHome)getActivity()).launcher.launch(i);
     }
-
-
-
 }

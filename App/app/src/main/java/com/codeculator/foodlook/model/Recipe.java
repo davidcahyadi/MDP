@@ -7,6 +7,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 @Entity(tableName = "recipe")
@@ -30,6 +32,8 @@ public class Recipe implements Parcelable {
     public int prep_duration;
     @ColumnInfo(name = "serve_portion")
     public int serve_portion;
+    @ColumnInfo(name = "crawling_from")
+    public String crawling_from;
     @ColumnInfo(name = "description")
     public String description;
     @ColumnInfo(name = "created_at")
@@ -39,7 +43,7 @@ public class Recipe implements Parcelable {
     @ColumnInfo(name = "photo")
     public String photo;
 
-    public Recipe(int id, String title, int user_id, float rate, int view, int like, int cook_duration, int prep_duration, int serve_portion, String description, String created_at, String updated_at, String photo) {
+    public Recipe(int id, String title, int user_id, float rate, int view, int like, int cook_duration, int prep_duration, int serve_portion, String description, String created_at, String updated_at, String photo,String crawling_from) {
         this.id = id;
         this.title = title;
         this.user_id = user_id;
@@ -53,6 +57,27 @@ public class Recipe implements Parcelable {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.photo = photo;
+        this.crawling_from = crawling_from;
+    }
+
+    public Recipe(JSONObject obj){
+        try{
+            this.id = obj.getInt("id");
+            this.title = obj.getString("title");
+            this.user_id = obj.getInt("user_id");
+            this.rate = (float) obj.getDouble("rate");
+            this.view = obj.getInt("view");
+            this.like = obj.getInt("like");
+            this.cook_duration = obj.getInt("cook_duration");
+            this.prep_duration = obj.getInt("prep_duration");
+            this.serve_portion = obj.getInt("serve_portion");
+            this.description = obj.getString("description");
+            this.created_at = obj.getString("created_at");
+            this.updated_at = obj.getString("updated_at");
+            this.photo = obj.getString("photo");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected Recipe(Parcel in) {

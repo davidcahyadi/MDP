@@ -29,12 +29,16 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
     HTTPRequest httpRequest;
     FetchImage fetchImage;
 
-    public RecommendationAdapter(Context context, ArrayList<Recipe> recipes, FragmentManager fm) {
+    public RecommendationAdapter(Context context,FragmentManager fm) {
         this.context = context;
-        this.recipes = recipes;
+        this.recipes = new ArrayList<>();
         httpRequest = new HTTPRequest((AppCompatActivity) context);
         fetchImage = new FetchImage(httpRequest);
         this.fm = fm;
+    }
+
+    public void setRecipes(ArrayList<Recipe> recipes){
+        this.recipes = recipes;
     }
 
     @NonNull

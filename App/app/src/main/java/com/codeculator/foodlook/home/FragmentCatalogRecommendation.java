@@ -120,7 +120,8 @@ public class FragmentCatalogRecommendation extends Fragment {
 //        httpRequest.get(getString(R.string.APP_URL)+"/recipe/"+recipeID+"/summary",new HashMap<>(),
 //                stepResponse);
 
-        adapter = new RecommendationAdapter(getContext(), recipes, getParentFragmentManager());
+        adapter = new RecommendationAdapter(getContext(), getParentFragmentManager());
+        adapter.setRecipes(recipes);
         rvRecommendation.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         rvRecommendation.setAdapter(adapter);
     }

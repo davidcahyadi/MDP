@@ -58,7 +58,11 @@ public class SummaryStepAdapter extends RecyclerView.Adapter<SummaryStepAdapter.
 
         public void bind(Step step){
             tvTitle.setText(step.title);
-            tvDescription.setText(step.description);
+            String description = step.description;
+            if(description.length() > 120){
+                description = description.substring(0,120)+"...";
+            }
+            tvDescription.setText(description);
             if(step.duration != 0){
                 tvType.setText("Timer");
             }

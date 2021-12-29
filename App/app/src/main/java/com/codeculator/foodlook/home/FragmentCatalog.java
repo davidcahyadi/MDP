@@ -17,6 +17,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.RecommendationAdapter;
 import com.codeculator.foodlook.databinding.FragmentCatalogBinding;
@@ -24,6 +30,7 @@ import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.services.HTTPRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -44,6 +51,8 @@ import java.util.TimeZone;
 public class FragmentCatalog extends Fragment {
     FragmentCatalogBinding binding;
     HTTPRequest httpRequest;
+    RecommendationAdapter adapter;
+
     int filter = -1;
 
     public FragmentCatalog() {
@@ -119,7 +128,9 @@ public class FragmentCatalog extends Fragment {
         binding.tvNewest.setBackgroundColor(Color.WHITE);
         binding.tvMostLike.setTextColor(getResources().getColor(R.color.yellow_300, null));
         binding.tvMostLike.setBackgroundColor(Color.WHITE);
-
+        binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
+        binding.rvRecipeCatalog.setAdapter(adapter);
         view.setTextColor(Color.WHITE);
         view.setBackgroundColor(getResources().getColor(R.color.yellow_300, null));
     }
@@ -145,51 +156,74 @@ public class FragmentCatalog extends Fragment {
 
     public void CatalogRecipeRequest(String type, int page)
     {
-        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
-        catalogResponse.onError(e->{
-            Log.e("ERROR",e.toString());
-            Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
-        });
-
-        catalogResponse.onSuccess(res-> {
-            try{
-                ArrayList<Recipe> recipes = new ArrayList<>();
-                JSONArray arr = new JSONArray(res);
-                int i = 0;
-                while(!arr.isNull(i)){
-                    JSONObject obj = arr.getJSONObject(i);
-
-                    Recipe recipe = new Recipe(
-                            obj.getInt("id"),
-                            obj.getString("title"),
-                            obj.getInt("user_id"),
-                            (float) obj.getDouble("rate"),
-                            obj.getInt("view"),
-                            obj.getInt("like"),
-                            obj.getInt("cook_duration"),
-                            obj.getInt("prep_duration"),
-                            obj.getInt("serve_portion"),
-                            obj.getString("description"),
-                            obj.getString("created_at"),
-                            obj.getString("updated_at"),
-                            obj.getString("photo")
-                    );
-                    recipes.add(recipe);
-                    i++;
-                }
-                Log.i("size", recipes.size()+"");
-                RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
-                binding.rvRecipeCatalog.setAdapter(adapter);
-                binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                binding.loading.setVisibility(View.GONE);
-            }
-            catch (Exception e){
-                Log.e("ERROR",e.getMessage());
-            }
-        });
         binding.loading.setVisibility(View.VISIBLE);
+        StringRequest req = new StringRequest(Request.Method.GET,
+                getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-        httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
-                catalogResponse);
+                        ArrayList<Recipe> recipes = new ArrayList<>();
+                        try{
+                            JSONArray arr = new JSONArray(response);
+                            int i = 0;
+                            while(!arr.isNull(i)){
+                                Recipe recipe = new Recipe(arr.getJSONObject(i));
+                                recipes.add(recipe);
+                                i++;
+                            }
+                            binding.loading.setVisibility(View.GONE);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setRecipes(recipes);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }).start();
+
+                        }catch (Exception e){
+                            binding.loading.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        RequestQueue rq = Volley.newRequestQueue(getActivity());
+        rq.add(req);
+
+//        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
+//        catalogResponse.onError(e->{
+//            Log.e("ERROR",e.toString());
+//            Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
+//        });
+//
+//        catalogResponse.onSuccess(res-> {
+//            try{
+//                ArrayList<Recipe> recipes = new ArrayList<>();
+//                JSONArray arr = new JSONArray(res);
+//                int i = 0;
+//                while(!arr.isNull(i)){
+//                    Recipe recipe = new Recipe(arr.getJSONObject(i));
+//                    recipes.add(recipe);
+//                    i++;
+//                }
+//                Log.i("size", recipes.size()+"");
+//                RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
+//                binding.rvRecipeCatalog.setAdapter(adapter);
+//                binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//                binding.loading.setVisibility(View.GONE);
+//            }
+//            catch (Exception e){
+//                Log.e("ERROR",e.getMessage());
+//            }
+//        });
+//        binding.loading.setVisibility(View.VISIBLE);
+//
+//        httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
+//                catalogResponse);
     }
 }

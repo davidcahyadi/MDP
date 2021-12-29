@@ -5,6 +5,7 @@ import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityLoginBinding;
 import com.codeculator.foodlook.databinding.ActivitySplashBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ public class ActivitySplash extends AppCompatActivity {
                 redirect();
             }
         }.start();
+
+        // assign retrotif api url
+        RetrofitApi.BASE_URL = getString(R.string.APP_URL)+"/";
     }
 
     private void redirect(){

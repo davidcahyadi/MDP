@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,8 @@ public class ActivityLogin extends AppCompatActivity {
         validator.validate(binding.email,binding.emailLayout).required();
         validator.validate(binding.password,binding.passwordLayout).required();
 
+        Log.i("Click","LOGIN");
+
         if(validator.isValid()){
             String email = binding.email.getText().toString();
             String password = binding.password.getText().toString();
@@ -63,7 +66,9 @@ public class ActivityLogin extends AppCompatActivity {
 
             HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
-            response.onError(e->{});
+            response.onError(e->{
+                Log.e("Error",e.getMessage());
+            });
 
             response.onSuccess(res->{
                 try{
@@ -74,7 +79,9 @@ public class ActivityLogin extends AppCompatActivity {
                     Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
                     startActivity(i);
                 }
-                catch (Exception e){}
+                catch (Exception e){
+                    Log.e("Error",e.getMessage());
+                }
             });
 
             request.post(getString(R.string.APP_URL)+"/auth/login",data,response);

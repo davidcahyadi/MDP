@@ -113,7 +113,8 @@ public class FragmentMyRecipe extends Fragment {
                             obj.getString("description"),
                             (obj.getString("created_at")),
                             (obj.getString("updated_at")),
-                            obj.getString("photo")
+                            obj.getString("photo"),
+                            obj.getString("crawling_from")
                     );
                     recipes.add(recipe);
                     i++;
