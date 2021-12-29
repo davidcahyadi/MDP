@@ -67,7 +67,8 @@ public class ActivityRegister extends AppCompatActivity {
             HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
             response.onError(e->{
-                Toast.makeText(this, "Register Error", Toast.LENGTH_SHORT).show();
+                System.out.println(e.toString());
+                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
             });
 
             response.onSuccess(res->{

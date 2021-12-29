@@ -17,6 +17,12 @@ public class Review implements Parcelable {
     @ColumnInfo(name = "description")
     public String description;
 
+    public Review(int id, int recipe_id, String description) {
+        this.id = id;
+        this.recipe_id = recipe_id;
+        this.description = description;
+    }
+
     protected Review(Parcel in) {
         id = in.readInt();
         recipe_id = in.readInt();
