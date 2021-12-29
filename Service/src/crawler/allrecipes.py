@@ -140,7 +140,7 @@ def crawlDetailRecipes(url):
                   "description": result["description"],
                   "created_at": datetime.now(),
                   "updated_at": datetime.now(),
-                  "deleted_at": ""
+                  "deleted_at": None
                   }
         model = Recipe()
         model.create(recipe)
@@ -159,7 +159,7 @@ def crawlDetailRecipes(url):
                 "recipe_id": recipe_id,
                 "created_at": datetime.now(),
                 "updated_at": datetime.now(),
-                "deleted_at": ""
+                "deleted_at": None
             }
             model = RecipeIngredient()
             model.create(ingredient)
@@ -178,8 +178,8 @@ def crawlDetailRecipes(url):
                 "recipe_id": recipe_id,
                 "url": i,
                 "type": t,
-                "created_at": "",
-                "deleted_at": ""
+                "created_at": datetime.now(),
+                "deleted_at": None
             }
             model = Photo()
             model.create(photo)
@@ -205,7 +205,7 @@ def crawlDetailRecipes(url):
                 "type_id": 0,
                 "created_at": datetime.now(),
                 "updated_at": datetime.now(),
-                "deleted_at": ""
+                "deleted_at": None
             }
             model = Step()
             model.create(step)
