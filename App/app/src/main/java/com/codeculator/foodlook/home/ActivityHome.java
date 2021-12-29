@@ -69,9 +69,15 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         binding.navigation.setBackground(null);
         binding.navigation.getMenu().getItem(2).setEnabled(false);
 
-        binding.navigation.setSelectedItemId(R.id.menu_catalog);
 
-        binding.leftNav.setNavigationItemSelectedListener(this);
+        String search = getIntent().hasExtra("search") ? getIntent().getStringExtra("search") : "";
+        if(!search.isEmpty()){
+            
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentFindRecipe()).commit();
+        }
+        else{
+            binding.navigation.setSelectedItemId(R.id.menu_catalog);
+        }
         getSupportFragmentManager().addFragmentOnAttachListener(new FragmentOnAttachListener() {
             @Override
             public void onAttachFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment) {
@@ -130,21 +136,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-//        MenuItem menuItem = menu.findItem(R.id.item_search);
-//        SearchView searchView = (SearchView) menuItem.getActionView();
-//        searchView.setQueryHint("Type here to search");
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                Toast.makeText(ActivityHome.this, s, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
         return super.onCreateOptionsMenu(menu);
     }
 

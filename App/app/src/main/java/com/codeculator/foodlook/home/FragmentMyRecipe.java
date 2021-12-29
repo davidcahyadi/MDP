@@ -98,21 +98,7 @@ public class FragmentMyRecipe extends Fragment {
             try{
                 ArrayList<Recipe> recipes = new ArrayList<>();
                 JSONObject obj = new JSONObject(res);
-                Recipe recipe = new Recipe(
-                        obj.getInt("id"),
-                        obj.getString("title"),
-                        obj.getInt("user_id"),
-                        (float) obj.getDouble("rate"),
-                        obj.getInt("view"),
-                        obj.getInt("like"),
-                        obj.getInt("cook_duration"),
-                        obj.getInt("prep_duration"),
-                        obj.getInt("serve_portion"),
-                        obj.getString("description"),
-                        (obj.getString("created_at")),
-                        (obj.getString("updated_at")),
-                        obj.getString("photo")
-                );
+                Recipe recipe = new Recipe(obj);
                 System.out.println(recipe.toString());
 //                JSONArray arr = new JSONArray(res);
 //                int i = 0;
