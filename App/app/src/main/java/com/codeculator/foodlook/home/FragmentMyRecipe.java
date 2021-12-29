@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.codeculator.foodlook.services.HTTPRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,57 +86,74 @@ public class FragmentMyRecipe extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recipes = new ArrayList<>();
         httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
-
+        recyclerViewMyRecipe = view.findViewById(R.id.recyclerViewMyRecipe);
         // get recipes catalog
-        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<String>();
-        catalogResponse.onError(e->{
-            Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
+        HTTPRequest.Response<String> recipeResponse = new HTTPRequest.Response<String>();
+        recipeResponse.onError(e->{
+            System.out.println(e.toString());
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         });
 
-        catalogResponse.onSuccess(res-> {
+        recipeResponse.onSuccess(res-> {
             try{
                 ArrayList<Recipe> recipes = new ArrayList<>();
+                JSONObject obj = new JSONObject(res);
+                Recipe recipe = new Recipe(
+                        obj.getInt("id"),
+                        obj.getString("title"),
+                        obj.getInt("user_id"),
+                        (float) obj.getDouble("rate"),
+                        obj.getInt("view"),
+                        obj.getInt("like"),
+                        obj.getInt("cook_duration"),
+                        obj.getInt("prep_duration"),
+                        obj.getInt("serve_portion"),
+                        obj.getString("description"),
+                        (obj.getString("created_at")),
+                        (obj.getString("updated_at")),
+                        obj.getString("photo")
+                );
+                System.out.println(recipe.toString());
+//                JSONArray arr = new JSONArray(res);
+//                int i = 0;
+//                while(!arr.isNull(i)){
+//                    JSONObject obj = arr.getJSONObject(i);
+//
+//                    Recipe recipe = new Recipe(
+//                            obj.getInt("id"),
+//                            obj.getString("title"),
+//                            obj.getInt("user_id"),
+//                            (float) obj.getDouble("rate"),
+//                            obj.getInt("view"),
+//                            obj.getInt("like"),
+//                            obj.getInt("cook_duration"),
+//                            obj.getInt("prep_duration"),
+//                            obj.getInt("serve_portion"),
+//                            obj.getString("description"),
+//                            (obj.getString("created_at")),
+//                            (obj.getString("updated_at")),
+//                            obj.getString("photo")
+//                    );
+//                    recipes.add(recipe);
+//                    i++;
+//                }
 
-                JSONArray arr = new JSONArray(res);
-                int i = 0;
-                while(!arr.isNull(i)){
-                    JSONObject obj = arr.getJSONObject(i);
-
-                    Recipe recipe = new Recipe(
-                            obj.getInt("id"),
-                            obj.getString("title"),
-                            obj.getInt("user_id"),
-                            (float) obj.getDouble("rate"),
-                            obj.getInt("view"),
-                            obj.getInt("like"),
-                            obj.getInt("cook_duration"),
-                            obj.getInt("prep_duration"),
-                            obj.getInt("serve_portion"),
-                            obj.getString("description"),
-                            (obj.getString("created_at")),
-                            (obj.getString("updated_at")),
-                            obj.getString("photo")
-                    );
-                    recipes.add(recipe);
-                    i++;
-                }
-                MyRecipeAdapter adapter = new MyRecipeAdapter(recipes);
+                recipes.add(recipe);
+                System.out.println(recipes.size());
+                MyRecipeAdapter adapter = new MyRecipeAdapter(recipes, getContext());
                 recyclerViewMyRecipe.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerViewMyRecipe.setAdapter(myRecipeAdapter);
+                recyclerViewMyRecipe.setAdapter(adapter);
             }
             catch (Exception e){
                 Log.e("ERROR",e.getMessage());
             }
         });
 
-        httpRequest.get(getString(R.string.APP_URL)+"/catalog/popular/1",new HashMap<>(),
-                catalogResponse);
-        myRecipeAdapter = new MyRecipeAdapter(recipes);
-        recyclerViewMyRecipe = view.findViewById(R.id.recyclerViewMyRecipe);
+        httpRequest.get(getString(R.string.APP_URL)+"/recipe/1/details",new HashMap<>(),
+                recipeResponse);
         buttonAddRecipe = view.findViewById(R.id.buttonAddRecipe);
-
         buttonAddRecipe.setOnClickListener(view1 -> {
-            fragmentMyRecipeListener.gotoDetail();
+            fragmentMyRecipeListener.addRecipe();
         });
     }
 
@@ -142,5 +161,6 @@ public class FragmentMyRecipe extends Fragment {
 
     public interface FragmentMyRecipeListener{
         void gotoDetail();
+        void addRecipe();
     }
 }
