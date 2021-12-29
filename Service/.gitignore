@@ -3,3 +3,4 @@ foodlook
 src/**/__pycache__
 docker-compose.yaml
 .env
+.flaskenv
