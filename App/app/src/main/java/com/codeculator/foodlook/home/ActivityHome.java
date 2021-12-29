@@ -1,8 +1,10 @@
 package com.codeculator.foodlook.home;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentOnAttachListener;
@@ -13,7 +15,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
@@ -60,6 +61,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 return bottomNavSelected(item);
             }
         });
+        binding.navigation.setBackground(null);
+        binding.navigation.getMenu().getItem(2).setEnabled(false);
 
         binding.navigation.setSelectedItemId(R.id.menu_catalog);
         getSupportFragmentManager().addFragmentOnAttachListener(new FragmentOnAttachListener() {
@@ -90,6 +93,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 f = new FragmentMyReview();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
                 return true;
+            case R.id.menu_bookmarks:
+                //TODO: implement Fragments
+                return true;
             case R.id.menu_my_recipe:
                 f = new FragmentMyRecipe();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
@@ -102,7 +108,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -112,10 +117,21 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        MenuItem menuItem = menu.findItem(R.id.item_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-//        searchView.getQueryHint("Type here to search");
-//        searchView.setOnQueryTextListener(new );
+//        MenuItem menuItem = menu.findItem(R.id.item_search);
+//        SearchView searchView = (SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Type here to search");
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                Toast.makeText(ActivityHome.this, s, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
         return super.onCreateOptionsMenu(menu);
     }
 

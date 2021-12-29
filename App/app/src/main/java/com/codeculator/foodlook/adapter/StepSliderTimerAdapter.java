@@ -46,8 +46,6 @@ public class StepSliderTimerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.step_slider, container, false);
 
-        LottieAnimationView animation = view.findViewById(R.id.timerAnimation);
-        animation.setAnimation(R.raw.timer);
         TextView stepContentTv = (TextView) view.findViewById(R.id.stepContentTv);
 
         stepContentTv.setText(steps.get(position).description);

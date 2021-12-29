@@ -23,99 +23,95 @@
             android:scaleType="fitCenter"
             android:src="@drawable/holomyth" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/timerAnimation"
+        <ImageView
+            android:id="@+id/bgStopwatch"
+            android:layout_width="305dp"
+            android:layout_height="273dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginBottom="128dp"
+            app:srcCompat="@drawable/stopwatchcircle" />
+
+        <ImageView
+            android:id="@+id/arrowStopwatch"
+            android:layout_width="407dp"
+            android:layout_height="289dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="132dp"
+            app:srcCompat="@drawable/stopwatcharrow" />
+
+        <Button
+            android:id="@+id/startBtn"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginBottom="48dp"
-            android:padding="14dp"
-            app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/timer" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="124dp"
+            android:layout_marginTop="360dp"
+            android:layout_marginRight="124dp"
+            android:text="START" />
+
+        <LinearLayout
+            android:id="@+id/timerIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="280dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/timerMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/timerMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : "
+                android:textColor="@color/black"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/timerSeconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="48sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/stepContentTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="440dp"
+            android:layout_weight="1"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="56dp"
+            android:paddingRight="56dp"
+            android:text="Lorem ipsum dolar set amet. Lorem ipsum dolar set amet.Lorem ipsum dolar set amet"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/stopBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="124dp"
+            android:layout_marginTop="400dp"
+            android:layout_marginRight="124dp"
+            android:text="STOP" />
+
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/stepContentTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingLeft="56dp"
-        android:paddingTop="72dp"
-        android:paddingRight="56dp"
-        android:paddingBottom="72dp"
-        android:text="Lorem ipsum dolar set amet. Lorem ipsum dolar set amet.Lorem ipsum dolar set amet"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!--    Single Alarm-->
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/stepContentTv">-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btn_set_once_alarm"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginBottom="16dp"-->
-    <!--            android:text="Set Alarm" />-->
-
-    <!--        <EditText-->
-    <!--            android:id="@+id/edt_once_message"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginBottom="16dp"-->
-    <!--            android:hint="Pesan Alarm"-->
-    <!--            android:inputType="text" />-->
-    <!--    </LinearLayout>-->
-    <!--    Single Alarm-->
-
-    <!--    Repeating Alarm-->
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/stepContentTv">-->
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:gravity="center_vertical"-->
-    <!--            android:orientation="horizontal"/>-->
-    <!--        <EditText-->
-    <!--            android:id="@+id/edt_repeating_message"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginBottom="16dp"-->
-    <!--            android:hint="Message here"-->
-    <!--            android:inputType="text" />-->
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:gravity="center"-->
-    <!--            android:orientation="horizontal">-->
-    <!--            <Button-->
-    <!--                android:id="@+id/btn_set_repeating_alarm"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_weight="0.5"-->
-    <!--                android:text="Set Repeating Alarm" />-->
-    <!--        </LinearLayout>-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/cancelAlarmBtn"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="Cancel Alarm" />-->
-    <!--    </LinearLayout>-->
-    <!--    Repeating Alarm-->
 </LinearLayout>

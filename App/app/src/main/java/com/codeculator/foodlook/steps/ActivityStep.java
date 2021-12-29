@@ -48,8 +48,6 @@ public class ActivityStep extends AppCompatActivity{
     private int mCurrentPage;
     ProgressBar loadingBar;
 
-    AlarmReceiver alarmReceiver = new AlarmReceiver();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +95,6 @@ public class ActivityStep extends AppCompatActivity{
                     System.out.println("Request error: " + e.getMessage());
                 });
                 response.onSuccess(res->{
-                    System.out.println("response: " + res);
                     try{
                         ArrayList<Step> fetchedSteps = new ArrayList<>();
                         JSONArray json = new JSONArray(res);
@@ -118,7 +115,6 @@ public class ActivityStep extends AppCompatActivity{
 
                             @Override
                             public void postProcess() {
-                                System.out.println("Steps added");
                                 new LoadStep(ActivityStep.this, new FetchCallback<ArrayList<Step>>() {
                                     @Override
                                     public void preProcess() {
@@ -129,12 +125,11 @@ public class ActivityStep extends AppCompatActivity{
                                     public void postProcess(ArrayList<Step> data) {
                                         steps.clear();
                                         steps.addAll(data);
-                                        System.out.println("Fetched steps size: " + steps.size());
                                         stepAdapter = new StepSliderAdapter(ActivityStep.this, steps);
+                                        sliderView.setOffscreenPageLimit(steps.size());
                                         sliderView.setAdapter(stepAdapter);
                                         addDotsIndicator(0);
                                         sliderView.addOnPageChangeListener(viewListener);
-
                                         loadingBar.setVisibility(View.INVISIBLE);
                                     }
                                 }).execute();
@@ -149,7 +144,6 @@ public class ActivityStep extends AppCompatActivity{
                 loadingBar.setVisibility(View.VISIBLE);
             }
         }).execute();
-        System.out.println("just called request");
     }
 
     public void addDotsIndicator(int pos){
@@ -164,7 +158,7 @@ public class ActivityStep extends AppCompatActivity{
             mDotLayout.addView(mDots[i]);
         }
         if(mDots.length > 0){
-            mDots[pos].setTextColor(getResources().getColor(R.color.white));
+            mDots[pos].setTextColor(getResources().getColor(R.color.material_on_primary_emphasis_high_type));
         }
     }
 
@@ -177,11 +171,8 @@ public class ActivityStep extends AppCompatActivity{
         @Override
         public void onPageSelected(int position) {
             addDotsIndicator(position);
-
             mCurrentPage = position;
-            stopRinging();
-            if(steps.get(mCurrentPage).duration > 0)
-                startTimer(steps.get(mCurrentPage).duration);
+            stepAdapter.stopTimer(position);
             if(mCurrentPage == 0){
                 nextBtn.setEnabled(true);
                 nextBtn.setText("NEXT");
@@ -209,19 +200,4 @@ public class ActivityStep extends AppCompatActivity{
         }
     };
 
-
-    public void startTimer(int seconds){
-        System.out.println("ringing");
-        String repeatMessage = "Time's Up!";
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, seconds);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String repeatTime = formatter.format(cal.getTime());
-        alarmReceiver.setRepeatingAlarm(getBaseContext(), AlarmReceiver.TYPE_REPEATING,
-                repeatTime, repeatMessage);
-    }
-
-    public void stopRinging(){
-        alarmReceiver.stopLoopingNotifSound(getBaseContext());
-    }
 }
