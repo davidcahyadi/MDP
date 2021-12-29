@@ -55,7 +55,10 @@ public class ActivityWelcome extends AppCompatActivity {
                     launcher.launch(i);
                 }
                 else{
-                    Toast.makeText(ActivityWelcome.this, "Search", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActivityWelcome.this, ActivityHome.class);
+                    i.putExtra("search", "true");
+                    launcher.launch(i);
+                    // Toast.makeText(ActivityWelcome.this, "Search", Toast.LENGTH_SHORT).show();
                 }
             }
         });

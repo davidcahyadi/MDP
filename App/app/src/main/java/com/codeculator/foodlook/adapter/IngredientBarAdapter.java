@@ -13,21 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Ingredient;
+import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Step;
 
 import java.util.ArrayList;
 
 public class IngredientBarAdapter extends RecyclerView.Adapter<IngredientBarAdapter.IngredientBarHolder> {
     Context context;
-    ArrayList<Ingredient> ingredients;
-    OnClickListener<Ingredient> onClick;
+    ArrayList<RecipeIngredient> ingredients;
+    OnClickListener<RecipeIngredient> onClick;
 
-    public IngredientBarAdapter(Context context,ArrayList<Ingredient> steps){
+    public IngredientBarAdapter(Context context,ArrayList<RecipeIngredient> steps){
         this.context = context;
         this.ingredients = steps;
     }
 
-    public void setOnClickListener(OnClickListener<Ingredient> onClick){
+    public void setOnClickListener(OnClickListener<RecipeIngredient> onClick){
         this.onClick = onClick;
     }
 
@@ -57,7 +58,7 @@ public class IngredientBarAdapter extends RecyclerView.Adapter<IngredientBarAdap
             tvOption = iv.findViewById(R.id.option);
         }
 
-        public void bind(Ingredient ingredient){
+        public void bind(RecipeIngredient ingredient){
             tvName.setText(ingredient.name);
             tvOption.setOnClickListener(view -> {
                 PopupMenu popupMenu = new PopupMenu(context,tvOption);

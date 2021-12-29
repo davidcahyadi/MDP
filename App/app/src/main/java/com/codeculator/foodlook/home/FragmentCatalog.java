@@ -144,7 +144,8 @@ public class FragmentCatalog extends Fragment {
 
     public void setAdapter(){
         recipes = new ArrayList<>();
-        adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
+        adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
+        adapter.setRecipes(recipes);
         binding.rvRecipeCatalog.setAdapter(adapter);
         binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         binding.loading.setVisibility(View.VISIBLE);
@@ -192,21 +193,7 @@ public class FragmentCatalog extends Fragment {
                 while(!arr.isNull(i)){
                     JSONObject obj = arr.getJSONObject(i);
 
-                    Recipe recipe = new Recipe(
-                            obj.getInt("id"),
-                            obj.getString("title"),
-                            obj.getInt("user_id"),
-                            (float) obj.getDouble("rate"),
-                            obj.getInt("view"),
-                            obj.getInt("like"),
-                            obj.getInt("cook_duration"),
-                            obj.getInt("prep_duration"),
-                            obj.getInt("serve_portion"),
-                            obj.getString("description"),
-                            obj.getString("created_at"),
-                            obj.getString("updated_at"),
-                            obj.getString("photo")
-                    );
+                    Recipe recipe = new Recipe(obj);
                     recipes.add(recipe);
                     i++;
                 }
@@ -220,10 +207,7 @@ public class FragmentCatalog extends Fragment {
             }
         });
 
-                    }
-                });
         RequestQueue rq = Volley.newRequestQueue(getActivity());
-        rq.add(req);
 
 //        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
 //        catalogResponse.onError(e->{
@@ -272,7 +256,8 @@ public class FragmentCatalog extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 if(s.isEmpty()){
-                    adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
+                    adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
+                    adapter.setRecipes(recipes);
                 }
                 else{
                     searchRecipes = new ArrayList<>();
@@ -281,7 +266,8 @@ public class FragmentCatalog extends Fragment {
                             searchRecipes.add(r);
                         }
                     }
-                    adapter = new RecommendationAdapter(getActivity(), searchRecipes, getParentFragmentManager());
+                    adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
+                    adapter.setRecipes(searchRecipes);
                 }
                 binding.rvRecipeCatalog.setAdapter(adapter);
                 binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));

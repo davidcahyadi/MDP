@@ -22,6 +22,8 @@ import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
 import com.codeculator.foodlook.model.Ingredient;
+import com.codeculator.foodlook.model.IngredientType;
+import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
@@ -165,10 +167,10 @@ public class FragmentRecipeDetail extends Fragment {
         binding.detailLayout.setVisibility(View.GONE);
         binding.detailTitleTv.setText("Ingredients");
 
-        Call<ArrayList<Ingredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(recipeID);
-        call.enqueue(new Callback<ArrayList<Ingredient>>() {
+        Call<ArrayList<RecipeIngredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(recipeID);
+        call.enqueue(new Callback<ArrayList<RecipeIngredient>>() {
             @Override
-            public void onResponse(Call<ArrayList<Ingredient>> call, Response<ArrayList<Ingredient>> response) {
+            public void onResponse(Call<ArrayList<RecipeIngredient>> call, Response<ArrayList<RecipeIngredient>> response) {
                 if(response.isSuccessful()){
                     IngredientBarAdapter adapter = new IngredientBarAdapter(getActivity(),response.body());
                     binding.recipeDetailRecycler.setAdapter(adapter);
@@ -176,7 +178,7 @@ public class FragmentRecipeDetail extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Ingredient>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<RecipeIngredient>> call, Throwable t) {
 
             }
         });
