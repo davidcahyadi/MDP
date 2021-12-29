@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,12 +39,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ListViewHo
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
         Review r = reviews.get(position);
-        holder.countCommentsTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reviewListener.onCommentClick(r);
-            }
-        });
+        holder.bind(r);
     }
 
     @Override
@@ -68,6 +64,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ListViewHo
             star3Image = itemView.findViewById(R.id.star3Image);
             star4Image = itemView.findViewById(R.id.star4Image);
             star5Image = itemView.findViewById(R.id.star5Image);
+        }
+
+        public void bind(Review review){
+            reviewContentTv.setText(review.description);
+            countCommentsTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //todo goto comments
+                    Toast.makeText(itemView.getContext(), review.id + "", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
