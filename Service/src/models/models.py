@@ -255,6 +255,7 @@ class Ingredient(db.Model):
     name = db.Column(db.String(255))
     icon_url = db.Column(db.Text())
     type_id = db.Column(db.Integer(), ForeignKey("ingredient_types.id"))
+    ingredient_type = db.relationship("IngredientType", backref="type")
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime)
 
@@ -264,6 +265,7 @@ class Ingredient(db.Model):
             "name": self.name,
             "icon_url": self.icon_url,
             "type_id": self.type_id,
+            "type": self.ingredient_type.name,
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
         }
