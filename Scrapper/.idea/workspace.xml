@@ -2,11 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b367e0ee-c476-4281-8e9d-8f7b34b3eb54" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/services/RetrofitApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../App/app/src/main/res/drawable/ic_baseline_description_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../App/app/src/main/res/drawable/ic_baseline_restaurant_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Service/src/controllers/admin_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Service/src/crawler/allrecipes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/adapter/RecommendationAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/adapter/RecommendationAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/auth/ActivityLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/auth/ActivityLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/home/FragmentCatalog.java" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/home/FragmentCatalog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/home/FragmentCatalogRecommendation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/home/FragmentCatalogRecommendation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/model/Recipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/codeculator/foodlook/model/Recipe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/res/menu/recipe_detail_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/res/menu/recipe_detail_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../App/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/url_cleaning.py" beforeDir="false" afterPath="$PROJECT_DIR$/url_cleaning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Service/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Service/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Service/src/controllers/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Service/src/controllers/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Service/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Service/src/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Service/src/services/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Service/src/services/security.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +53,8 @@
       <option name="presentableId" value="Default" />
       <updated>1637333125386</updated>
       <workItem from="1637333126886" duration="389000" />
+      <workItem from="1640591341025" duration="2790000" />
+      <workItem from="1640672062752" duration="904000" />
     </task>
     <servers />
   </component>
@@ -53,5 +71,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

@@ -1,3 +1,4 @@
+from .admin_controller import admin
 from .auth_controller import auth
 from .catalog_controller import catalog
 from .my_controller import my
@@ -16,3 +17,4 @@ def init_controller(app):
     app.register_blueprint(review)
     app.register_blueprint(recipe)
     app.register_blueprint(my)
+    app.register_blueprint(admin)

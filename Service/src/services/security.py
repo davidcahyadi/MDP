@@ -51,3 +51,15 @@ def token_required(f):
         return f(result["sub"], *args, **kwargs)
 
     return decorator
+
+
+def admin_gate(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        sub = args[0]
+
+        if sub == 0:
+            return f(sub, *args, **kwargs)
+        else:
+            return jsonify({"error": {"auth": "Not Authorized"}}), HTTP_403_FORBIDDEN
+    return decorator
