@@ -64,7 +64,7 @@ public class Recipe implements Parcelable {
         try{
             this.id = obj.getInt("id");
             this.title = obj.getString("title");
-            this.user_id = obj.getInt("user_id");
+//            this.user_id = obj.getInt("user_id");
             this.rate = (float) obj.getDouble("rate");
             this.view = obj.getInt("view");
             this.like = obj.getInt("like");

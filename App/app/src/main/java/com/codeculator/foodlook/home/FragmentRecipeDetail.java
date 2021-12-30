@@ -21,8 +21,6 @@ import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
-import com.codeculator.foodlook.model.Ingredient;
-import com.codeculator.foodlook.model.IngredientType;
 import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Step;
@@ -31,12 +29,7 @@ import com.codeculator.foodlook.services.RetrofitApi;
 import com.codeculator.foodlook.steps.ActivityStep;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;

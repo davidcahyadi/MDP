@@ -69,10 +69,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         binding.navigation.setBackground(null);
         binding.navigation.getMenu().getItem(2).setEnabled(false);
 
-
         String search = getIntent().hasExtra("search") ? getIntent().getStringExtra("search") : "";
         if(!search.isEmpty()){
-            
+            // todo : set option menu to send
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentFindRecipe()).commit();
         }
         else{

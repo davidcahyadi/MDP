@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
@@ -95,6 +96,7 @@ public class FragmentCatalog extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Recipes");
 
         httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
 
@@ -103,6 +105,7 @@ public class FragmentCatalog extends Fragment {
                 setAdapter();
                 filter = 0;
                 type = "popular";
+                page = 1;
                 CatalogRecipeRequest();
                 setFilter();
             }
@@ -113,6 +116,7 @@ public class FragmentCatalog extends Fragment {
                 setAdapter();
                 filter = 1;
                 type = "newest";
+                page = 1;
                 CatalogRecipeRequest();
                 setFilter();
             }
@@ -123,6 +127,7 @@ public class FragmentCatalog extends Fragment {
                 setAdapter();
                 filter = 2;
                 type = "like";
+                page = 1;
                 CatalogRecipeRequest();
                 setFilter();
             }
@@ -166,9 +171,6 @@ public class FragmentCatalog extends Fragment {
         binding.tvNewest.setBackgroundColor(Color.WHITE);
         binding.tvMostLike.setTextColor(getResources().getColor(R.color.yellow_300, null));
         binding.tvMostLike.setBackgroundColor(Color.WHITE);
-        binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
-        binding.rvRecipeCatalog.setAdapter(adapter);
         view.setTextColor(Color.WHITE);
         view.setBackgroundColor(getResources().getColor(R.color.yellow_300, null));
     }
@@ -198,7 +200,7 @@ public class FragmentCatalog extends Fragment {
                     i++;
                 }
                 Log.i("size", recipes.size()+"");
-                adapter.notifyItemRangeChanged(page*10-10, 10);
+                adapter.notifyItemRangeInserted(page*10-10, 10);
                 binding.loading.setVisibility(View.GONE);
                 binding.progressBar2.setVisibility(View.GONE);
             }
@@ -207,38 +209,8 @@ public class FragmentCatalog extends Fragment {
             }
         });
 
-        RequestQueue rq = Volley.newRequestQueue(getActivity());
-
-//        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
-//        catalogResponse.onError(e->{
-//            Log.e("ERROR",e.toString());
-//            Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
-//        });
-//
-//        catalogResponse.onSuccess(res-> {
-//            try{
-//                ArrayList<Recipe> recipes = new ArrayList<>();
-//                JSONArray arr = new JSONArray(res);
-//                int i = 0;
-//                while(!arr.isNull(i)){
-//                    Recipe recipe = new Recipe(arr.getJSONObject(i));
-//                    recipes.add(recipe);
-//                    i++;
-//                }
-//                Log.i("size", recipes.size()+"");
-//                RecommendationAdapter adapter = new RecommendationAdapter(getActivity(), recipes, getParentFragmentManager());
-//                binding.rvRecipeCatalog.setAdapter(adapter);
-//                binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-//                binding.loading.setVisibility(View.GONE);
-//            }
-//            catch (Exception e){
-//                Log.e("ERROR",e.getMessage());
-//            }
-//        });
-//        binding.loading.setVisibility(View.VISIBLE);
-//
-//        httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
-//                catalogResponse);
+        httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
+                catalogResponse);
     }
 
     @Override

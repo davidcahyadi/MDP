@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAdapter.RecommendationItemHolder> {
     Context context;
     FragmentManager fm;
-    ArrayList<Recipe> recipes = new ArrayList<>();
+    ArrayList<Recipe> recipes;
     HTTPRequest httpRequest;
     FetchImage fetchImage;
 
