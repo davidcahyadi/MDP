@@ -5,15 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="925dde72-9715-46ac-a096-51d38f186539" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/MyRecipeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/MyRecipeAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/ReviewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/ReviewAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/auth/ActivityRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/auth/ActivityRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/ActivityHome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/ActivityHome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/FragmentMyRecipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/FragmentMyRecipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/FragmentMyReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/home/FragmentMyReview.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/Recipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/Recipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/Review.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/component_my_recipe.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/component_my_recipe.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/admin/AdminRecipeListAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/adapter/admin/AdminUserListAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/admin/AdminHomeFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/admin/AdminListFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/services/admin/AdminService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/admin_component_recipe_list.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/admin_component_user_list.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_admin_home.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_admin_list.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/menu/admin_toolbar_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/admin/AdminHomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/admin/AdminHomeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/auth/ActivityLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/auth/ActivityLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/services/RetrofitApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codeculator/foodlook/services/RetrofitApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_admin_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_admin_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/component_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/component_search.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +46,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="ProjectId" id="22rsK4D18f1NxPYDhKF6nBuGfzY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,5 +66,16 @@
       <updated>1640606975056</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

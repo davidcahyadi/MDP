@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.admin.AdminHomeActivity;
 import com.codeculator.foodlook.databinding.ActivityLoginBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.Validator;
@@ -60,31 +61,38 @@ public class ActivityLogin extends AppCompatActivity {
         if(validator.isValid()){
             String email = binding.email.getText().toString();
             String password = binding.password.getText().toString();
-            HashMap<String,String> data = new HashMap<>();
-            data.put("email",email);
-            data.put("password",password);
 
-            HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
+            if(email.equalsIgnoreCase("admin@gmail.com") &&
+                    password.equalsIgnoreCase("itsaboutdrive")){
+                Intent i = new Intent(ActivityLogin.this, AdminHomeActivity.class);
+                startActivity(i);
+            }else{
+                HashMap<String,String> data = new HashMap<>();
+                data.put("email",email);
+                data.put("password",password);
 
-            response.onError(e->{
-                Log.e("Error",e.getMessage());
-            });
+                HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
-            response.onSuccess(res->{
-                try{
-                    JSONObject json = new JSONObject(res);
-                    PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
-                    prefHelper.setAccess(json.getString("access"));
-                    prefHelper.setRefresh(json.getString("refresh"));
-                    Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
-                    startActivity(i);
-                }
-                catch (Exception e){
+                response.onError(e->{
                     Log.e("Error",e.getMessage());
-                }
-            });
+                });
 
-            request.post(getString(R.string.APP_URL)+"/auth/login",data,response);
+                response.onSuccess(res->{
+                    try{
+                        JSONObject json = new JSONObject(res);
+                        PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
+                        prefHelper.setAccess(json.getString("access"));
+                        prefHelper.setRefresh(json.getString("refresh"));
+                        Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
+                        startActivity(i);
+                    }
+                    catch (Exception e){
+                        Log.e("Error",e.getMessage());
+                    }
+                });
+
+                request.post(getString(R.string.APP_URL)+"/auth/login",data,response);
+            }
         }
     }
 }

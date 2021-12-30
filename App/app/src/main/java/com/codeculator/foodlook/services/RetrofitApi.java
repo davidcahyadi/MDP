@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.services.admin.AdminService;
 import com.codeculator.foodlook.services.service.RecipeService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +20,7 @@ public class RetrofitApi {
 
     // interfaces
     private RecipeService recipeService;
+    private AdminService adminService;
 
     public static RetrofitApi getInstance() {
         if (instance == null) {
@@ -51,9 +53,14 @@ public class RetrofitApi {
 
         // Build your services once
         this.recipeService = retrofit.create(RecipeService.class);
+        this.adminService = retrofit.create(AdminService.class);
     }
 
     public RecipeService getRecipeService() {
         return recipeService;
+    }
+
+    public AdminService getAdminService(){
+        return adminService;
     }
 }

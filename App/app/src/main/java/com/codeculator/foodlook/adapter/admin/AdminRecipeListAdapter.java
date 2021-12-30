@@ -1,0 +1,79 @@
+package com.codeculator.foodlook.adapter.admin;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.model.Recipe;
+
+import java.util.ArrayList;
+
+public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeListAdapter.AdminListRecipeHolder>{
+    ArrayList<Recipe> recipes;
+    Context context;
+    public AdminUserListAdapter.ListClickListener listClickListener;
+
+    public AdminRecipeListAdapter(ArrayList<Recipe> recipes, Context context) {
+        this.recipes = recipes;
+        this.context = context;
+    }
+
+    public void setListClickListener(AdminUserListAdapter.ListClickListener listClickListener){
+        this.listClickListener = listClickListener;
+    }
+
+    @NonNull
+    @Override
+    public AdminListRecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_component_recipe_list,parent,false);
+        return new AdminListRecipeHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull AdminListRecipeHolder holder, int position) {
+        holder.bind(recipes.get(position), position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return recipes.size();
+    }
+
+    public class AdminListRecipeHolder extends RecyclerView.ViewHolder {
+        ImageView recipeImageIV;
+        ImageButton recipeMoreButton;
+        TextView recipeNameTV, recipeCreatorTV, recipeCreatedAtTV;
+        public AdminListRecipeHolder(@NonNull View itemView) {
+            super(itemView);
+            recipeImageIV = itemView.findViewById(R.id.recipeImageIV);
+            recipeNameTV = itemView.findViewById(R.id.recipeNameTV);
+            recipeCreatorTV = itemView.findViewById(R.id.recipeCreatorTV);
+            recipeCreatedAtTV = itemView.findViewById(R.id.recipeCreatedAtTV);
+            recipeMoreButton = itemView.findViewById(R.id.recipeMoreBtn);
+        }
+
+        public void bind(Recipe recipe, int idx){
+            recipeNameTV.setText(recipe.title);
+            recipeCreatorTV.setText("By: Your Mom");
+            recipeCreatedAtTV.setText("Created At: " + recipe.created_at);
+            recipeMoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listClickListener.moreButtonClick(idx, recipeMoreButton);
+                }
+            });
+        }
+    }
+
+    public interface ListClickListener{
+        void moreButtonClick(int position, ImageButton btn);
+    }
+}

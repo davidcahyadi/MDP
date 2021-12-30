@@ -16,7 +16,7 @@
             app:cardCornerRadius="50dp">
 
             <ImageView
-                android:id="@+id/imageViewDisplayRecipe"
+                android:id="@+id/displayPicIV"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_gravity="center"

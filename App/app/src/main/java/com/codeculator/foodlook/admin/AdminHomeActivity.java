@@ -6,16 +6,16 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityAdminHomeBinding;
-import com.codeculator.foodlook.databinding.ActivityHomeBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
-import com.codeculator.foodlook.home.FragmentCatalog;
-import com.codeculator.foodlook.home.FragmentMyRecipe;
-import com.codeculator.foodlook.home.FragmentMyReview;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,6 +23,7 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
 
     ActivityAdminHomeBinding binding;
     ResultLauncherHelper launcher;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
     @SuppressLint("NonConstantResourceId")
     private boolean bottomNavSelected(@NonNull MenuItem item){
         Fragment f;
+        Bundle b = new Bundle();
         switch (item.getItemId()){
             case R.id.admin_menu_home:
 //                f = new FragmentCatalog();
@@ -55,13 +57,25 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
                 //TODO: implement Fragments
                 return true;
             case R.id.admin_menu_users:
-                //TODO: implement Fragments
+                f = new AdminListFragment();
+                type = "users";
+                b.putString("type", type);
+                f.setArguments(b);
+                getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
                 return true;
             case R.id.admin_menu_recipes:
-                //TODO: implement Fragments
+                f = new AdminListFragment();
+                type = "recipes";
+                b.putString("type", type);
+                f.setArguments(b);
+                getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
                 return true;
             case R.id.admin_menu_reviews:
-                //TODO: implement Fragments
+                f = new AdminListFragment();
+                type = "reviews";
+                b.putString("type", type);
+                f.setArguments(b);
+                getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
                 return true;
         }
         return false;
