@@ -3,16 +3,20 @@ import time
 from glob import glob
 import click
 import pandas as pd
+
+from src.crawler.AsianFoodNetworkAdapter import AsianFoodNetworkAdapter
 from src.models.database import db
 from src.models.seeder import Seeder
 from src.models.models import model_list, model_order
 from flask import Blueprint, Flask
 
 command = Blueprint('db', __name__)
+test = Blueprint('test',__name__)
 
 
 def register_command(app: Flask):
     app.register_blueprint(command)
+    app.register_blueprint(test)
 
 
 @command.cli.command('migrate')
@@ -72,3 +76,9 @@ def dump(tables):
             df = df.set_index("id")
             index = model_order.index(table_name)
             df.to_csv(str(pathlib.Path().resolve()) + "/dump/"+str(index)+"-"+table_name + ".csv")
+
+@test.cli.command('crawler')
+@click.argument("resource")
+def crawl(resource):
+    if resource == "AFN":
+        AsianFoodNetworkAdapter().crawl(1)

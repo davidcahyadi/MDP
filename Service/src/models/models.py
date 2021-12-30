@@ -439,10 +439,7 @@ class Bookmark(db.Model):
     def raw(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "ingredient_id": self.ingredient_id,
-            "measurement_id": self.measurement_id,
-            "amount": self.amount,
+            "user_id": self.user_id,
             "recipe_id": self.recipe_id,
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,

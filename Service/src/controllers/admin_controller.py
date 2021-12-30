@@ -3,7 +3,6 @@ from flask import Blueprint, make_response, jsonify
 from src.constant.http_status_codes import HTTP_403_FORBIDDEN, HTTP_200_OK
 from src.crawler.AllRecipeAdapter import AllRecipeAdapter
 from src.crawler.Crawler import Crawler
-from src.crawler.allrecipes import crawl_all_recipes
 from src.helper.dictHelper import iterateModel
 from src.models.database import db
 from src.models.models import User, Review, Recipe
