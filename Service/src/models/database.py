@@ -19,5 +19,6 @@ def init_db(app):
         "pool_size": 400
     }
     db = SQLAlchemy(app)
+    print("Database Initialize")
 
 
