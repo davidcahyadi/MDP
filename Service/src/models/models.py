@@ -428,6 +428,39 @@ class RecipeIngredient(db.Model):
         return self
 
 
+class Bookmark(db.Model):
+    __tablename__ = "bookmarks"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey("users.id"))
+    recipe_id = db.Column(db.Integer(), ForeignKey("recipes.id"))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    deleted_at = db.Column(db.DateTime)
+
+    def raw(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "ingredient_id": self.ingredient_id,
+            "measurement_id": self.measurement_id,
+            "amount": self.amount,
+            "recipe_id": self.recipe_id,
+            "created_at": self.created_at,
+            "deleted_at": self.deleted_at,
+        }
+
+    def create(self, record):
+        self.id = record["id"]
+        self.recipe_id = record["recipe_id"]
+        self.user_id = record["user_id"]
+        self.created_at = record["created_at"] if record["created_at"] is not None else datetime.now()
+        self.deleted_at = record["deleted_at"] if record["deleted_at"] is not None else None
+
+    def make(self, user_id, recipe_id):
+        self.user_id = user_id
+        self.recipe_id = recipe_id
+        return self
+
+
 model_list = {
     "conversions": Conversion,
     "ingredient_types": IngredientType,
@@ -438,7 +471,8 @@ model_list = {
     "recipes": Recipe,
     "reviews": Review,
     "steps": Step,
-    "users": User
+    "users": User,
+    "bookmarks": Bookmark
 }
 
 model_order = [
@@ -451,5 +485,6 @@ model_order = [
     "photos",
     "recipe_ingredients",
     "steps",
-    "reviews"
+    "reviews",
+    "bookmarks"
 ]
