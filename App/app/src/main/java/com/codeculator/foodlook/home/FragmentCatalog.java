@@ -26,15 +26,17 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.RecommendationAdapter;
+import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentCatalogBinding;
 import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.json.JSONArray;
@@ -51,6 +53,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -182,35 +188,27 @@ public class FragmentCatalog extends Fragment {
 
     public void CatalogRecipeRequest()
     {
-        HTTPRequest.Response<String> catalogResponse = new HTTPRequest.Response<>();
-        catalogResponse.onError(e->{
-            Log.e("ERROR",e.toString());
-            Toast.makeText(getActivity(), "Load Recipe Error", Toast.LENGTH_SHORT).show();
-        });
-
-        catalogResponse.onSuccess(res-> {
-            try{
-                JSONArray arr = new JSONArray(res);
-                int i = 0;
-                while(!arr.isNull(i)){
-                    JSONObject obj = arr.getJSONObject(i);
-
-                    Recipe recipe = new Recipe(obj);
-                    recipes.add(recipe);
-                    i++;
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getCatalogService().getCatalogs(type, page);
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+                if(response.isSuccessful()){
+                    if(response.body().size() > 0){
+                        int newIndex = recipes.size();
+                        recipes.addAll(response.body());
+                        Log.i("size", recipes.size()+"");
+                        adapter.notifyItemRangeInserted(newIndex, response.body().size());
+                        binding.loading.setVisibility(View.GONE);
+                        binding.progressBar2.setVisibility(View.GONE);
+                    }
                 }
-                Log.i("size", recipes.size()+"");
-                adapter.notifyItemRangeInserted(page*10-10, 10);
-                binding.loading.setVisibility(View.GONE);
-                binding.progressBar2.setVisibility(View.GONE);
             }
-            catch (Exception e){
-                Log.e("ERROR",e.getMessage());
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+
             }
         });
-
-        httpRequest.get(getString(R.string.APP_URL)+"/catalog/"+ type +"/" + page,new HashMap<>(),
-                catalogResponse);
     }
 
     @Override

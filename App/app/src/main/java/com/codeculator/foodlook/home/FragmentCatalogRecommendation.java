@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,21 +17,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.RecommendationAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentCatalogBinding;
 import com.codeculator.foodlook.databinding.FragmentCatalogRecommendationBinding;
+import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +50,8 @@ public class FragmentCatalogRecommendation extends Fragment {
     FragmentCatalogRecommendationBinding binding;
     ArrayList<Recipe> recipes = new ArrayList<>();
     ArrayList<Recipe> searchRecipes = new ArrayList<>();
+    ArrayList<Integer> ids = new ArrayList<>();
+    HTTPRequest httpRequest;
 
     public FragmentCatalogRecommendation() {
         // Required empty public constructor
@@ -80,8 +90,44 @@ public class FragmentCatalogRecommendation extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Recommendation");
+        httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
+
+        callAPI();
 
         setAdapter();
+    }
+
+    public void callAPI(){
+        // create arraylist of id
+        for (ArrayList<Ingredient> list: FragmentFindRecipe.listIngredients) {
+            for (Ingredient i: list) {
+                if(i.check_status)
+                    ids.add(i.id);
+            }
+        }
+
+        // call api
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getCatalogService().getRecommendations(ids);
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+                if(response.isSuccessful()){
+                    if(response.body().size() > 0){
+                        int newIndex = recipes.size();
+                        recipes.addAll(response.body());
+                        Log.i("size", recipes.size()+"");
+                        adapter.notifyItemRangeInserted(newIndex, response.body().size());
+                        binding.loading.setVisibility(View.GONE);
+                        binding.progressBar3.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+                Log.e("error recommendation : ", "error call");
+            }
+        });
     }
 
     public void setAdapter(){
