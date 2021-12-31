@@ -36,6 +36,12 @@ def get_reviews():
 def get_recipes():
     recipes = db.session.query(Recipe).order_by(Recipe.created_at).all()
     return jsonify(iterateModel(recipes))
+    
+@admin.get("users/<id>")
+def get_user_by_id(id):
+    u = User.query.filter_by(id=id).first()
+    db.session.commit()
+    return jsonify(u.raw())
 
 
 @admin.post("delete/user/<id>")

@@ -65,7 +65,7 @@ public class AdminUserListAdapter extends RecyclerView.Adapter<AdminUserListAdap
         public void bind(User user, int index){
             displayNameTV.setText(user.getName());
             emailTV.setText(user.getEmail());
-            joinedSinceTV.setText(user.getCreated_at());
+            joinedSinceTV.setText("Joined since: " + user.getCreated_at());
 //            displayPictureIV.setImageResource();
             userMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override

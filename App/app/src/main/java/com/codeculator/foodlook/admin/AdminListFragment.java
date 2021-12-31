@@ -1,5 +1,7 @@
 package com.codeculator.foodlook.admin;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +34,7 @@ import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.RetrofitApi;
+import com.codeculator.foodlook.services.admin.AdminDeleteResponse;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -59,7 +63,6 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
     LottieAnimationView loading;
 
-    String selectedType;
     int selectedIndex;
 
     ItemTouchHelper.SimpleCallback simpleCallback =
@@ -75,8 +78,9 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
             switch(direction){
                 case ItemTouchHelper.LEFT:
-                    //TODO: implement delete
-                    Toast.makeText(getActivity(), "Deleting", Toast.LENGTH_SHORT).show();
+                    if(type.equalsIgnoreCase("users")) prepDeleteUser();
+                    else if(type.equalsIgnoreCase("recipes")) prepDeleteRecipe();
+                    showDeleteConfirmation();
                     break;
                 case ItemTouchHelper.RIGHT:
                     //TODO: implement detail
@@ -98,6 +102,8 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             super.onChildDraw(c, recyclerView, viewHolder, dX / 4, dY, actionState, isCurrentlyActive);
         }
    };
+
+    AlertDialog.Builder builder;
 
     public AdminListFragment() {
         // Required empty public constructor
@@ -143,6 +149,16 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(listRV);
+
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure you want to delete this item?")
+                .setCancelable(false)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
     }
 
     @Override
@@ -258,7 +274,6 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             @Override
             public void moreButtonClick(int position, ImageButton btn) {
                 showPopup(btn);
-                selectedType = "recipes";
                 selectedIndex = position;
             }
         });
@@ -269,7 +284,6 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             @Override
             public void moreButtonClick(int position, ImageButton btn) {
                 showPopup(btn);
-                selectedType = "users";
                 selectedIndex = position;
             }
         });
@@ -289,6 +303,8 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
                 showRecipeDetail();
                 return true;
             case R.id.item_delete:
+                if(type.equalsIgnoreCase("users")) prepDeleteUser();
+                else if(type.equalsIgnoreCase("recipes")) prepDeleteRecipe();
                 showDeleteConfirmation();
                 return true;
             default:
@@ -300,7 +316,66 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
     }
 
-    public void showDeleteConfirmation(){
+    public void prepDeleteUser(){
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteUser();
+            }
+        });
+    }
 
+    public void prepDeleteRecipe(){
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteRecipe();
+            }
+        });
+    }
+
+    public void showDeleteConfirmation(){
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void deleteUser(){
+        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteUserById(selectedIndex);
+        call.enqueue(new Callback<AdminDeleteResponse>() {
+            @Override
+            public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "Response: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    loadAllUsers();
+                    Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
+                System.out.println("Error: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void deleteRecipe(){
+        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteRecipeById(selectedIndex);
+        call.enqueue(new Callback<AdminDeleteResponse>() {
+            @Override
+            public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "Response: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    loadAllRecipes();
+                    Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
+                System.out.println("Error: " + t.getLocalizedMessage());
+            }
+        });
     }
 }
