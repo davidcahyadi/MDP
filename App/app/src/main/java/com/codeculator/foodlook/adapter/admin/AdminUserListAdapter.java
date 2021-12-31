@@ -70,13 +70,13 @@ public class AdminUserListAdapter extends RecyclerView.Adapter<AdminUserListAdap
             userMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listClickListener.moreButtonClick(index, userMoreButton);
+                    listClickListener.moreButtonClick(user.getId(), userMoreButton);
                 }
             });
         }
     }
 
     public interface ListClickListener{
-        void moreButtonClick(int position, ImageButton btn);
+        void moreButtonClick(int userID, ImageButton btn);
     }
 }
