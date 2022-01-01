@@ -5,7 +5,7 @@ from src.crawler.AllRecipeAdapter import AllRecipeAdapter
 from src.crawler.Crawler import Crawler
 from src.helper.dictHelper import iterateModel
 from src.models.database import db
-from src.models.models import User, Review, Recipe
+from src.models.models import User, Review, Recipe, RecipeIngredient, Step, Photo
 from src.services.security import token_required
 
 admin = Blueprint("admin", __name__, url_prefix="/api/v1/admin")
@@ -60,6 +60,9 @@ def delete_review(id):
 
 @admin.post("delete/recipe/<id>")
 def delete_recipe(id):
+    RecipeIngredient.query.filter_by(recipe_id=id).delete()
+    Step.query.filter_by(recipe_id=id).delete()
+    Photo.query.filter_by(recipe_id=id).delete()
     Recipe.query.filter_by(id=id).delete()
     db.session.commit()
     return jsonify({"message": "OK"}), HTTP_200_OK

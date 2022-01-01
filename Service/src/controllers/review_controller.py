@@ -18,10 +18,11 @@ def add_review(user_id):
     recipe_id = request.args.get("recipe")
     rate = int(request.form.get("rate"))
     description = request.form.get("description")
+    print(recipe_id,rate,description)
     r = Review().make(user_id=user_id, recipe_id=recipe_id, rate=rate, description=description)
     db.session.add(r)
     db.session.commit()
-    return jsonify("OK"), HTTP_200_OK
+    return jsonify({"message": "OK"}), HTTP_200_OK
 
 
 @review.post("/<id>/replies/add")
@@ -39,6 +40,3 @@ def review_replies(id):
     replies = Review.query.filter(Review.review_id == id).all()
     db.session.commit()
     return jsonify(iterateModel(replies))
-
-
-

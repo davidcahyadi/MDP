@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from src.constant.http_status_codes import HTTP_200_OK
 from src.helper.dictHelper import iterateModel
 from src.models.database import db
-from src.models.models import Review, Recipe, Photo, Step, RecipeIngredient, User
+from src.models.models import Review, Recipe, Photo, Step, RecipeIngredient, User, Bookmark
 from src.services.security import token_required
 
 my = Blueprint("my", __name__, url_prefix="/api/v1/my")
@@ -51,40 +51,40 @@ def save_recipe(user_id):
 
     db.session.add(recipe)
     db.session.commit()
-
-    return "OK"
-
-#
-# @my.post("/bookmark/add")
-# @token_required
-# def add_bookmark(user_id):
-#     bookmark = Bookmark()
-#     recipe_id = request.form.get("recipe_id")
-#     bookmark.make(user_id, recipe_id)
-#     if db.session.query(Bookmark).filter_by(recipe_id=recipe_id, user_id=user_id).count() == 0:
-#         db.session.add(bookmark)
-#         db.session.commit()
-#         return jsonify({"message": "OK"}), HTTP_200_OK
-#     return jsonify({"message": "Recipe in bookmark"}), HTTP_200_OK
-#
-#
-# @my.post("/bookmark/remove")
-# @token_required
-# def add_bookmark(user_id):
-#     recipe_id = request.form.get("recipe_id")
-#     Bookmark.query.filter_by(user_id=user_id,recipe_id=recipe_id).delete()
-#     db.session.commit()
-#     return jsonify({"message": "OK"}), HTTP_200_OK
-#
-#
-# @my.post("/bookmark/all")
-# @token_required
-# def add_bookmark(user_id):
-#     return jsonify(iterateModel(Bookmark.query.filter_by(user_id=user_id).all()))
+    return jsonify("OK"), HTTP_200_OK
 
 
-# @my.get("/profile")
-# @token_required
-# def profile(user_id):
-#     user = db.session.query(User).filter_by(id=user_id).first()
-#     return jsonify(user), HTTP_200_OK
+@my.post("/bookmark/add")
+@token_required
+def add_bookmark(user_id):
+    bookmark = Bookmark()
+    recipe_id = request.form.get("recipe_id")
+    bookmark.make(user_id, recipe_id)
+    if db.session.query(Bookmark).filter_by(recipe_id=recipe_id, user_id=user_id).count() == 0:
+        db.session.add(bookmark)
+        db.session.commit()
+        return jsonify({"message": "OK"}), HTTP_200_OK
+    else:
+        return jsonify({"message": "Recipe in bookmark"}), HTTP_200_OK
+
+
+@my.post("/bookmark/remove")
+@token_required
+def rm_bookmark(user_id):
+    recipe_id = request.form.get("recipe_id")
+    Bookmark.query.filter_by(user_id=user_id, recipe_id=recipe_id).delete()
+    db.session.commit()
+    return jsonify({"message": "OK"}), HTTP_200_OK
+
+
+@my.post("/bookmark/all")
+@token_required
+def get_bookmark(user_id):
+    return jsonify(iterateModel(Bookmark.query.filter_by(user_id=user_id).all()))
+
+
+@my.get("/profile")
+@token_required
+def profile(user_id):
+    user = db.session.query(User).filter_by(id=user_id).first()
+    return jsonify(user), HTTP_200_OK
