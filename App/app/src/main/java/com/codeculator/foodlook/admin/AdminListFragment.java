@@ -63,7 +63,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
     LottieAnimationView loading;
 
-    int selectedIndex;
+    int selectedID;
 
     ItemTouchHelper.SimpleCallback simpleCallback =
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -78,8 +78,14 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
             switch(direction){
                 case ItemTouchHelper.LEFT:
-                    if(type.equalsIgnoreCase("users")) prepDeleteUser();
-                    else if(type.equalsIgnoreCase("recipes")) prepDeleteRecipe();
+                    if(type.equalsIgnoreCase("users")) {
+                        selectedID = users.get(position).getId();
+                        prepDeleteUser();
+                    }
+                    else if(type.equalsIgnoreCase("recipes")) {
+                        selectedID = recipes.get(position).id;
+                        prepDeleteRecipe();
+                    }
                     showDeleteConfirmation();
                     break;
                 case ItemTouchHelper.RIGHT:
@@ -270,11 +276,11 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void setRecipesAdapterInterface(){
-        recipesAdapter.setListClickListener(new AdminUserListAdapter.ListClickListener() {
+        recipesAdapter.setListClickListener(new AdminRecipeListAdapter.ListClickListener() {
             @Override
-            public void moreButtonClick(int position, ImageButton btn) {
+            public void moreButtonClick(int recipeID, ImageButton btn) {
                 showPopup(btn);
-                selectedIndex = position;
+                selectedID = recipeID;
             }
         });
     }
@@ -282,9 +288,9 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     public void setUsersAdapterInterface(){
         usersAdapter.setListClickListener(new AdminUserListAdapter.ListClickListener() {
             @Override
-            public void moreButtonClick(int position, ImageButton btn) {
+            public void moreButtonClick(int userID, ImageButton btn) {
                 showPopup(btn);
-                selectedIndex = position;
+                selectedID = userID;
             }
         });
     }
@@ -340,7 +346,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void deleteUser(){
-        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteUserById(selectedIndex);
+        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteUserById(selectedID);
         call.enqueue(new Callback<AdminDeleteResponse>() {
             @Override
             public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
@@ -360,20 +366,24 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void deleteRecipe(){
-        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteRecipeById(selectedIndex);
+        System.out.println("Deleting recipe...");
+        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteRecipeById(selectedID);
         call.enqueue(new Callback<AdminDeleteResponse>() {
             @Override
             public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
+                System.out.println("Successfully responded...");
                 if(response.isSuccessful()){
                     Toast.makeText(getContext(), "Response: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     loadAllRecipes();
                     Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
+                }else{
+                    System.out.println("Delete process is not successful");
                 }
             }
 
             @Override
             public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
+                System.out.println("Error deleting recipe");
                 System.out.println("Error: " + t.getLocalizedMessage());
             }
         });

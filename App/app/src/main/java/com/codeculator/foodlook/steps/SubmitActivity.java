@@ -5,13 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.services.RetrofitApi;
+import com.codeculator.foodlook.services.admin.AdminDeleteResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SubmitActivity extends AppCompatActivity {
     ImageButton[] rateStars;
     Button ratingSubmitBtn, cancelBtn;
+    EditText reviewDescription;
+    int rateScore = 0;
+    private int recipeID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +35,8 @@ public class SubmitActivity extends AppCompatActivity {
         rateStars[4] = findViewById(R.id.rateStar5);
         ratingSubmitBtn = findViewById(R.id.ratingSubmitBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
+        reviewDescription = findViewById(R.id.review_description);
+        recipeID = getIntent().getIntExtra("recipe",0);
 
         for (int i = 0; i < 5; i++) {
             rateStars[i].setOnClickListener(new View.OnClickListener() {
@@ -50,12 +63,26 @@ public class SubmitActivity extends AppCompatActivity {
     }
 
     public void doSubmit(){
+        Call<String> call = RetrofitApi.getInstance().getReviewInterface().addReviews(rateScore,
+                reviewDescription.getText().toString(), recipeID);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println("Response: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
 
     }
 
     public void toggleStars(int itemID){
         for (int i = 0; i < 5; i++) {
             if(rateStars[i].getId() == itemID){
+                rateScore = i;
                 for (int j = i; j > -1; j--) {
                     rateStars[j].setImageResource(R.drawable.ic_baseline_star_72);
                 }

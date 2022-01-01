@@ -19,14 +19,14 @@ import java.util.ArrayList;
 public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeListAdapter.AdminListRecipeHolder>{
     ArrayList<Recipe> recipes;
     Context context;
-    public AdminUserListAdapter.ListClickListener listClickListener;
+    public ListClickListener listClickListener;
 
     public AdminRecipeListAdapter(ArrayList<Recipe> recipes, Context context) {
         this.recipes = recipes;
         this.context = context;
     }
 
-    public void setListClickListener(AdminUserListAdapter.ListClickListener listClickListener){
+    public void setListClickListener(AdminRecipeListAdapter.ListClickListener listClickListener){
         this.listClickListener = listClickListener;
     }
 
@@ -67,13 +67,13 @@ public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeList
             recipeMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listClickListener.moreButtonClick(idx, recipeMoreButton);
+                    listClickListener.moreButtonClick(recipe.id, recipeMoreButton);
                 }
             });
         }
     }
 
     public interface ListClickListener{
-        void moreButtonClick(int position, ImageButton btn);
+        void moreButtonClick(int recipeID, ImageButton btn);
     }
 }

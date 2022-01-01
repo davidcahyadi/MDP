@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface AdminService {
     @GET("admin/recipes")
@@ -24,12 +25,12 @@ public interface AdminService {
     Call<ArrayList<Review>> getReviews();
 
     @POST("admin/delete/user/{id}")
-    Call<AdminDeleteResponse> deleteUserById(@Body int id);
+    Call<AdminDeleteResponse> deleteUserById(@Path("id") int id);
 
     @POST("admin/delete/recipe/{id}")
-    Call<AdminDeleteResponse> deleteRecipeById(@Body int id);
+    Call<AdminDeleteResponse> deleteRecipeById(@Path("id") int id);
 
     @FormUrlEncoded
     @POST("admin/delete/review/{id}")
-    Call<AdminDeleteResponse> deleteReviewById(int id);
+    Call<AdminDeleteResponse> deleteReviewById(@Body int id);
 }

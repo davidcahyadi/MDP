@@ -67,6 +67,7 @@ public class ActivityStep extends AppCompatActivity{
             public void onClick(View view) {
                 if(mCurrentPage == mDots.length - 1){
                     Intent i = new Intent(getBaseContext(), SubmitActivity.class);
+                    i.putExtra("recipe", recipeID);
                     startActivity(i);
                     finish();
                 }else{
