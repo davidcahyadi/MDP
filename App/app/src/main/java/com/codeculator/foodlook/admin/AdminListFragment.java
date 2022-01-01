@@ -360,31 +360,24 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             @Override
             public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
-                System.out.println("Error: " + t.getLocalizedMessage());
             }
         });
     }
 
     public void deleteRecipe(){
-        System.out.println("Deleting recipe...");
         Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteRecipeById(selectedID);
         call.enqueue(new Callback<AdminDeleteResponse>() {
             @Override
             public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
-                System.out.println("Successfully responded...");
                 if(response.isSuccessful()){
-                    Toast.makeText(getContext(), "Response: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     loadAllRecipes();
                     Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
-                }else{
-                    System.out.println("Delete process is not successful");
                 }
             }
 
             @Override
             public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
-                System.out.println("Error deleting recipe");
-                System.out.println("Error: " + t.getLocalizedMessage());
+                Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
             }
         });
     }

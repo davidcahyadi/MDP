@@ -1,13 +1,9 @@
 package com.codeculator.foodlook.services;
 
-import android.content.Context;
-import android.content.res.Resources;
-
-import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.services.admin.AdminService;
 import com.codeculator.foodlook.services.service.CatalogService;
 import com.codeculator.foodlook.services.service.RecipeService;
-import com.codeculator.foodlook.services.service.ReviewInterface;
+import com.codeculator.foodlook.services.service.ReviewService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +20,7 @@ public class RetrofitApi {
     private RecipeService recipeService;
     private AdminService adminService;
     private CatalogService catalogService;
-    private ReviewInterface reviewInterface;
+    private ReviewService reviewService;
 
     public static RetrofitApi getInstance() {
         if (instance == null) {
@@ -59,7 +55,7 @@ public class RetrofitApi {
         this.recipeService = retrofit.create(RecipeService.class);
         this.adminService = retrofit.create(AdminService.class);
         this.catalogService = retrofit.create(CatalogService.class);
-        this.reviewInterface = retrofit.create(ReviewInterface.class);
+        this.reviewService = retrofit.create(ReviewService.class);
     }
 
     public RecipeService getRecipeService() {
@@ -74,7 +70,7 @@ public class RetrofitApi {
         return catalogService;
     }
 
-    public ReviewInterface getReviewInterface(){
-        return reviewInterface;
+    public ReviewService getReviewInterface(){
+        return reviewService;
     }
 }

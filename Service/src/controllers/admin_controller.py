@@ -42,7 +42,12 @@ def get_user_by_id(id):
     u = User.query.filter_by(id=id).first()
     db.session.commit()
     return jsonify(u.raw())
-
+    
+@admin.get("reviews/<id>")
+def get_user_by_id(id):
+    r = Reviews.query.filter_by(id=id).first()
+    db.session.commit()
+    return jsonify(r.raw())
 
 @admin.post("delete/user/<id>")
 def delete_user(id):

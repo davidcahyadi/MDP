@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.services.RetrofitApi;
 import com.codeculator.foodlook.services.admin.AdminDeleteResponse;
 
@@ -23,6 +24,8 @@ public class SubmitActivity extends AppCompatActivity {
     EditText reviewDescription;
     int rateScore = 0;
     private int recipeID;
+    PrefHelper prefHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class SubmitActivity extends AppCompatActivity {
         cancelBtn = findViewById(R.id.cancelBtn);
         reviewDescription = findViewById(R.id.review_description);
         recipeID = getIntent().getIntExtra("recipe",0);
+        prefHelper = new PrefHelper(this);
 
         for (int i = 0; i < 5; i++) {
             rateStars[i].setOnClickListener(new View.OnClickListener() {
@@ -64,16 +68,17 @@ public class SubmitActivity extends AppCompatActivity {
 
     public void doSubmit(){
         Call<String> call = RetrofitApi.getInstance().getReviewInterface().addReviews(rateScore,
-                reviewDescription.getText().toString(), recipeID);
+                reviewDescription.getText().toString(), recipeID, prefHelper.getAccess());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("Response: " + response.body());
+                Toast.makeText(getBaseContext(), "Your review has been successfully submitted!", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                System.out.println("Error submitting: " + t.getMessage());
             }
         });
 
