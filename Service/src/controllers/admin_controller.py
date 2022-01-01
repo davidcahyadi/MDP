@@ -2,6 +2,7 @@ from flask import Blueprint, make_response, jsonify
 
 from src.constant.http_status_codes import HTTP_403_FORBIDDEN, HTTP_200_OK
 from src.crawler.AllRecipeAdapter import AllRecipeAdapter
+from src.crawler.AsianFoodNetworkAdapter import AsianFoodNetworkAdapter
 from src.crawler.Crawler import Crawler
 from src.helper.dictHelper import iterateModel
 from src.models.database import db
@@ -16,6 +17,8 @@ admin = Blueprint("admin", __name__, url_prefix="/api/v1/admin")
 def crawl_web(crawl_id):
     if int(crawl_id) == 1:
         return Crawler(AllRecipeAdapter()).crawl(1)
+    if int(crawl_id) == 2:
+        return Crawler(AsianFoodNetworkAdapter()).crawl(1)
     else:
         return jsonify({"error": {"crawl": "ID not Found"}}), HTTP_403_FORBIDDEN
 
