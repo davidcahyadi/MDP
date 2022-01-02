@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.RetrofitApi;
 
@@ -97,10 +99,44 @@ public class AdminUserDetailFragment extends Fragment {
     }
 
     public void loadRecipeCount(){
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getAdminService().getRecipes(-1);
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+                if(response.isSuccessful()){
+                    int ctr = 0;
+                    for(Recipe r : response.body()){
+                        if(r.user_id == selectedUser.getId()) ctr++;
+                    }
+                    totalRecipesTV.setText(ctr+"");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void loadReviewCount(){
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getAdminService().getReviews(-1);
+        call.enqueue(new Callback<ArrayList<Review>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
+                if(response.isSuccessful()){
+                    int ctr = 0;
+                    for(Review r : response.body()){
+                        if(r.user_id == selectedUser.getId()) ctr++;
+                    }
+                    totalReviewsTV.setText(ctr+"");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+
+            }
+        });
     }
 }

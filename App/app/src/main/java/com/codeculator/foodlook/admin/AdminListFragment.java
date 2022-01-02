@@ -93,6 +93,12 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
                     showDeleteConfirmation();
                     break;
                 case ItemTouchHelper.RIGHT:
+                    if(type.equalsIgnoreCase("users"))
+                        selectedID = users.get(position).getId();
+                    else if(type.equalsIgnoreCase("recipes"))
+                        selectedID = recipes.get(position).id;
+                    else
+                        selectedID = reviews.get(position).id;
                     ((AdminHomeActivity) getActivity()).goToDetail(type, selectedID);
                     Toast.makeText(getActivity(), "Displaying detail", Toast.LENGTH_SHORT).show();
                     break;
@@ -358,7 +364,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.item_detail:
-                showRecipeDetail();
+                ((AdminHomeActivity) getActivity()).goToDetail(type, selectedID);
                 return true;
             case R.id.item_delete:
                 if(type.equalsIgnoreCase("users")) prepDeleteUser();
@@ -369,10 +375,6 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             default:
                 return false;
         }
-    }
-
-    public void showRecipeDetail(){
-
     }
 
     public void prepDeleteUser(){

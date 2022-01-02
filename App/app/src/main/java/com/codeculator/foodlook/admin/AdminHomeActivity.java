@@ -87,8 +87,11 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
 
     public void goToDetail(String type, int itemID){
         Fragment f = null;
+        Bundle b = new Bundle();
         if(type.equalsIgnoreCase("users")){
             f = new AdminUserDetailFragment();
+            b.putInt("userID", itemID);
+            f.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }else if(type.equalsIgnoreCase("recipes")){
 
