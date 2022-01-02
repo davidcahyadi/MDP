@@ -34,6 +34,7 @@
         android:text="Ingredients : " />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />
@@ -46,6 +47,7 @@
         android:text="Step by step : " />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_steps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -58,7 +60,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/b_add_ingredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -68,7 +70,7 @@
             android:text="Add Ingredient" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/b_add_steps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
