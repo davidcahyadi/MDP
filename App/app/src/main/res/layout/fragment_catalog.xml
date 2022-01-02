@@ -21,6 +21,8 @@
             android:gravity="center"
             android:text="Most Popular"
             android:textColor="@color/yellow_300"
+            android:backgroundTint="@color/transparent"
+            android:background="@drawable/rounded_sm"
             android:textSize="16sp" />
 
         <TextView
@@ -32,6 +34,8 @@
             android:gravity="center"
             android:text="Newest"
             android:textColor="@color/yellow_300"
+            android:backgroundTint="@color/transparent"
+            android:background="@drawable/rounded_sm"
             android:textSize="16sp" />
 
         <TextView
@@ -43,6 +47,8 @@
             android:gravity="center"
             android:text="Most Like"
             android:textColor="@color/yellow_300"
+            android:backgroundTint="@color/transparent"
+            android:background="@drawable/rounded_sm"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -52,40 +58,34 @@
         android:layout_height="match_parent"
         android:padding="10dp">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:fillViewport="true">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecipeCatalog"
                 android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecipeCatalog"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <ProgressBar
-                    android:id="@+id/progressBar2"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/loading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="match_parent">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loadingSpinner"

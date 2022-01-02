@@ -13,6 +13,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.RecommendationAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentCatalogBinding;
+import com.codeculator.foodlook.helper.EndlessRecyclerViewScrollListener;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
@@ -67,8 +70,8 @@ public class FragmentCatalog extends Fragment {
     ArrayList<Recipe> recipes = new ArrayList<>();
     ArrayList<Recipe> searchRecipes = new ArrayList<>();
     FragmentCatalogBinding binding;
-    HTTPRequest httpRequest;
     RecommendationAdapter adapter;
+    EndlessRecyclerViewScrollListener scrollListener;
     int filter = -1;
     int page = 1;
     String type = "popular";
@@ -104,11 +107,10 @@ public class FragmentCatalog extends Fragment {
         setHasOptionsMenu(true);
         getActivity().setTitle("Recipes");
 
-        httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
-
+        setAdapter();
         binding.tvMostPopular.setOnClickListener(v -> {
             if(filter != 0){
-                setAdapter();
+                resetAdapter();
                 filter = 0;
                 type = "popular";
                 page = 1;
@@ -119,7 +121,7 @@ public class FragmentCatalog extends Fragment {
 
         binding.tvNewest.setOnClickListener(v -> {
             if(filter != 1){
-                setAdapter();
+                resetAdapter();
                 filter = 1;
                 type = "newest";
                 page = 1;
@@ -130,7 +132,7 @@ public class FragmentCatalog extends Fragment {
 
         binding.tvMostLike.setOnClickListener(v -> {
             if(filter != 2){
-                setAdapter();
+                resetAdapter();
                 filter = 2;
                 type = "like";
                 page = 1;
@@ -142,15 +144,16 @@ public class FragmentCatalog extends Fragment {
         setToMostPopularPage();
         binding.loading.setVisibility(View.VISIBLE);
 
-        binding.nestedScrollView.setOnScrollChangeListener(
-                (NestedScrollView.OnScrollChangeListener)
-                        (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                            if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
-                                page++;
-                                binding.progressBar2.setVisibility(View.VISIBLE);
-                                CatalogRecipeRequest();
-                            }
-        });
+
+//        binding.nestedScrollView.setOnScrollChangeListener(
+//                (NestedScrollView.OnScrollChangeListener)
+//                        (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//                            if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
+//                                page++;
+//                                binding.progressBar2.setVisibility(View.VISIBLE);
+//                                CatalogRecipeRequest();
+//                            }
+//        });
     }
 
     public void setAdapter(){
@@ -158,8 +161,26 @@ public class FragmentCatalog extends Fragment {
         adapter = new RecommendationAdapter(getActivity(), getParentFragmentManager());
         adapter.setRecipes(recipes);
         binding.rvRecipeCatalog.setAdapter(adapter);
-        binding.rvRecipeCatalog.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        binding.rvRecipeCatalog.setLayoutManager(gridLayoutManager);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                FragmentCatalog.this.page++;
+                binding.progressBar2.setVisibility(View.VISIBLE);
+                CatalogRecipeRequest();
+            }
+        };
+        binding.rvRecipeCatalog.addOnScrollListener(scrollListener);
+    }
+
+    private void resetAdapter(){
         binding.loading.setVisibility(View.VISIBLE);
+        recipes.clear();
+        adapter.notifyDataSetChanged();
+        scrollListener.resetState();
     }
 
     public void setFilter()
@@ -172,14 +193,15 @@ public class FragmentCatalog extends Fragment {
         }
 
         binding.tvMostPopular.setTextColor(getResources().getColor(R.color.yellow_300, null));
-        binding.tvMostPopular.setBackgroundColor(Color.WHITE);
+        binding.tvMostPopular.setBackgroundTintList(getResources().getColorStateList(R.color.transparent, null));
         binding.tvNewest.setTextColor(getResources().getColor(R.color.yellow_300, null));
-        binding.tvNewest.setBackgroundColor(Color.WHITE);
+        binding.tvNewest.setBackgroundTintList(getResources().getColorStateList(R.color.transparent, null));
         binding.tvMostLike.setTextColor(getResources().getColor(R.color.yellow_300, null));
-        binding.tvMostLike.setBackgroundColor(Color.WHITE);
+        binding.tvMostLike.setBackgroundTintList(getResources().getColorStateList(R.color.transparent, null));
         view.setTextColor(Color.WHITE);
-        view.setBackgroundColor(getResources().getColor(R.color.yellow_300, null));
+        view.setBackgroundTintList(getResources().getColorStateList(R.color.yellow_300, null));
     }
+
 
     public void setToMostPopularPage()
     {

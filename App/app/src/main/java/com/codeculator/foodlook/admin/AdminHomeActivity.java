@@ -19,6 +19,8 @@ import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 public class AdminHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ActivityAdminHomeBinding binding;
@@ -32,7 +34,7 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
         View view = binding.getRoot();
         setContentView(view);
         launcher = new ResultLauncherHelper(this);
-
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         binding.adminNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

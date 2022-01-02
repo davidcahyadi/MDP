@@ -75,7 +75,8 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
 
         public void bind(Recipe r) {
             tvRecipeName2.setText(r.title);
-            tvRating.setText(r.rate+"");
+            float rating = Math.round(r.rate*100)/100f;
+            tvRating.setText(rating+"");
             tvTime.setText((r.prep_duration + r.cook_duration)+"");
             tvViewCount.setText(r.view+"");
             Picasso.get().load(r.photo).into(imageViewDisplayRecipe3);

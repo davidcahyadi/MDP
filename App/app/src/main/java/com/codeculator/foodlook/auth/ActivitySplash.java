@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivitySplashBinding;
@@ -20,6 +21,9 @@ public class ActivitySplash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         View view = binding.getRoot();
         setContentView(view);
 

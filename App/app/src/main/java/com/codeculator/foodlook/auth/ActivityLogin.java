@@ -66,6 +66,7 @@ public class ActivityLogin extends AppCompatActivity {
                     password.equalsIgnoreCase("itsaboutdrive")){
                 Intent i = new Intent(ActivityLogin.this, AdminHomeActivity.class);
                 startActivity(i);
+                finish();
             }else{
                 HashMap<String,String> data = new HashMap<>();
                 data.put("email",email);
@@ -74,7 +75,7 @@ public class ActivityLogin extends AppCompatActivity {
                 HTTPRequest.Response<String> response = new HTTPRequest.Response<>();
 
                 response.onError(e->{
-                    Log.e("Error",e.getMessage());
+                    Toast.makeText(this, "Login Error", Toast.LENGTH_SHORT).show();
                 });
 
                 response.onSuccess(res->{
