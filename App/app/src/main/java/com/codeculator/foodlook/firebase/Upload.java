@@ -1,4 +1,4 @@
-package com.codeculator.foodlook.model;
+package com.codeculator.foodlook.firebase;
 
 public class Upload {
     private String name;
