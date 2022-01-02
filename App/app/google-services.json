@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "250935748568",
+    "project_id": "foodlook-af12b",
+    "storage_bucket": "foodlook-af12b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250935748568:android:5d2e974909d895f387f4ad",
+        "android_client_info": {
+          "package_name": "com.codeculator.foodlook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250935748568-sfg85jegd11a18dj3ka9qe6k3pmv5ttm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYGPGtVDrALgNsbHl2t4jhsB6Djmuy7PY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250935748568-sfg85jegd11a18dj3ka9qe6k3pmv5ttm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
