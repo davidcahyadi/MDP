@@ -156,7 +156,6 @@ class AsianFoodNetworkAdapter(Adapter):
                 "created_at": datetime.now(),
                 "deleted_at": None
             })
-
         return photos
 
     def crawl(self, count):
