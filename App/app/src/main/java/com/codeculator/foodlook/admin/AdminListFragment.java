@@ -27,7 +27,10 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.admin.AdminRecipeListAdapter;
+import com.codeculator.foodlook.adapter.admin.AdminReviewListAdapter;
 import com.codeculator.foodlook.adapter.admin.AdminUserListAdapter;
+import com.codeculator.foodlook.helper.EndlessRecyclerViewScrollListener;
+import com.codeculator.foodlook.home.ActivityHome;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
@@ -50,9 +53,11 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
     AdminRecipeListAdapter recipesAdapter;
     AdminUserListAdapter usersAdapter;
+    AdminReviewListAdapter reviewsAdapter;
 
     ArrayList<Recipe> recipes;
     ArrayList<User> users;
+    ArrayList<Review> reviews;
 
     RecyclerView listRV;
     String type;
@@ -81,11 +86,14 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
                     else if(type.equalsIgnoreCase("recipes")) {
                         selectedID = recipes.get(position).id;
                         prepDeleteRecipe();
+                    }else{
+                        selectedID = reviews.get(position).id;
+                        prepDeleteReview();
                     }
                     showDeleteConfirmation();
                     break;
                 case ItemTouchHelper.RIGHT:
-                    //TODO: implement detail
+                    ((AdminHomeActivity) getActivity()).goToDetail(type, selectedID);
                     Toast.makeText(getActivity(), "Displaying detail", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -106,6 +114,9 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
    };
 
     AlertDialog.Builder builder;
+
+    EndlessRecyclerViewScrollListener scrollListener;
+    int page;
 
     public AdminListFragment() {
         // Required empty public constructor
@@ -137,10 +148,25 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listRV = view.findViewById(R.id.listRV);
-        listRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        setHasOptionsMenu(true);
         loading = view.findViewById(R.id.loading_list_spinner);
+        listRV = view.findViewById(R.id.listRV);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        listRV.setLayoutManager(linearLayoutManager);
+        //Load by Scroll Props
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                page++;
+                loading.setVisibility(View.VISIBLE);
+                if(type.equalsIgnoreCase("users")) loadAllUsers();
+                else if(type.equalsIgnoreCase("recipes")) loadAllRecipes();
+                else loadAllReviews();
+            }
+        };
+        listRV.addOnScrollListener(scrollListener);
+        //
+        setHasOptionsMenu(true);
+        this.page = 1;
 
         if(type.equalsIgnoreCase("recipes"))
             loadAllRecipes();
@@ -203,7 +229,22 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
                     }
 
                 }else{
-                    //TODO: implement reviews
+                    ArrayList<Review> searchedReviews = new ArrayList<>();
+                    int idx = -1;
+                    if(reviews != null){
+                        System.out.println("Reviews size: " + reviews.size());
+                        System.out.println("Items at adapter size: " + reviewsAdapter.reviews.size());
+                        for(Review r : reviews){
+                            idx++;
+                            if(s.equalsIgnoreCase("") ||
+                                    r.description.toLowerCase().contains(s.toLowerCase()) ||
+                                    reviewsAdapter.getOPAt(idx).contains(s.toLowerCase()))
+                                searchedReviews.add(r);
+                        }
+                        reviewsAdapter = new AdminReviewListAdapter(searchedReviews, getContext());
+                        setReviewsAdapterInterface();
+                        listRV.setAdapter(reviewsAdapter);
+                    }
                 }
                 return false;
             }
@@ -212,7 +253,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void loadAllRecipes(){
-        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getAdminService().getRecipes();
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getAdminService().getRecipes(page);
         call.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
@@ -227,13 +268,13 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             }
             @Override
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void loadAllUsers(){
-        Call<ArrayList<User>> call = RetrofitApi.getInstance().getAdminService().getUsers();
+        Call<ArrayList<User>> call = RetrofitApi.getInstance().getAdminService().getUsers(page);
         call.enqueue((new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -248,25 +289,30 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             }
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
+
     public void loadAllReviews(){
-        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getAdminService().getReviews();
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getAdminService().getReviews(page);
         call.enqueue(new Callback<ArrayList<Review>>() {
             @Override
             public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
                 if(response.isSuccessful()){
-                    //TODO: implement reviewsAdapter
+                    reviews = new ArrayList<>();
+                    reviews.addAll(response.body());
+                    reviewsAdapter = new AdminReviewListAdapter(reviews, getContext());
+                    setReviewsAdapterInterface();
+                    listRV.setAdapter(reviewsAdapter);
                     loading.setVisibility(View.INVISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -291,6 +337,16 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
         });
     }
 
+    public void setReviewsAdapterInterface(){
+        reviewsAdapter.setListClickListener(new AdminReviewListAdapter.ListClickListener() {
+            @Override
+            public void moreButtonClick(int reviewID, ImageButton btn) {
+                showPopup(btn);
+                selectedID = reviewID;
+            }
+        });
+    }
+
     public void showPopup(View v){
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
         popupMenu.setOnMenuItemClickListener(this);
@@ -307,6 +363,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             case R.id.item_delete:
                 if(type.equalsIgnoreCase("users")) prepDeleteUser();
                 else if(type.equalsIgnoreCase("recipes")) prepDeleteRecipe();
+                else prepDeleteReview();
                 showDeleteConfirmation();
                 return true;
             default:
@@ -332,6 +389,15 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 deleteRecipe();
+            }
+        });
+    }
+
+    public void prepDeleteReview(){
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteReview();
             }
         });
     }
@@ -367,6 +433,24 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
                 if(response.isSuccessful()){
                     loadAllRecipes();
+                    Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminDeleteResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "An error has occurred.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void deleteReview(){
+        Call<AdminDeleteResponse> call = RetrofitApi.getInstance().getAdminService().deleteReviewById(selectedID);
+        call.enqueue(new Callback<AdminDeleteResponse>() {
+            @Override
+            public void onResponse(Call<AdminDeleteResponse> call, Response<AdminDeleteResponse> response) {
+                if(response.isSuccessful()){
+                    loadAllReviews();
                     Toast.makeText(getContext(), "Item has been successfully deleted!", Toast.LENGTH_SHORT).show();
                 }
             }

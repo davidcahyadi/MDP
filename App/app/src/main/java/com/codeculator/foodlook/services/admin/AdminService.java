@@ -1,15 +1,14 @@
-package com.codeculator.foodlook.services.service;
+package com.codeculator.foodlook.services.admin;
 
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.response.AdminDeleteResponse;
-import com.codeculator.foodlook.services.response.BasicResponse;
-import com.codeculator.foodlook.services.response.CrawlResponse;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -30,9 +29,6 @@ public interface AdminService {
     @GET("admin/users/{id}")
     Call<User> getUserByID(@Path("id") int id);
 
-    @GET("admin/recipes/{id}")
-    Call<Recipe> getRecipeByID(@Path("id") int id);
-
     @GET("admin/reviews/{id}")
     Call<Review> getReviewByID(@Path("id") int id);
 
@@ -44,7 +40,4 @@ public interface AdminService {
 
     @POST("admin/delete/review/{id}")
     Call<AdminDeleteResponse> deleteReviewById(@Path("id") int id);
-
-    @POST("admin/crawl/{id}")
-    Call<CrawlResponse> crawl(@Path("id") int id);
 }
