@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.model.RecipeIngredient;
 
 public class ActivityAddIngredient extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
                     }
                     else{
                         //todo masukin ingredient pake retrofit
+                        RecipeIngredient in = new RecipeIngredient(1,((double) 1),"test",1,1,1);
                     }
                 }
             }

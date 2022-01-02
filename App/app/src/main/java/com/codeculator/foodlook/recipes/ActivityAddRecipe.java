@@ -12,15 +12,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.IngredientAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityAddRecipe extends AppCompatActivity {
 
@@ -28,6 +35,8 @@ public class ActivityAddRecipe extends AppCompatActivity {
     EditText add_recipe_title;
     RecyclerView rc_ingredients, rc_steps;
     Button b_add_ingredients, b_add_steps;
+
+    ArrayList<RecipeIngredient> recipeIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,7 @@ public class ActivityAddRecipe extends AppCompatActivity {
         //setup recycler view ingredients
         rc_ingredients.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         ArrayList<Ingredient> ingredients = new ArrayList<>();
+
         IngredientAdapter ia = new IngredientAdapter(getApplicationContext());
         //todo ambil ingredients dari retrofit
 
@@ -76,6 +86,28 @@ public class ActivityAddRecipe extends AppCompatActivity {
         rc_steps.setAdapter(ssa);
     }
 
+    public void getIngredients(){
+        Call<ArrayList<RecipeIngredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(1);
+        call.enqueue(new Callback<ArrayList<RecipeIngredient>>() {
+            @Override
+            public void onResponse(Call<ArrayList<RecipeIngredient>> call, Response<ArrayList<RecipeIngredient>> response) {
+                if(response.isSuccessful()){
+                    recipeIngredients = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<RecipeIngredient>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void getSteps(){
+
+    }
+
     //setup button save ontop
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,9 +118,27 @@ public class ActivityAddRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item_save){
-            //todo masukkin item ke database
+            Recipe r = new Recipe("title",1,0,0,0,0,0,0,"description","created at","updated at","photo","from");
+            addRecipe(r);
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addRecipe(Recipe recipe){
+        Call<Recipe> call = RetrofitApi.getInstance().getRecipeService().addRecipe(recipe);
+        call.enqueue(new Callback<Recipe>() {
+            @Override
+            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Recipe Added Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Recipe> call, Throwable t) {
+
+            }
+        });
     }
 }
