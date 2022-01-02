@@ -32,7 +32,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ListViewHo
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.component_my_recipe, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.component_review, parent, false);
         return new ListViewHolder(view);
     }
 
@@ -71,8 +71,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ListViewHo
             countCommentsTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //todo goto comments
-                    Toast.makeText(itemView.getContext(), review.id + "", Toast.LENGTH_SHORT).show();
+                    reviewListener.onCommentClick(review);
                 }
             });
         }
