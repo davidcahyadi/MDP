@@ -162,6 +162,7 @@ class AsianFoodNetworkAdapter(Adapter):
         crawl_result = []
         for i in range(count):
             urls = self.get_urls(i + 1)
+            urls = urls[:5]
             for url in urls:
                 crawl_result.append(self.extractPage(url))
         return crawl_result

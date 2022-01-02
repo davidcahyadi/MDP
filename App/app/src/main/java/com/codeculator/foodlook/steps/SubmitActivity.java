@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.services.RetrofitApi;
-import com.codeculator.foodlook.services.admin.AdminDeleteResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

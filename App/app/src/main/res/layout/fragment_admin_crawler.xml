@@ -3,4 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.AdminCrawlerFragment"/>
+    tools:context=".admin.AdminCrawlerFragment"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/crawlerRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_trans"
+        android:gravity="center"
+        android:id="@+id/loadingLayer">
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+</FrameLayout>

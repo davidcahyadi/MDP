@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,16 +28,13 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.admin.AdminRecipeListAdapter;
 import com.codeculator.foodlook.adapter.admin.AdminUserListAdapter;
-import com.codeculator.foodlook.home.ActivityHome;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.RetrofitApi;
-import com.codeculator.foodlook.services.admin.AdminDeleteResponse;
-import com.google.android.material.snackbar.Snackbar;
+import com.codeculator.foodlook.services.response.AdminDeleteResponse;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import retrofit2.Call;

@@ -6,10 +6,6 @@
         android:icon="@drawable/ic_baseline_article_24"
         android:title="Summary" />
     <item
-        android:id="@+id/detail_restaurant"
-        android:icon="@drawable/ic_baseline_restaurant_24"
-        android:title="Restaurant" />
-    <item
         android:id="@+id/detail_ingredient"
         android:icon="@drawable/ic_baseline_fastfood_24"
         android:title="Ingredients" />

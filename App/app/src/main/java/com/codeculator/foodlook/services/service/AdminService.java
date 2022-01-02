@@ -1,13 +1,15 @@
-package com.codeculator.foodlook.services.admin;
+package com.codeculator.foodlook.services.service;
 
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;
+import com.codeculator.foodlook.services.response.AdminDeleteResponse;
+import com.codeculator.foodlook.services.response.BasicResponse;
+import com.codeculator.foodlook.services.response.CrawlResponse;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -33,4 +35,7 @@ public interface AdminService {
     @FormUrlEncoded
     @POST("admin/delete/review/{id}")
     Call<AdminDeleteResponse> deleteReviewById(@Body int id);
+
+    @POST("admin/crawl/{id}")
+    Call<CrawlResponse> crawl(@Path("id") int id);
 }

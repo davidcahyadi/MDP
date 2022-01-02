@@ -1,10 +1,7 @@
-package com.codeculator.foodlook.services.admin;
+package com.codeculator.foodlook.services.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class AdminDeleteResponse implements Parcelable {
     private String message;

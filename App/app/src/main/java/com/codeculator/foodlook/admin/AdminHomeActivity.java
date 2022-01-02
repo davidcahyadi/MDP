@@ -15,6 +15,7 @@ import android.widget.SearchView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityAdminHomeBinding;
+import com.codeculator.foodlook.databinding.FragmentAdminCrawlerBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -41,6 +42,7 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
                 return bottomNavSelected(item);
             }
         });
+        binding.adminNavigation.setSelectedItemId(R.id.admin_menu_home);
     }
 
     @Override
@@ -54,9 +56,8 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
         Bundle b = new Bundle();
         switch (item.getItemId()){
             case R.id.admin_menu_home:
-//                f = new FragmentCatalog();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
-                //TODO: implement Fragments
+                f = new AdminCrawlerFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
                 return true;
             case R.id.admin_menu_users:
                 f = new AdminListFragment();

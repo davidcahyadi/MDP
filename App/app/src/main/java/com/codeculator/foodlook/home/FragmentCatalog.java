@@ -144,16 +144,6 @@ public class FragmentCatalog extends Fragment {
         setToMostPopularPage();
         binding.loading.setVisibility(View.VISIBLE);
 
-
-//        binding.nestedScrollView.setOnScrollChangeListener(
-//                (NestedScrollView.OnScrollChangeListener)
-//                        (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-//                            if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
-//                                page++;
-//                                binding.progressBar2.setVisibility(View.VISIBLE);
-//                                CatalogRecipeRequest();
-//                            }
-//        });
     }
 
     public void setAdapter(){

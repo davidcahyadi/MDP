@@ -1,11 +1,14 @@
 package com.codeculator.foodlook.services;
 
-import com.codeculator.foodlook.services.admin.AdminService;
+import com.codeculator.foodlook.services.service.AdminService;
 import com.codeculator.foodlook.services.service.CatalogService;
 import com.codeculator.foodlook.services.service.RecipeService;
 import com.codeculator.foodlook.services.service.ReviewService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -43,6 +46,8 @@ public class RetrofitApi {
     private void buildRetrofit() {
         Gson gson = new GsonBuilder().serializeNulls().create();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(120, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
