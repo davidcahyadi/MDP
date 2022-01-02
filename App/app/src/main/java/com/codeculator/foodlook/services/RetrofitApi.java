@@ -2,8 +2,10 @@ package com.codeculator.foodlook.services;
 
 import com.codeculator.foodlook.services.service.AdminService;
 import com.codeculator.foodlook.services.service.CatalogService;
+import com.codeculator.foodlook.services.service.CommentService;
 import com.codeculator.foodlook.services.service.RecipeService;
 import com.codeculator.foodlook.services.service.ReviewService;
+import com.codeculator.foodlook.services.service.StepService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,6 +26,8 @@ public class RetrofitApi {
     private AdminService adminService;
     private CatalogService catalogService;
     private ReviewService reviewService;
+    private CommentService commentService;
+    private StepService stepService;
 
     public static RetrofitApi getInstance() {
         if (instance == null) {
@@ -61,6 +65,7 @@ public class RetrofitApi {
         this.adminService = retrofit.create(AdminService.class);
         this.catalogService = retrofit.create(CatalogService.class);
         this.reviewService = retrofit.create(ReviewService.class);
+        this.commentService = retrofit.create(CommentService.class);
     }
 
     public RecipeService getRecipeService() {
@@ -77,5 +82,9 @@ public class RetrofitApi {
 
     public ReviewService getReviewInterface(){
         return reviewService;
+    }
+
+    public CommentService getCommentService(){
+        return commentService;
     }
 }

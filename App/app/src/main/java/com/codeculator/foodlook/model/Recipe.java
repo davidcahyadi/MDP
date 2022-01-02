@@ -43,8 +43,7 @@ public class Recipe implements Parcelable {
     @ColumnInfo(name = "photo")
     public String photo;
 
-    public Recipe(int id, String title, int user_id, float rate, int view, int like, int cook_duration, int prep_duration, int serve_portion, String description, String created_at, String updated_at, String photo,String crawling_from) {
-        this.id = id;
+    public Recipe(String title, int user_id, float rate, int view, int like, int cook_duration, int prep_duration, int serve_portion, String description, String created_at, String updated_at, String photo,String crawling_from) {
         this.title = title;
         this.user_id = user_id;
         this.rate = rate;
