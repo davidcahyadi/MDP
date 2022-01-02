@@ -27,15 +27,23 @@ public interface AdminService {
     @GET("admin/reviews")
     Call<ArrayList<Review>> getReviews(@Query("page")int page);
 
+    @GET("admin/users/{id}")
+    Call<User> getUserByID(@Path("id") int id);
+
+    @GET("admin/recipes/{id}")
+    Call<Recipe> getRecipeByID(@Path("id") int id);
+
+    @GET("admin/reviews/{id}")
+    Call<Review> getReviewByID(@Path("id") int id);
+
     @POST("admin/delete/user/{id}")
     Call<AdminDeleteResponse> deleteUserById(@Path("id") int id);
 
     @POST("admin/delete/recipe/{id}")
     Call<AdminDeleteResponse> deleteRecipeById(@Path("id") int id);
 
-    @FormUrlEncoded
     @POST("admin/delete/review/{id}")
-    Call<AdminDeleteResponse> deleteReviewById(@Body int id);
+    Call<AdminDeleteResponse> deleteReviewById(@Path("id") int id);
 
     @POST("admin/crawl/{id}")
     Call<CrawlResponse> crawl(@Path("id") int id);
