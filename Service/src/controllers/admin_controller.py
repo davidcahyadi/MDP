@@ -52,17 +52,22 @@ def get_recipes():
             .paginate(page=page,max_per_page=10).items
     return jsonify(iterateModel(recipes))
 
+@admin.get("recipes/<id>")
+def get_recipe_by_id(id):
+    r = Recipe.query.filter(Recipe.id == id).first()
+    db.session.commit()
+    return jsonify(r.raw())
 
 @admin.get("users/<id>")
 def get_user_by_id(id):
-    u = User.query.filter_by(id=id).first()
+    u = User.query.filter_by(User.id=id).first()
     db.session.commit()
     return jsonify(u.raw())
 
 
 @admin.get("reviews/<id>")
 def get_review_by_id(id):
-    r = Review.query.filter_by(id=id).first()
+    r = Review.query.filter_by(Review.id=id).first()
     db.session.commit()
     return jsonify(r.raw())
 

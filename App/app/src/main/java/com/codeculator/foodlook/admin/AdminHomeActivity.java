@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import com.codeculator.foodlook.AdminUserDetailFragment;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityAdminHomeBinding;
 import com.codeculator.foodlook.databinding.FragmentAdminCrawlerBinding;
@@ -82,5 +83,17 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
                 return true;
         }
         return false;
+    }
+
+    public void goToDetail(String type, int itemID){
+        Fragment f = null;
+        if(type.equalsIgnoreCase("users")){
+            f = new AdminUserDetailFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
+        }else if(type.equalsIgnoreCase("recipes")){
+
+        }else if(type.equalsIgnoreCase("reviews")){
+
+        }
     }
 }

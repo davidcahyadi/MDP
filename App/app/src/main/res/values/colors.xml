@@ -5,6 +5,11 @@
     <color name="blue_500">#3A82F5</color>
     <color name="blue_600">#2563EA</color>
     <color name="blue_700">#1D4ED7</color>
+    <color name="green_300">#84ECAD</color>
+    <color name="green_400">#4ADD81</color>
+    <color name="green_500">#22C45E</color>
+    <color name="green_600">#16A34A</color>
+    <color name="green_700">#15803D</color>
     <color name="red_300">#F8A4A7</color>
     <color name="red_400">#F67072</color>
     <color name="red_500">#EE4444</color>
