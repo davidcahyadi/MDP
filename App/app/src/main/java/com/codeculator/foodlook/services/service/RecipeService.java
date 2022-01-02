@@ -3,6 +3,7 @@ package com.codeculator.foodlook.services.service;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.RecipeIngredient;
+import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.Step;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public interface RecipeService {
 
     @GET("recipe/{id}/ingredients")
     Call<ArrayList<RecipeIngredient>> getRecipeIngredients(@Path("id") int id);
+
+    @GET("recipe/{id}/reviews")
+    Call<ArrayList<Review>> getRecipeReviews(@Path("id") int id);
 
     @POST("recipe/add")
     Call<Recipe> addRecipe(Recipe recipe);

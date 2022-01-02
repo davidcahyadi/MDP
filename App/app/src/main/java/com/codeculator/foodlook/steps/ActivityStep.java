@@ -87,9 +87,7 @@ public class ActivityStep extends AppCompatActivity{
         new DeleteAllStep(ActivityStep.this, new StoreCallback() {
             @Override
             public void preProcess() {
-
             }
-
             @Override
             public void postProcess() {
                 response.onError(e->{

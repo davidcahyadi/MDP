@@ -1,6 +1,7 @@
 package com.codeculator.foodlook.services.service;
 
 import com.codeculator.foodlook.model.Review;
+import com.codeculator.foodlook.services.response.BasicResponse;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,10 @@ public interface ReviewService {
 
     @FormUrlEncoded
     @POST("review/add")
-    Call<String> addReviews(@Field("rate") int rate,
-                            @Field("description") String description,
-                            @Query("recipe") int recipe_id,
-                            @Header("x-api-key") String key);
+    Call<BasicResponse> addReviews(@Field("rate") int rate,
+                                   @Field("description") String description,
+                                   @Query("recipe") int recipe_id,
+                                   @Header("x-api-key") String key);
     @GET("review/my")
     Call <ArrayList<Review>> getMyReviews();
 }

@@ -16,7 +16,7 @@ public interface CommentService {
 
     @FormUrlEncoded
     @POST("recipe/{id_recipe}/replies/add")
-    Call<String> addComment(int id_recipe, Comment c);
+    Call<String> addComment(int id_recipe, Comment c,@Header("x-api-key") String key);
 
     @GET("recipe/{id_recipe}/replies")
     Call<ArrayList<Comment>> getAllComment(int id_recipe);

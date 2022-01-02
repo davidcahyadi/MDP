@@ -18,11 +18,13 @@ import android.view.ViewGroup;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.IngredientBarAdapter;
+import com.codeculator.foodlook.adapter.ReviewAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
 import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
 import com.codeculator.foodlook.services.RetrofitApi;
@@ -180,6 +182,30 @@ public class FragmentRecipeDetail extends Fragment {
     private void changeToReview(){
         binding.detailLayout.setVisibility(View.GONE);
         binding.detailTitleTv.setText("Reviews");
+
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getRecipeService().getRecipeReviews(recipeID);
+        call.enqueue(new Callback<ArrayList<Review>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
+                if(response.isSuccessful()){
+                    ReviewAdapter adapter = new ReviewAdapter(response.body());
+                    adapter.setReviewListener(new ReviewAdapter.ReviewListener() {
+                        @Override
+                        public void onCommentClick(Review v) {
+                            Intent i = new Intent(getActivity(),ActivityReview.class);
+                            i.putExtra("review",v);
+                            startActivity(i);
+                        }
+                    });
+                    binding.recipeDetailRecycler.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void changeToLetsCook(){

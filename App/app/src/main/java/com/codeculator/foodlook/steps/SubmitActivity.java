@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.services.RetrofitApi;
+import com.codeculator.foodlook.services.response.BasicResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,17 +67,17 @@ public class SubmitActivity extends AppCompatActivity {
     }
 
     public void doSubmit(){
-        Call<String> call = RetrofitApi.getInstance().getReviewInterface().addReviews(rateScore,
+        Call<BasicResponse> call = RetrofitApi.getInstance().getReviewInterface().addReviews(rateScore,
                 reviewDescription.getText().toString(), recipeID, prefHelper.getAccess());
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<BasicResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Toast.makeText(getBaseContext(), "Your review has been successfully submitted!", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Toast.makeText(SubmitActivity.this, "Your review has been successfully submitted!", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
                 System.out.println("Error submitting: " + t.getMessage());
             }
         });

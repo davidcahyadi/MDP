@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.CommentAdapter;
 import com.codeculator.foodlook.adapter.ReviewAdapter;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.Comment;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.services.RetrofitApi;
@@ -66,7 +67,8 @@ public class ActivityReview extends AppCompatActivity {
                 int user_id = 1;
                 int id = ((Review) getIntent().getParcelableExtra("review")).id;
                 Comment c = new Comment(et_comments.getText().toString(), user_id);
-                Call<String> call = RetrofitApi.getInstance().getCommentService().addComment(id, c);
+                PrefHelper helper = new PrefHelper(this);
+                Call<String> call = RetrofitApi.getInstance().getCommentService().addComment(id, c,helper.getAccess());
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
