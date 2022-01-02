@@ -23,7 +23,7 @@ def crawl_web(crawl_id):
 
 @admin.get("users")
 def get_users():
-    page = request.args.get("page")
+    page = int(request.args.get("page"))
     if page == -1:
         users = db.session.query(User).all()
     else:
@@ -33,7 +33,7 @@ def get_users():
 
 @admin.get("reviews")
 def get_reviews():
-    page = request.args.get("page")
+    page = int(request.args.get("page"))
     if page == -1:
         reviews = db.session.query(Review).order_by(Review.created_at).all()
     else:
@@ -43,11 +43,13 @@ def get_reviews():
 
 @admin.get("recipes")
 def get_recipes():
-    page = request.args.get("page")
+    page = int(request.args.get("page"))
+
     if page == -1:
         recipes = db.session.query(Recipe).order_by(Recipe.created_at).all()
     else:
-        recipes = db.session.query(Recipe).order_by(Recipe.created_at).paginate(page=int(page),max_per_page=10).items
+        recipes = db.session.query(Recipe).order_by(Recipe.created_at)\
+            .paginate(page=page,max_per_page=10).items
     return jsonify(iterateModel(recipes))
 
 

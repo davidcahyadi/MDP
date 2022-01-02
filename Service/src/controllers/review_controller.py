@@ -18,7 +18,6 @@ def add_review(user_id):
     recipe_id = request.args.get("recipe")
     rate = int(request.form.get("rate"))
     description = request.form.get("description")
-    print(recipe_id,rate,description)
     r = Review().make(user_id=user_id, recipe_id=recipe_id, rate=rate, description=description)
     db.session.add(r)
     db.session.commit()
