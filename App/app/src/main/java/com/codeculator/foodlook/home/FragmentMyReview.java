@@ -22,12 +22,17 @@ import com.codeculator.foodlook.adapter.ReviewAdapter;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentMyReview extends Fragment {
 
@@ -70,7 +75,7 @@ public class FragmentMyReview extends Fragment {
         review_recylerview = view.findViewById(R.id.review_recylerview);
         review_recylerview.setLayoutManager(new LinearLayoutManager(getContext()));
         reviews = new ArrayList<>();
-
+        getReviews();
         reviewAdapter = new ReviewAdapter(reviews);
         reviewAdapter.setReviewListener(v -> {
             Intent i = new Intent(getContext(), ActivityReview.class);
@@ -78,5 +83,23 @@ public class FragmentMyReview extends Fragment {
             startActivity(i);
         });
         review_recylerview.setAdapter(reviewAdapter);
+    }
+
+    public void getReviews(){
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getReviewInterface().getMyReviews();
+        call.enqueue(new Callback<ArrayList<Review>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
+                if(response.isSuccessful()){
+                    reviews = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+
+            }
+        });
+
     }
 }
