@@ -21,6 +21,11 @@ def my_recipes(user_id):
     recipes = Recipe.query.filter(Recipe.user_id == user_id).all()
     return jsonify(iterateModel(recipes))
 
+@my.get("/biodata")
+@token_required
+def my_biodata(user_id):
+    u = User.query.filter(User.id == user_id).first()
+    return jsonify(u.raw())
 
 @my.post("/recipe/save")
 @token_required
