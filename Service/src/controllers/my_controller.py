@@ -82,7 +82,8 @@ def rm_bookmark(user_id):
 @my.post("/bookmark/all")
 @token_required
 def get_bookmark(user_id):
-    return jsonify(iterateModel(Bookmark.query.filter_by(user_id=user_id).all()))
+    return jsonify(iterateModel(db.session.query(Recipe)
+                                .filter_by(Recipe.id == Bookmark.recipe_id, Bookmark.user_id == user_id).all()))
 
 
 @my.get("/bookmark/check")
