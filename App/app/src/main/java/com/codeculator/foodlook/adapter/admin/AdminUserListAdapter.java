@@ -33,6 +33,11 @@ public class AdminUserListAdapter extends RecyclerView.Adapter<AdminUserListAdap
         this.listClickListener = listClickListener;
     }
 
+    public void replaceDataset(ArrayList<User> users){
+        this.users.clear();
+        this.users.addAll(users);
+    }
+
     @NonNull
     @Override
     public AdminListUserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -319,7 +319,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
             @Override
             public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
                 if(response.isSuccessful() && response.body().size() > 0){
-                    int newIndex = users.size();
+                    int newIndex = reviews.size();
                     reviews.addAll(response.body());
                     if(reviewsAdapter == null || reviewsAdapter.getItemCount() == 0) {
                         reviewsAdapter = new AdminReviewListAdapter(reviews, getContext());

@@ -37,6 +37,11 @@ public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeList
         this.listClickListener = listClickListener;
     }
 
+    public void replaceDataset(ArrayList<Recipe> recipes){
+        this.recipes.clear();
+        this.recipes.addAll(recipes);
+    }
+
     @NonNull
     @Override
     public AdminListRecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
