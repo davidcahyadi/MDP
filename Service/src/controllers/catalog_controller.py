@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func, or_, and_
+
+from src.helper.dictHelper import iterateModel
 from src.models.models import User, Recipe, RecipeIngredient
 from src.models.database import db
 
@@ -51,15 +53,15 @@ def catalog_search():
 def catalog_recommendation():
     ingredients = request.form.getlist("id[]")
     recipes = Recipe.query.all()
-    print(recipes)
+    filtered_recipes = []
     filter_or = []
     for ingredient_id in ingredients:
         filter_or.append(RecipeIngredient.ingredient_id == ingredient_id)
 
     for recipe in recipes:
-        print(recipe.title)
         total_ingredient = db.session.query(func.count(RecipeIngredient.id))\
-            .filter_by(RecipeIngredient.recipe_id == recipe.id,or_(*filter_or))\
+            .filter(and_(RecipeIngredient.recipe_id == recipe.id,or_(*filter_or)))\
             .group_by(RecipeIngredient.recipe_id).scalar()
-        print(total_ingredient)
-    return jsonify({"message": "OK"})
+        if total_ingredient == len(ingredients):
+            filtered_recipes.append(recipe)
+    return jsonify(iterateModel(filtered_recipes))

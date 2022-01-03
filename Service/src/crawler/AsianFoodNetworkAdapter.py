@@ -125,8 +125,6 @@ class AsianFoodNetworkAdapter(Adapter):
                     "updated_at": datetime.now(),
                     "deleted_at": None
                 })
-
-
         return ingredients
 
     def extractStep(self):
