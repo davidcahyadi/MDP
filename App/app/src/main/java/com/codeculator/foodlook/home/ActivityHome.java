@@ -29,6 +29,7 @@ import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.model.LoggedIn;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.recipes.ActivityAddIngredient;
+import com.codeculator.foodlook.recipes.ActivityAddRecipe;
 import com.codeculator.foodlook.services.FirebaseUpload;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -122,6 +123,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         String[] created = LoggedIn.user.getCreated_at().split(" ");
         tvJoinFrom.setText("Join From : " + created[1] + " " + created[2] + " " + created[3]);
 
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ActivityHome.this, ActivityAddRecipe.class);
+                startActivity(i);
+            }
+        });
+
         // change imageview profile pic
         firebaseUpload = new FirebaseUpload<UploadUserImage>(this, this, "uploads/users") {
             @Override
@@ -173,6 +182,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 f = new FragmentMyRecipe();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
                 return true;
+
         }
         return false;
     }

@@ -22,6 +22,7 @@ import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.firebase.Upload;
 import com.codeculator.foodlook.helper.PrefHelper;
+import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.home.ActivityTemp;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Recipe;
@@ -30,10 +31,12 @@ import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.FirebaseUpload;
 import com.codeculator.foodlook.services.RetrofitApi;
+import com.codeculator.foodlook.services.response.BasicResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,15 +48,19 @@ public class ActivityAddRecipe extends AppCompatActivity {
     EditText add_recipe_title, cook_duration, prep_duration, serve_portion, recipe_description;
     RecyclerView rc_ingredients, rc_steps;
     Button b_add_ingredients, b_add_steps, btn_upload_image;
-
-    ArrayList<RecipeIngredient> recipeIngredients;
-    ArrayList<Step> steps;
+    Button btnSave;
+    IngredientBarAdapter ia;
+    SummaryStepAdapter ssa;
 
     final int RECIPE_ID = 1;
 
     FirebaseUpload<Upload> firebaseUpload;
 
     String photos = "";
+
+    ResultLauncherHelper launcher;
+
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +78,28 @@ public class ActivityAddRecipe extends AppCompatActivity {
         prep_duration = findViewById(R.id.prep_duration);
         serve_portion = findViewById(R.id.serve_portion);
         recipe_description = findViewById(R.id.recipe_description);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
+        launcher = new ResultLauncherHelper(this);
+        launcher.addListener(ActivityAddStep.CODE,l ->{
+            Step step =  l.getParcelableExtra("STEP");
+            recipe.steps.add(step);
+            Toast.makeText(ActivityAddRecipe.this, "Success add step !", Toast.LENGTH_SHORT).show();
+            ssa.notifyDataSetChanged();
+        });
+        launcher.addListener(ActivityAddIngredient.CODE,l ->{
+            RecipeIngredient ing =  l.getParcelableExtra("INGREDIENT");
+            recipe.ingredients.add(ing);
+            Toast.makeText(ActivityAddRecipe.this, "Success add ingredient !", Toast.LENGTH_SHORT).show();
+            ia.notifyDataSetChanged();
+        });
 
         //onclick ingredients
         b_add_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ActivityAddRecipe.this, ActivityAddIngredient.class);
-                startActivity(i);
+                launcher.launch(i);
             }
         });
 
@@ -87,23 +108,22 @@ public class ActivityAddRecipe extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ActivityAddRecipe.this, ActivityAddStep.class);
-                startActivity(i);
+                launcher.launch(i);
             }
         });
 
+        // create new recipe
+        recipe = new Recipe();
+
         //setup recycler view ingredients
         rc_ingredients.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recipeIngredients = new ArrayList<>();
-        getIngredients();
-        IngredientBarAdapter ia = new IngredientBarAdapter(getApplicationContext(), recipeIngredients);
+        ia = new IngredientBarAdapter(getApplicationContext(), recipe.ingredients);
         rc_ingredients.setAdapter(ia);
 
         //setup recycler view steps
         rc_steps.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        steps = new ArrayList<>();
-        getSteps();
 
-        SummaryStepAdapter ssa = new SummaryStepAdapter(getApplicationContext(), steps);
+        ssa = new SummaryStepAdapter(getApplicationContext(), recipe.steps);
         rc_steps.setAdapter(ssa);
 
         firebaseUpload = new FirebaseUpload<Upload>(this, this,"uploads/recipes") {
@@ -114,6 +134,7 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 // class untuk firebase database
                 Upload upload = new Upload("photo", uri.toString());
                 photos = uri.toString();
+                recipe.photo = photos;
                 firebaseUpload.setObj(upload);
             }
 
@@ -135,42 +156,31 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 firebaseUpload.openFileChooserDialog(view);
             }
         });
-    }
 
-    public void getIngredients(){
-        Call<ArrayList<RecipeIngredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(RECIPE_ID);
-        call.enqueue(new Callback<ArrayList<RecipeIngredient>>() {
+        btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<ArrayList<RecipeIngredient>> call, Response<ArrayList<RecipeIngredient>> response) {
-                if(response.isSuccessful()){
-                    recipeIngredients = response.body();
-                }
-            }
+            public void onClick(View view) {
 
-            @Override
-            public void onFailure(Call<ArrayList<RecipeIngredient>> call, Throwable t) {
+                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
+                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
+                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
+                recipe.steps.add(new Step(0,0,"Step 1","","Test 1",20));
+                recipe.steps.add(new Step(0,0,"Step 2","","Test 2",20));
+                recipe.steps.add(new Step(0,0,"Step 3","","Test 3",20));
+                recipe.title = "Testing add recipe";
+                recipe.cook_duration= 120;
+                recipe.prep_duration = 30;
+                recipe.serve_portion = 4;
+                recipe.description = "Lorem ipsum dolar set amet";
 
-            }
-        });
-
-    }
-
-    public void getSteps(){
-        Call<ArrayList<Step>> call = RetrofitApi.getInstance().getRecipeService().getRecipeStep(RECIPE_ID);
-        call.enqueue(new Callback<ArrayList<Step>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Step>> call, Response<ArrayList<Step>> response) {
-                if(response.isSuccessful()){
-                    steps = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Step>> call, Throwable t) {
-
+                System.out.println("CLICKED");
+                addRecipe(recipe);
             }
         });
     }
+
+
 
     //setup button save ontop
     @Override
@@ -182,13 +192,13 @@ public class ActivityAddRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item_save){
-            String title = add_recipe_title.getText().toString();
-            int cook_dur = Integer.parseInt(cook_duration.getText().toString());
-            int prep_dur = Integer.parseInt(prep_duration.getText().toString());
-            int serve_port = Integer.parseInt(serve_portion.getText().toString());
-            String descr = recipe_description.getText().toString();
-            Recipe r = new Recipe(title,-1,0,0,0,cook_dur,prep_dur,serve_port,descr, new Date().toString(),new Date().toString(),photos,"-");
-            addRecipe(r);
+            recipe.title = add_recipe_title.getText().toString();
+            recipe.cook_duration= Integer.parseInt(cook_duration.getText().toString());
+            recipe.prep_duration = Integer.parseInt(prep_duration.getText().toString());
+            recipe.serve_portion = Integer.parseInt(serve_portion.getText().toString());
+            recipe.description = recipe_description.getText().toString();
+
+            addRecipe(recipe);
 
         }
         return super.onOptionsItemSelected(item);
@@ -196,17 +206,20 @@ public class ActivityAddRecipe extends AppCompatActivity {
 
     public void addRecipe(Recipe recipe){
         PrefHelper prefHelper = new PrefHelper(this);
-        Call<Recipe> call = RetrofitApi.getInstance().getRecipeService().addRecipe(recipe, prefHelper.getAccess());
-        call.enqueue(new Callback<Recipe>() {
+        Call<BasicResponse> call = RetrofitApi.getInstance().getRecipeService().saveRecipe(recipe, prefHelper.getAccess());
+        System.out.println("CALL API");
+        call.enqueue(new Callback<BasicResponse>() {
             @Override
-            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "Recipe Added Successfully", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
+                System.out.println(response.raw());;
             }
 
             @Override
-            public void onFailure(Call<Recipe> call, Throwable t) {
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Recipe Addition Failed", Toast.LENGTH_SHORT).show();
             }
         });

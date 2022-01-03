@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -48,6 +49,9 @@ public interface RecipeService {
 
     @GET("recipe/{id}/view")
     Call<BasicResponse> addRecipeView(@Path("id") int id);
+
+    @POST("my/recipe/save")
+    Call<BasicResponse> saveRecipe(@Body Recipe recipe,@Header("x-api-key") String token);
 
     @GET("my/bookmark/check")
     Call<BookmarkCheckResponse> checkBookmark(@Query("recipe_id") int recipe_id, @Header("x-api-key") String token);

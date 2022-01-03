@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(tableName = "recipe")
@@ -43,6 +45,32 @@ public class Recipe implements Parcelable {
     @ColumnInfo(name = "photo")
     public String photo;
 
+    @Ignore
+    public ArrayList<Step> steps;
+    @Ignore
+    public ArrayList<String> photos;
+    @Ignore
+    public ArrayList<RecipeIngredient> ingredients;
+
+    public Recipe() {
+        this.title = "";
+        this.user_id = 0;
+        this.rate = 0;
+        this.view = 0;
+        this.like = 0;
+        this.cook_duration = 0;
+        this.prep_duration = 0;
+        this.serve_portion = 0;
+        this.description = "";
+        this.created_at = "";
+        this.updated_at = "";
+        this.photo = "";
+        this.crawling_from = "";
+        this.steps = new ArrayList<>();
+        this.photos = new ArrayList<>();
+        this.ingredients = new ArrayList<>();
+    }
+
     public Recipe(String title, int user_id, float rate, int view, int like, int cook_duration, int prep_duration, int serve_portion, String description, String created_at, String updated_at, String photo,String crawling_from) {
         this.title = title;
         this.user_id = user_id;
@@ -57,6 +85,9 @@ public class Recipe implements Parcelable {
         this.updated_at = updated_at;
         this.photo = photo;
         this.crawling_from = crawling_from;
+        this.steps = new ArrayList<>();
+        this.photos = new ArrayList<>();
+        this.ingredients = new ArrayList<>();
     }
 
     public Recipe(JSONObject obj){

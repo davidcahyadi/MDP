@@ -40,22 +40,20 @@ def save_recipe(user_id):
     order = 0
     for step_json in req["steps"]:
         order += 1
-        if step_json["type_id"] == 0:
-            recipe.steps.append(Step().makeText(order, step_json["title"], step_json["description"]))
-        elif step_json["type_id"] == 1:
+        if step_json["duration"] == 0:
             recipe.steps.append(Step().makePhoto(order, step_json["title"], step_json["description"],
                                                  step_json["url"]))
-        elif step_json["type_id"] == 2:
+        else:
             recipe.steps.append(Step().makeTimer(order, step_json["title"], step_json["description"],
                                                  step_json["duration"]))
 
     for ingredient_json in req["ingredients"]:
-        recipe.ingredients.append(RecipeIngredient().make(ingredient_json["name"], ingredient_json["ingredient_id"],
-                                                          ingredient_json["measurement_id"], ingredient_json["amount"]))
+        recipe.ingredients.append(RecipeIngredient().make(ingredient_json["name"], ingredient_json["ingredientId"],
+                                                          ingredient_json["measurementId"], ingredient_json["amount"]))
 
     db.session.add(recipe)
     db.session.commit()
-    return jsonify("OK"), HTTP_200_OK
+    return jsonify({"message": "OK"}), HTTP_200_OK
 
 
 @my.post("/bookmark/add")

@@ -15,13 +15,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/titlelayout"
                 style="@style/TextInputLayoutStyle"
-                android:layout_margin="10dp"
-                android:layout_marginVertical="10dp"
                 android:hint="Recipe Title Here">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -30,18 +33,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/cardview_dark_background"
-                    android:hint="Add Recipe Title Here"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cook_duration_layout"
                 style="@style/TextInputLayoutStyle"
-                android:layout_margin="10dp"
-                android:layout_marginVertical="10dp"
-                android:hint="cook duration layout">
+                android:hint="Cook Duration">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cook_duration"
@@ -49,19 +47,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/cardview_dark_background"
-                    android:hint="Cooking Duration"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/prep_duration_layout"
                 style="@style/TextInputLayoutStyle"
-                android:layout_margin="10dp"
-                android:layout_marginVertical="10dp"
-                android:hint="cook duration layout">
+                android:hint="Preparation Duration">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/prep_duration"
@@ -69,18 +62,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/cardview_dark_background"
-                    android:hint="Cooking Prep Duration"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/servePortion_layout"
                 style="@style/TextInputLayoutStyle"
-                android:layout_margin="10dp"
-                android:layout_marginVertical="10dp"
-                android:hint="cook duration layout">
+                android:hint="Serve Portion">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/serve_portion"
@@ -88,18 +76,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/cardview_dark_background"
-                    android:hint="Serve Portion"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/recipe_description_layout"
                 style="@style/TextInputLayoutStyle"
-                android:layout_margin="10dp"
-                android:layout_marginVertical="10dp"
-                android:hint="cook duration layout">
+                android:hint="Description">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/recipe_description"
@@ -107,10 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/cardview_dark_background"
-                    android:hint="Recipe Description"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -118,40 +98,37 @@
                 android:id="@+id/btn_upload_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:text="Upload Image" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Ingredients : " />
+                android:text="Ingredients : "
+                android:layout_marginVertical="10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" />
+                android:layout_marginVertical="10dp"/>
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:text="Step by step : " />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginVertical="10dp"
                 android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <Button

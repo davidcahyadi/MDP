@@ -2,6 +2,7 @@ package com.codeculator.foodlook.recipes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,6 +30,8 @@ public class ActivityAddIngredient extends AppCompatActivity {
     Spinner ingredient_spinner, measurement_spinner;
     ArrayList<String> types;
     ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+
+    public static final int CODE = 112;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
                         int measurement_id = measurement_spinner.getSelectedItemPosition();
                         RecipeIngredient ri = new RecipeIngredient(id, amount, title, recipe_id, ingredient_id, measurement_id);
                         insertIngredient(ri);
-                        finish();
+
                     }
                 }
             }
@@ -119,21 +122,9 @@ public class ActivityAddIngredient extends AppCompatActivity {
     }
 
     private void insertIngredient(RecipeIngredient recipeIngredient){
-        PrefHelper ph = new PrefHelper(this);
-
-        Call<RecipeIngredient> call = RetrofitApi.getInstance().getRecipeService().addIngredient(recipeIngredient, ph.getAccess());
-        call.enqueue(new Callback<RecipeIngredient>() {
-            @Override
-            public void onResponse(Call<RecipeIngredient> call, Response<RecipeIngredient> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Ingredients Successfully Inserted", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RecipeIngredient> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Inserting Ingredients Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent i = new Intent();
+        i.putExtra("INGREDIENT",recipeIngredient);
+        setResult(CODE,i);
+        finish();
     }
 }

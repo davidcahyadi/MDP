@@ -2,6 +2,7 @@ package com.codeculator.foodlook.recipes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,8 @@ public class ActivityAddStep extends AppCompatActivity {
     EditText step_title,step_description,step_countdown;
     Spinner spinner_step;
     Button btn_add_step;
+
+    public static final int CODE = 111;
 
     final int RECIPE_ID = 0;
 
@@ -93,20 +96,9 @@ public class ActivityAddStep extends AppCompatActivity {
     }
 
     public void insertStep(Step step){
-        PrefHelper prefHelper = new PrefHelper(this);
-        Call<Step> call = RetrofitApi.getInstance().getRecipeService().addStep(step, prefHelper.getAccess());
-        call.enqueue(new Callback<Step>() {
-            @Override
-            public void onResponse(Call<Step> call, Response<Step> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Insert Step Successful", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Step> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Insert Step Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent i = new Intent();
+        i.putExtra("STEP",step);
+        setResult(CODE,i);
+        finish();
     }
 }
