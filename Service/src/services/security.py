@@ -45,6 +45,7 @@ def token_required(f):
             return jsonify({"error": {"token": "token is missing"}}), HTTP_403_FORBIDDEN
 
         result = validate_token(token)
+        print(result["code"])
         if result["code"] != SUCCESS or result["mode"] != ACCESS:
             return jsonify({"error": {"token": "invalid" if result["code"] == INVALID else "expired"}}), HTTP_403_FORBIDDEN
 

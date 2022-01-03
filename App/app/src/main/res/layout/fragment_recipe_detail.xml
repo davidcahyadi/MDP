@@ -55,7 +55,22 @@
                 android:text="@string/long_desc"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/btnBookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bookmark"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
     </RelativeLayout>
 
 

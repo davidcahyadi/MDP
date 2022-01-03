@@ -22,6 +22,6 @@ public interface ReviewService {
                                    @Field("description") String description,
                                    @Query("recipe") int recipe_id,
                                    @Header("x-api-key") String key);
-    @GET("review/my")
-    Call <ArrayList<Review>> getMyReviews();
+    @GET("my/reviews")
+    Call <ArrayList<Review>> getMyReviews(@Header("x-api-key") String key);
 }

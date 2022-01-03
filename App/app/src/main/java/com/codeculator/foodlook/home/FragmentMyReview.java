@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.MyRecipeAdapter;
 import com.codeculator.foodlook.adapter.ReviewAdapter;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.services.HTTPRequest;
@@ -86,7 +87,8 @@ public class FragmentMyReview extends Fragment {
     }
 
     public void getReviews(){
-        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getReviewInterface().getMyReviews();
+        PrefHelper prefHelper = new PrefHelper((AppCompatActivity) getActivity());
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getReviewInterface().getMyReviews(prefHelper.getAccess());
         call.enqueue(new Callback<ArrayList<Review>>() {
             @Override
             public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {

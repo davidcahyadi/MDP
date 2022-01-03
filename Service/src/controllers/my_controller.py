@@ -22,13 +22,6 @@ def my_recipes(user_id):
     return jsonify(iterateModel(recipes))
 
 
-@my.get("/biodata")
-@token_required
-def my_biodata(user_id):
-    u = User.query.filter(User.id == user_id).first()
-    return jsonify(u.raw())
-
-
 @my.post("/recipe/save")
 @token_required
 def save_recipe(user_id):
@@ -64,10 +57,12 @@ def save_recipe(user_id):
 @my.post("/bookmark/add")
 @token_required
 def add_bookmark(user_id):
-    bookmark = Bookmark()
-    recipe_id = request.form.get("recipe_id")
-    bookmark.make(user_id, recipe_id)
+
+    recipe_id = request.args.get("recipe_id")
+    print(recipe_id)
     if db.session.query(Bookmark).filter_by(recipe_id=recipe_id, user_id=user_id).count() == 0:
+        bookmark = Bookmark()
+        bookmark.make(user_id, recipe_id)
         db.session.add(bookmark)
         db.session.commit()
         return jsonify({"message": "OK"}), HTTP_200_OK
@@ -78,7 +73,7 @@ def add_bookmark(user_id):
 @my.post("/bookmark/remove")
 @token_required
 def rm_bookmark(user_id):
-    recipe_id = request.form.get("recipe_id")
+    recipe_id = request.args.get("recipe_id")
     Bookmark.query.filter_by(user_id=user_id, recipe_id=recipe_id).delete()
     db.session.commit()
     return jsonify({"message": "OK"}), HTTP_200_OK
@@ -90,8 +85,20 @@ def get_bookmark(user_id):
     return jsonify(iterateModel(Bookmark.query.filter_by(user_id=user_id).all()))
 
 
+@my.get("/bookmark/check")
+@token_required
+def check_bookmark(user_id):
+    recipe_id = request.args.get("recipe_id")
+    bookmark = Bookmark.query.filter(Bookmark.user_id == user_id, Bookmark.recipe_id == recipe_id).first()
+    if bookmark is None:
+        # False artinya tidak ada bookmark
+        return {"status": False}, HTTP_200_OK
+    else:
+        return {"status": True}, HTTP_200_OK
+
+
 @my.get("/profile")
 @token_required
 def profile(user_id):
     user = db.session.query(User).filter_by(id=user_id).first()
-    return jsonify(user), HTTP_200_OK
+    return jsonify(user.raw()), HTTP_200_OK

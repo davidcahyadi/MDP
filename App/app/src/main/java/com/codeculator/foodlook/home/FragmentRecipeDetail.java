@@ -22,6 +22,7 @@ import com.codeculator.foodlook.adapter.ReviewAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.databinding.FragmentRecipeDetailBinding;
 import com.codeculator.foodlook.helper.FetchImage;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
@@ -29,6 +30,7 @@ import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
 import com.codeculator.foodlook.services.RetrofitApi;
 import com.codeculator.foodlook.services.response.BasicResponse;
+import com.codeculator.foodlook.services.response.BookmarkCheckResponse;
 import com.codeculator.foodlook.steps.ActivityStep;
 import com.squareup.picasso.Picasso;
 
@@ -45,9 +47,8 @@ import retrofit2.Response;
  */
 public class FragmentRecipeDetail extends Fragment {
     FragmentRecipeDetailBinding binding;
-    HTTPRequest httpRequest;
-    FetchImage fetchImage;
     int recipeID;
+    PrefHelper prefHelper;
 
     public FragmentRecipeDetail() {
         // Required empty public constructor
@@ -88,6 +89,7 @@ public class FragmentRecipeDetail extends Fragment {
         changeToSummary();
         Log.i("CREATED","VIEW");
 
+        prefHelper = new PrefHelper((AppCompatActivity) getActivity());
 
         Call<BasicResponse> call = RetrofitApi.getInstance().getRecipeService().addRecipeView(recipeID);
         call.enqueue(new Callback<BasicResponse>() {
@@ -101,8 +103,71 @@ public class FragmentRecipeDetail extends Fragment {
 
             }
         });
+
+        Call<BookmarkCheckResponse> bookmark = RetrofitApi.getInstance()
+                .getRecipeService().checkBookmark(recipeID,prefHelper.getAccess());
+
+        bookmark.enqueue(new Callback<BookmarkCheckResponse>() {
+            @Override
+            public void onResponse(Call<BookmarkCheckResponse> call, Response<BookmarkCheckResponse> response) {
+                System.out.println(response.raw());
+                if(response.isSuccessful()){
+                    assert response.body() != null;
+                    System.out.println(response.body().getStatus());
+                    if(response.body().getStatus()){
+                        binding.btnBookmark.setText("Bookmarked");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookmarkCheckResponse> call, Throwable t) {
+
+            }
+        });
+
+        binding.btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmark();
+            }
+        });
     }
 
+    private void bookmark(){
+        if(binding.btnBookmark.getText().toString().toLowerCase().equals("bookmark")){
+            Call<BasicResponse> call = RetrofitApi.getInstance().getRecipeService().addBookmark(recipeID,prefHelper.getAccess());
+            call.enqueue(new Callback<BasicResponse>() {
+                @Override
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                    if(response.isSuccessful()){
+                        binding.btnBookmark.setText("Bookmarked");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                }
+            });
+        }
+        else{
+            Call<BasicResponse> call = RetrofitApi.getInstance().getRecipeService().removeBookmark(recipeID,prefHelper.getAccess());
+            call.enqueue(new Callback<BasicResponse>() {
+                @Override
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                    if(response.isSuccessful()){
+                        binding.btnBookmark.setText("Bookmark");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                }
+            });
+        }
+    }
 
     private void loadRecipe(){
         Call<Recipe> call = RetrofitApi.getInstance().getRecipeService().getRecipeDetail(recipeID);

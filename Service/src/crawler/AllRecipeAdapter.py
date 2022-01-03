@@ -131,7 +131,6 @@ class AllRecipeAdapter(Adapter):
             ingredient_name = ingredient.text.replace("  ", "")
             ingredient_id = Ingredient.query.filter(literal(ingredient_name.lower()).contains(Ingredient.name))\
                 .with_entities(Ingredient.id).scalar()
-            print(ingredient_id)
             ingredients.append({
                 "id": self.recipe_ingredient_id,
                 "name": ingredient_name,
