@@ -30,13 +30,16 @@ public interface RecipeService {
     @GET("recipe/{id}/reviews")
     Call<ArrayList<Review>> getRecipeReviews(@Path("id") int id);
 
+    @GET("recipe/{id}/steps")
+    Call<ArrayList<Step>> getRecipeStep(@Path("id") int id);
+
     @POST("recipe/add")
     Call<Recipe> addRecipe(Recipe recipe);
 
-    @POST("recipe/add/step")
+    @POST("recipe/{id}/add/step")
     Call<Step> addStep(Step step);
 
-    @POST("recipe/add/ingredient")
+    @POST("recipe/{id}/add/ingredient")
     Call<RecipeIngredient> addIngredient(RecipeIngredient ingredient);
 
     @GET("recipe/{id}/view")

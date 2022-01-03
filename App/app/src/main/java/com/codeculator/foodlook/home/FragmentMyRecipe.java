@@ -137,10 +137,6 @@ public class FragmentMyRecipe extends Fragment {
 
         httpRequest.get(getString(R.string.APP_URL)+"/recipe/1/details",new HashMap<>(),
                 recipeResponse);
-        buttonAddRecipe = view.findViewById(R.id.buttonAddRecipe);
-        buttonAddRecipe.setOnClickListener(view1 -> {
-            fragmentMyRecipeListener.addRecipe();
-        });
     }
 
 
