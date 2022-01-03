@@ -6,17 +6,11 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SearchView;
 
-import com.codeculator.foodlook.AdminUserDetailFragment;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityAdminHomeBinding;
-import com.codeculator.foodlook.databinding.FragmentAdminCrawlerBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -94,9 +88,15 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
             f.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }else if(type.equalsIgnoreCase("recipes")){
-
+            f = new FragmentAdminRecipeDetail();
+            b.putInt("recipeID", itemID);
+            f.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }else if(type.equalsIgnoreCase("reviews")){
-
+            f = new FragmentAdminReviewDetail();
+            b.putInt("reviewID", itemID);
+            f.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }
     }
 }

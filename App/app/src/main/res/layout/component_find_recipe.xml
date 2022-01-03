@@ -20,7 +20,7 @@
             app:cardCornerRadius="10dp">
 
             <ImageView
-                android:id="@+id/imageViewDisplayRecipe3"
+                android:id="@+id/bookmarkImageIV"
                 android:layout_width="170dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
@@ -35,7 +35,7 @@
                 app:srcCompat="@drawable/linear_transparent" />
 
             <TextView
-                android:id="@+id/tvRecipeName2"
+                android:id="@+id/bookmarkNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

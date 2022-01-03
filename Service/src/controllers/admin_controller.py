@@ -54,7 +54,7 @@ def get_recipes():
 
 @admin.get("recipes/<id>")
 def get_recipe_by_id(id):
-    r = Recipe.query.filter_by(id == id).first()
+    r = Recipe.query.filter_by(id = id).first()
     db.session.commit()
     return jsonify(r.raw())
 

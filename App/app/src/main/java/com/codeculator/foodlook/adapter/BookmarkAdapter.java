@@ -23,14 +23,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAdapter.RecommendationItemHolder> {
+public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.BookmarkItemHolder> {
     Context context;
     FragmentManager fm;
     ArrayList<Recipe> recipes;
     HTTPRequest httpRequest;
     FetchImage fetchImage;
+    ClickListener clickListener;
 
-        public RecommendationAdapter(Context context,FragmentManager fm) {
+    public BookmarkAdapter(Context context,FragmentManager fm) {
         this.context = context;
         this.recipes = new ArrayList<>();
         httpRequest = new HTTPRequest((AppCompatActivity) context);
@@ -42,16 +43,18 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         this.recipes = recipes;
     }
 
+    public void setClickListener(ClickListener clickListener){ this.clickListener = clickListener; }
+
     @NonNull
     @Override
-    public RecommendationItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BookmarkItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.component_find_recipe,parent,false);
-        return new RecommendationItemHolder(view);
+                .inflate(R.layout.component_bookmarked_recipe,parent,false);
+        return new BookmarkItemHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecommendationItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookmarkItemHolder holder, int position) {
         holder.bind(recipes.get(position));
     }
 
@@ -60,33 +63,37 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         return recipes.size();
     }
 
-    public class RecommendationItemHolder extends RecyclerView.ViewHolder {
-        TextView tvRecipeName2, tvRating, tvTime, tvViewCount;
-        ImageView imageViewDisplayRecipe3;
+    public class BookmarkItemHolder extends RecyclerView.ViewHolder {
+        ImageView bookmarkImageIV,removeBookmarkBtn;
+        TextView bookmarkNameTV;
 
-        public RecommendationItemHolder(@NonNull View itemView) {
+        public BookmarkItemHolder(@NonNull View itemView) {
             super(itemView);
-            tvRecipeName2 = itemView.findViewById(R.id.bookmarkNameTV);
-            tvRating = itemView.findViewById(R.id.tvRating);
-            tvTime = itemView.findViewById(R.id.tvTime);
-            tvViewCount = itemView.findViewById(R.id.tvViewCount);
-            imageViewDisplayRecipe3 = itemView.findViewById(R.id.bookmarkImageIV);
+            bookmarkImageIV = itemView.findViewById(R.id.bookmarkImageIV);
+            removeBookmarkBtn = itemView.findViewById(R.id.removeBookmarkBtn);
+            bookmarkNameTV = itemView.findViewById(R.id.bookmarkNameTV);
         }
 
-        public void bind(Recipe r) {
-            tvRecipeName2.setText(r.title);
-            float rating = Math.round(r.rate*100)/100f;
-            tvRating.setText(rating+"");
-            tvTime.setText((r.prep_duration + r.cook_duration)+"");
-            tvViewCount.setText(r.view+"");
-            Picasso.get().load(r.photo).into(imageViewDisplayRecipe3);
+        public void bind(Recipe recipe){
+            bookmarkNameTV.setText(recipe.title);
+            Picasso.get().load(recipe.photo).into(bookmarkImageIV);
+            removeBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.delButtonClick(recipe.id);
+                }
+            });
             itemView.setOnClickListener(v -> {
                 Fragment f = new FragmentRecipeDetail();
                 Bundle b = new Bundle();
-                b.putInt("ID",r.id);
+                b.putInt("ID",recipe.id);
                 f.setArguments(b);
                 fm.beginTransaction().replace(R.id.container,f).commit();
             });
         }
+    }
+
+    public interface ClickListener{
+        void delButtonClick(int recipeID);
     }
 }

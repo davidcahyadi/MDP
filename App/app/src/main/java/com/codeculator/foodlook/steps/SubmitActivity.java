@@ -87,7 +87,7 @@ public class SubmitActivity extends AppCompatActivity {
     public void toggleStars(int itemID){
         for (int i = 0; i < 5; i++) {
             if(rateStars[i].getId() == itemID){
-                rateScore = i;
+                rateScore = i + 1;
                 for (int j = i; j > -1; j--) {
                     rateStars[j].setImageResource(R.drawable.ic_baseline_star_72);
                 }

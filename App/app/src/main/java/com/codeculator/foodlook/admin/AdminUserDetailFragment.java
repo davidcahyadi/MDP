@@ -1,4 +1,4 @@
-package com.codeculator.foodlook;
+package com.codeculator.foodlook.admin;
 
 import android.os.Bundle;
 
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.User;

@@ -94,15 +94,14 @@
             android:layout_height="match_parent"
             android:layout_marginTop="440dp"
             android:layout_weight="1"
-            android:foregroundGravity="center_vertical"
             android:gravity="center_vertical"
             android:paddingLeft="56dp"
             android:paddingRight="56dp"
             android:text="Lorem ipsum dolar set amet. Lorem ipsum dolar set amet.Lorem ipsum dolar set amet"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="normal" />
 
         <Button
             android:id="@+id/stopBtn"
