@@ -88,9 +88,15 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
             f.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }else if(type.equalsIgnoreCase("recipes")){
-
+            f = new FragmentAdminRecipeDetail();
+            b.putInt("recipeID", itemID);
+            f.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }else if(type.equalsIgnoreCase("reviews")){
-
+            f = new FragmentAdminReviewDetail();
+            b.putInt("reviewID", itemID);
+            f.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }
     }
 }

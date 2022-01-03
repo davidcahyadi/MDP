@@ -51,65 +51,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/textView28"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Content" />
-
-                <TextView
-                    android:id="@+id/textView29"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="TextView" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:text="Content"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detailReviewContentTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:paddingLeft="8dp"
+                    android:text="TextView"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/textView26"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_weight="1"
-                    android:text="Posted At" />
+                    android:text="Posted At"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detailReviewPostedTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="TextView" />
+                    android:layout_weight="3"
+                    android:paddingLeft="8dp"
+                    android:text="TextView"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_weight="1"
-                    android:text="Poster" />
+                    android:text="Poster"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detailReviewPosterTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                    android:layout_weight="3"
+                    android:paddingLeft="8dp"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 

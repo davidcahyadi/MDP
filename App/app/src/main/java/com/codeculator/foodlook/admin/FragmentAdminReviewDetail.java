@@ -88,10 +88,11 @@ public class FragmentAdminReviewDetail extends Fragment {
     public void loadReview(){
         binding.detailReviewIDTV.setText("#" + selectedReview.id);
         binding.detailReviewPostedTV.setText(selectedReview.created_at);
+        binding.detailReviewContentTV.setText(selectedReview.description);
         if(selectedReview.review_id == 0)
-            binding.detailReviewRatingTV.setText("-");
-        else
             binding.detailReviewRatingTV.setText(selectedReview.rate + "");
+        else
+            binding.detailReviewRatingTV.setText("-");
     }
 
     public void loadPoster(){
@@ -119,7 +120,7 @@ public class FragmentAdminReviewDetail extends Fragment {
                 if(response.isSuccessful()){
                     int replies = 0;
                     for(Review r : response.body()){
-                        if(r.review_id == selectedReview.review_id) replies++;
+                        if(r.review_id == selectedReview.id) replies++;
                     }
                     binding.detailReviewRepliesTV.setText(replies + "");
                 }

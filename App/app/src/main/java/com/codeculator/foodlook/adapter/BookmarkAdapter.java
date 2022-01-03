@@ -1,6 +1,7 @@
 package com.codeculator.foodlook.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.helper.FetchImage;
+import com.codeculator.foodlook.home.FragmentRecipeDetail;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.services.HTTPRequest;
 import com.squareup.picasso.Picasso;
@@ -79,6 +82,13 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
                 public void onClick(View view) {
                     clickListener.delButtonClick(recipe.id);
                 }
+            });
+            itemView.setOnClickListener(v -> {
+                Fragment f = new FragmentRecipeDetail();
+                Bundle b = new Bundle();
+                b.putInt("ID",recipe.id);
+                f.setArguments(b);
+                fm.beginTransaction().replace(R.id.container,f).commit();
             });
         }
     }
