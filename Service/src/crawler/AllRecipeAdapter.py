@@ -2,10 +2,11 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
+from sqlalchemy import literal
 
 from src.crawler.Adapter import Adapter
 from src.models.database import db
-from src.models.models import Recipe, Photo, Step, RecipeIngredient
+from src.models.models import Recipe, Photo, Step, RecipeIngredient, Ingredient
 
 
 def countTime(str):
@@ -127,10 +128,14 @@ class AllRecipeAdapter(Adapter):
         ingredients_text = self.recipe_page.find_all("span", class_="ingredients-item-name")
         ingredients = []
         for ingredient in ingredients_text:
+            ingredient_name = ingredient.text.replace("  ", "")
+            ingredient_id = Ingredient.query.filter(literal(ingredient_name.lower()).contains(Ingredient.name))\
+                .with_entities(Ingredient.id).scalar()
+            print(ingredient_id)
             ingredients.append({
                 "id": self.recipe_ingredient_id,
-                "name": ingredient.text.replace("  ", ""),
-                "ingredient_id": None,
+                "name": ingredient_name,
+                "ingredient_id": ingredient_id,
                 "measurement_id": None,
                 "amount": 0,
                 "recipe_id": self.recipe_id,

@@ -49,4 +49,6 @@ def catalog_search():
 
 @catalog.post("/recommendation")
 def catalog_recommendation():
+    ingredients = request.form.get("id")
+    print(ingredients)
     pass
