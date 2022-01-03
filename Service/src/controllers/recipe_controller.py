@@ -37,3 +37,11 @@ def recipe_reviews(id):
     r = Recipe.query.filter(Recipe.id == id).first()
     db.session.commit()
     return jsonify(r.reviews_raw())
+
+
+@recipe.get("/<id>/view")
+def recipe_view(id):
+    r = Recipe.query.filter(Recipe.id == id).first()
+    r.view += 1
+    db.session.commit()
+    return jsonify({"message": "OK"}), HTTP_200_OK

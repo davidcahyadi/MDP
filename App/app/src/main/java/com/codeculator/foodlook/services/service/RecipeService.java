@@ -5,6 +5,7 @@ import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.services.response.BasicResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,4 +36,7 @@ public interface RecipeService {
 
     @POST("recipe/add/ingredient")
     Call<RecipeIngredient> addIngredient(RecipeIngredient ingredient);
+
+    @GET("recipe/{id}/view")
+    Call<BasicResponse> addRecipeView(@Path("id") int id);
 }

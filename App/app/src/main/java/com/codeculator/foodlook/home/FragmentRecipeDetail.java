@@ -28,6 +28,7 @@ import com.codeculator.foodlook.model.Review;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.HTTPRequest;
 import com.codeculator.foodlook.services.RetrofitApi;
+import com.codeculator.foodlook.services.response.BasicResponse;
 import com.codeculator.foodlook.steps.ActivityStep;
 import com.squareup.picasso.Picasso;
 
@@ -83,12 +84,23 @@ public class FragmentRecipeDetail extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.summaryNavigation.setOnItemSelectedListener(this::onNavigationChange);
 
-        httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
-        fetchImage = new FetchImage(httpRequest);
         binding.recipeDetailRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         changeToSummary();
         Log.i("CREATED","VIEW");
-        loadRecipe();
+
+
+        Call<BasicResponse> call = RetrofitApi.getInstance().getRecipeService().addRecipeView(recipeID);
+        call.enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                loadRecipe();
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 
