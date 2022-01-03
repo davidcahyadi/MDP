@@ -76,21 +76,26 @@ public class AdminCrawlerListAdapter extends RecyclerView.Adapter<AdminCrawlerLi
                     call.enqueue(new Callback<CrawlResponse>() {
                         @Override
                         public void onResponse(Call<CrawlResponse> call, Response<CrawlResponse> response) {
-                            System.out.println(response.raw());
-                            fragment.hideLoading();
-                            crawler.setUpdated_at(new Date().toString());
-                            new UpdateCrawler(fragment.getActivity(), new StoreCallback() {
-                                @Override
-                                public void preProcess() {
+                            if(response.isSuccessful()){
+                                System.out.println(response.raw());
+                                fragment.hideLoading();
+                                crawler.setUpdated_at(new Date().toString());
+                                new UpdateCrawler(fragment.getActivity(), new StoreCallback() {
+                                    @Override
+                                    public void preProcess() {
 
-                                }
+                                    }
 
-                                @Override
-                                public void postProcess() {
+                                    @Override
+                                    public void postProcess() {
 
-                                }
-                            }).execute(crawler);
-                            Toast.makeText(fragment.getActivity(), "Success Crawling from : "+ crawler.getName() + " with total : " + response.body().getNewRecipes() + " recipes.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).execute(crawler);
+                                Toast.makeText(fragment.getActivity(), "Success Crawling from : "+
+                                        crawler.getName() + " with total : " +
+                                        response.body().getNewRecipes() + " recipes.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, make_response
-from sqlalchemy import desc
-from src.models.models import User, Recipe
+from sqlalchemy import desc, func, or_
+from src.models.models import User, Recipe, RecipeIngredient
 from src.models.database import db
 
 catalog = Blueprint("catalog", __name__, url_prefix="/api/v1/catalog")
@@ -8,7 +8,7 @@ catalog = Blueprint("catalog", __name__, url_prefix="/api/v1/catalog")
 
 @catalog.get("/popular/<page>")
 def catalog_popular(page):
-    results = Recipe.query.order_by(desc(Recipe.view)).paginate(page=int(page),max_per_page=10).items
+    results = Recipe.query.order_by(desc(Recipe.view)).paginate(page=int(page), max_per_page=10).items
     db.session.commit()
     result = []
     for res in results:
@@ -49,6 +49,17 @@ def catalog_search():
 
 @catalog.post("/recommendation")
 def catalog_recommendation():
-    ingredients = request.form.get("id")
-    print(ingredients)
-    pass
+    ingredients = request.form.getlist("id[]")
+    recipes = Recipe.query.all()
+    print(recipes)
+    filter_or = []
+    for ingredient_id in ingredients:
+        filter_or.append(RecipeIngredient.ingredient_id == ingredient_id)
+
+    for recipe in recipes:
+        print(recipe.title)
+        total_ingredient = db.session.query(func.count(RecipeIngredient.id))\
+            .filter_by(RecipeIngredient.recipe_id == recipe.id,or_(*filter_or))\
+            .group_by(RecipeIngredient.recipe_id).scalar()
+        print(total_ingredient)
+    return jsonify({"message": "OK"})

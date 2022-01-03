@@ -15,23 +15,23 @@ import java.util.concurrent.Executors;
 
 public class LoadCrawler {
     private final WeakReference<Context> weakContext;
-    private final WeakReference<FetchCallback<ArrayList<Crawler>>> weakCallback;
+    private final FetchCallback<ArrayList<Crawler>> weakCallback;
 
     public LoadCrawler(Context context, FetchCallback<ArrayList<Crawler>> weakCallback) {
         this.weakContext = new WeakReference<>(context);
-        this.weakCallback = new WeakReference<>(weakCallback);
+        this.weakCallback = weakCallback;
     }
 
     public void execute() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        weakCallback.get().preProcess();
+        weakCallback.preProcess();
         executorService.execute(() -> {
             Context c = weakContext.get();
             List<Crawler> crawlers = AppDatabase.getAppDatabase(c).crawlerDAO().get_all();
             ArrayList<Crawler> result = new ArrayList<>();
             result.addAll(crawlers);
-            handler.post(() -> weakCallback.get().postProcess(result));
+            handler.post(() -> weakCallback.postProcess(result));
         });
     }
 }
