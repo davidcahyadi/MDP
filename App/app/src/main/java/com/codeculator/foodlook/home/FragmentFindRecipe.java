@@ -129,6 +129,7 @@ public class FragmentFindRecipe extends Fragment {
             try{
                 JSONArray arr = new JSONArray(res);
                 int i = 0;
+                listIngredients = new ArrayList<>();
                 while(!arr.isNull(i)){
                     JSONObject obj = arr.getJSONObject(i);
 
@@ -212,8 +213,20 @@ public class FragmentFindRecipe extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item_send){
             // go to fragment recommendation
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction().replace(R.id.container, new FragmentCatalogRecommendation()).commit();
+            int ctr = 0;
+            for (ArrayList<Ingredient> ingredients : listIngredients) {
+                for (Ingredient ingredient : ingredients) {
+                    if(ingredient.check_status)
+                        ctr++;
+                }
+            }
+            if(ctr > 0){
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.container, new FragmentCatalogRecommendation()).commit();
+            }
+            else{
+                Toast.makeText(getActivity(), "Please choose the ingredient", Toast.LENGTH_SHORT).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
