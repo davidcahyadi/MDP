@@ -5,11 +5,9 @@ import com.codeculator.foodlook.services.service.CatalogService;
 import com.codeculator.foodlook.services.service.CommentService;
 import com.codeculator.foodlook.services.service.RecipeService;
 import com.codeculator.foodlook.services.service.ReviewService;
-import com.codeculator.foodlook.services.service.StepService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +25,6 @@ public class RetrofitApi {
     private CatalogService catalogService;
     private ReviewService reviewService;
     private CommentService commentService;
-    private StepService stepService;
 
     public static RetrofitApi getInstance() {
         if (instance == null) {

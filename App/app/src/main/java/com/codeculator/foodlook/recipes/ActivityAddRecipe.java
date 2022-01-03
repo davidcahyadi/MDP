@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.IngredientAdapter;
+import com.codeculator.foodlook.adapter.IngredientBarAdapter;
 import com.codeculator.foodlook.adapter.SummaryStepAdapter;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.Recipe;
@@ -37,6 +38,9 @@ public class ActivityAddRecipe extends AppCompatActivity {
     Button b_add_ingredients, b_add_steps;
 
     ArrayList<RecipeIngredient> recipeIngredients;
+    ArrayList<Step> steps;
+
+    final int RECIPE_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class ActivityAddRecipe extends AppCompatActivity {
         rc_steps = findViewById(R.id.rc_steps);
         b_add_ingredients = findViewById(R.id.b_add_ingredients);
         b_add_steps = findViewById(R.id.b_add_steps);
+
 
         //onclick ingredients
         b_add_ingredients.setOnClickListener(new View.OnClickListener() {
@@ -69,25 +74,22 @@ public class ActivityAddRecipe extends AppCompatActivity {
 
         //setup recycler view ingredients
         rc_ingredients.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        ArrayList<Ingredient> ingredients = new ArrayList<>();
-
-        IngredientAdapter ia = new IngredientAdapter(getApplicationContext());
-        //todo ambil ingredients dari retrofit
-
-        ia.setIngredients(ingredients);
+        recipeIngredients = new ArrayList<>();
+        getIngredients();
+        IngredientBarAdapter ia = new IngredientBarAdapter(getApplicationContext(), recipeIngredients);
         rc_ingredients.setAdapter(ia);
 
         //setup recycler view steps
         rc_steps.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        ArrayList<Step> steps = new ArrayList<>();
-        //todo ambil steps dari retrofit
+        steps = new ArrayList<>();
+        getSteps();
 
         SummaryStepAdapter ssa = new SummaryStepAdapter(getApplicationContext(), steps);
         rc_steps.setAdapter(ssa);
     }
 
     public void getIngredients(){
-        Call<ArrayList<RecipeIngredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(1);
+        Call<ArrayList<RecipeIngredient>> call = RetrofitApi.getInstance().getRecipeService().getRecipeIngredients(RECIPE_ID);
         call.enqueue(new Callback<ArrayList<RecipeIngredient>>() {
             @Override
             public void onResponse(Call<ArrayList<RecipeIngredient>> call, Response<ArrayList<RecipeIngredient>> response) {
@@ -105,7 +107,20 @@ public class ActivityAddRecipe extends AppCompatActivity {
     }
 
     public void getSteps(){
+        Call<ArrayList<Step>> call = RetrofitApi.getInstance().getRecipeService().getRecipeStep(RECIPE_ID);
+        call.enqueue(new Callback<ArrayList<Step>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Step>> call, Response<ArrayList<Step>> response) {
+                if(response.isSuccessful()){
+                    steps = response.body();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<Step>> call, Throwable t) {
+
+            }
+        });
     }
 
     //setup button save ontop
