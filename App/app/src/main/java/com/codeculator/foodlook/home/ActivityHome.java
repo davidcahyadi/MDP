@@ -1,5 +1,6 @@
 package com.codeculator.foodlook.home;
 
+import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentOnAttachListener;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,14 +21,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.auth.ActivityWelcome;
 import com.codeculator.foodlook.databinding.ActivityHomeBinding;
+import com.codeculator.foodlook.firebase.UploadUserImage;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
 import com.codeculator.foodlook.model.LoggedIn;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.recipes.ActivityAddIngredient;
+import com.codeculator.foodlook.services.FirebaseUpload;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -40,6 +49,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     View header;
     ImageView profilePic;
     TextView tvNama, tvJoinFrom;
+    FirebaseUpload<UploadUserImage> firebaseUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +121,37 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         tvNama.setText(LoggedIn.user.getName());
         String[] created = LoggedIn.user.getCreated_at().split(" ");
         tvJoinFrom.setText("Join From : " + created[1] + " " + created[2] + " " + created[3]);
+
+        // change imageview profile pic
+        firebaseUpload = new FirebaseUpload<UploadUserImage>(this, this, "uploads/users") {
+            @Override
+            public void onSuccessUpload(Uri uri) {
+
+            }
+
+            @Override
+            public void onSuccessChooseImage(ActivityResult result) {
+
+            }
+        };
+
+        firebaseUpload.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                profilePic.setImageResource(R.drawable.john_xina);
+                for (DataSnapshot postSnapShot : snapshot.getChildren()){
+                    UploadUserImage upload = postSnapShot.getValue(UploadUserImage.class);
+                    if(upload.userId == LoggedIn.user.getId()){
+                        Picasso.get().load(upload.imageUrl).into(profilePic);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -155,7 +196,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item_profile){
-            Toast.makeText(getBaseContext(), "Item 1", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(ActivityHome.this, ActivityChangeProfile.class);
+            launcher.launch(i);
         }
         else if(item.getItemId() == R.id.sidebar_menu_logout){
             logout();
