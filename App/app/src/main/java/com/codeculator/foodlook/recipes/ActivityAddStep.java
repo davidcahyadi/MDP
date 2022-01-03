@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.RetrofitApi;
 
@@ -23,6 +24,8 @@ public class ActivityAddStep extends AppCompatActivity {
     EditText step_title,step_description,step_countdown;
     Spinner spinner_step;
     Button btn_add_step;
+
+    final int RECIPE_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,10 @@ public class ActivityAddStep extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Step Countdown / Photo Url is missing", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            int id = 1;
-                            int order = 1;
+                            int id = 0;
+                            int order = 0;
                             String title = step_title.getText().toString();
-                            int duration = 1;
+                            int duration = 0;
                             String url = "";
                             if(step_countdown.getHint().toString().equals("Step Countdown")){
                                 duration = Integer.parseInt(step_countdown.getText().toString());
@@ -62,7 +65,7 @@ public class ActivityAddStep extends AppCompatActivity {
                                 url = step_countdown.getText().toString();
                             }
                             String desc = step_description.getText().toString();
-                            Step step = new Step(id,order,title,url,desc,duration);
+                            Step step = new Step(id,order,RECIPE_ID ,title,url,desc,duration);
                             insertStep(step);
                             finish();
                         }
@@ -90,7 +93,8 @@ public class ActivityAddStep extends AppCompatActivity {
     }
 
     public void insertStep(Step step){
-        Call<Step> call = RetrofitApi.getInstance().getRecipeService().addStep(step);
+        PrefHelper prefHelper = new PrefHelper(this);
+        Call<Step> call = RetrofitApi.getInstance().getRecipeService().addStep(step, prefHelper.getAccess());
         call.enqueue(new Callback<Step>() {
             @Override
             public void onResponse(Call<Step> call, Response<Step> response) {
