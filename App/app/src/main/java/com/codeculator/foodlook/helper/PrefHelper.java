@@ -28,6 +28,19 @@ public class PrefHelper {
         return sharedPref.getString("access","null");
     }
 
+    public void setUser(String user){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString("user",user);
+        editor.apply();
+    }
+
+    public String getUser(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        return sharedPref.getString("user","null");
+    }
+
     public void setRefresh(String refresh){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         SharedPreferences.Editor editor = sharedPref.edit();

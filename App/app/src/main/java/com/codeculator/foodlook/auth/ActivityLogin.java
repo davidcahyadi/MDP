@@ -16,16 +16,26 @@ import com.codeculator.foodlook.admin.AdminHomeActivity;
 import com.codeculator.foodlook.databinding.ActivityLoginBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.Validator;
+import com.codeculator.foodlook.model.LoggedIn;
+import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityLogin extends AppCompatActivity {
     HTTPRequest request;
 
     private ActivityLoginBinding binding;
+    PrefHelper prefHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +91,12 @@ public class ActivityLogin extends AppCompatActivity {
                 response.onSuccess(res->{
                     try{
                         JSONObject json = new JSONObject(res);
-                        PrefHelper prefHelper = new PrefHelper(ActivityLogin.this);
+                        prefHelper = new PrefHelper(ActivityLogin.this);
                         prefHelper.setAccess(json.getString("access"));
                         prefHelper.setRefresh(json.getString("refresh"));
-                        Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
-                        startActivity(i);
+                        requestUserBiodata();
+//                        Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
+//                        startActivity(i);
                     }
                     catch (Exception e){
                         Log.e("Error",e.getMessage());
@@ -95,5 +106,27 @@ public class ActivityLogin extends AppCompatActivity {
                 request.post(getString(R.string.APP_URL)+"/auth/login",data,response);
             }
         }
+    }
+
+    public void requestUserBiodata(){
+        Call<User> call = RetrofitApi.getInstance().getUserService().getUserBiodata(prefHelper.getAccess());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    LoggedIn.user = response.body();
+                    prefHelper.setUser(LoggedIn.user.convertToString());
+                    Intent i = new Intent(ActivityLogin.this, ActivityWelcome.class);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
+
     }
 }
