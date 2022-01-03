@@ -2,7 +2,7 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-from sqlalchemy import literal
+from sqlalchemy import literal, func
 
 from src.crawler.Adapter import Adapter
 from src.models.database import db
@@ -28,10 +28,29 @@ class AllRecipeAdapter(Adapter):
     recipe_page = None
 
     def __init__(self):
-        self.recipe_id = db.session.query(Recipe.id).count()
-        self.recipe_ingredient_id = db.session.query(RecipeIngredient.id).count()
-        self.photo_id = db.session.query(Photo.id).count()
-        self.steps_id = db.session.query(Step.id).count()
+        self.recipe_id = db.session.query(func.max(Recipe.id)).scalar()
+        self.recipe_ingredient_id = db.session.query(func.max(RecipeIngredient.id)).scalar()
+        self.photo_id = db.session.query(func.max(Photo.id)).scalar()
+        self.steps_id = db.session.query(func.max(Step.id)).scalar()
+        if self.recipe_id is None:
+            self.recipe_id = 0
+        else:
+            self.recipe_id += 1
+
+        if self.recipe_ingredient_id is None:
+            self.recipe_ingredient_id = 0
+        else:
+            self.recipe_ingredient_id += 1
+
+        if self.photo_id is None:
+            self.photo_id = 0
+        else:
+            self.photo_id += 1
+
+        if self.steps_id is None:
+            self.steps_id = 0
+        else:
+            self.steps_id += 1
 
     def get_urls(self, page):
         html_text = requests.get(self.url + str(page)).text
@@ -48,7 +67,7 @@ class AllRecipeAdapter(Adapter):
         crawl_result = []
         for i in range(count):
             urls = self.get_urls(i + 1)
-            urls = urls[:5]
+            # urls = urls[:5]
             for url in urls:
                 crawl_result.append(self.extractPage(url))
         return crawl_result
@@ -128,9 +147,14 @@ class AllRecipeAdapter(Adapter):
         ingredients_text = self.recipe_page.find_all("span", class_="ingredients-item-name")
         ingredients = []
         for ingredient in ingredients_text:
+            self.recipe_ingredient_id += 1
             ingredient_name = ingredient.text.replace("  ", "")
-            ingredient_id = Ingredient.query.filter(literal(ingredient_name.lower()).contains(Ingredient.name))\
-                .with_entities(Ingredient.id).scalar()
+            ingredient_id = db.session.query(Ingredient.id).\
+                filter(literal(ingredient_name.lower()).contains(Ingredient.name))\
+                .first()
+            if ingredient_id is not None:
+                ingredient_id = ingredient_id[0]
+
             ingredients.append({
                 "id": self.recipe_ingredient_id,
                 "name": ingredient_name,
@@ -142,7 +166,7 @@ class AllRecipeAdapter(Adapter):
                 "updated_at": datetime.now(),
                 "deleted_at": None
             })
-            self.recipe_ingredient_id += 1
+
         return ingredients
 
     def extractStep(self):
@@ -151,6 +175,8 @@ class AllRecipeAdapter(Adapter):
         steps = []
         order = 0
         for step in instructions:
+            self.steps_id += 1
+            order += 1
             steps.append({
                 "id": self.steps_id,
                 "recipe_id": self.recipe_id,
@@ -164,8 +190,7 @@ class AllRecipeAdapter(Adapter):
                 "updated_at": datetime.now(),
                 "deleted_at": None
             })
-            self.steps_id += 1
-            order += 1
+
         return steps
 
     def extractPhoto(self):
@@ -180,6 +205,7 @@ class AllRecipeAdapter(Adapter):
                 t = 1
             else:
                 t = 0
+            self.photo_id += 1
             photos.append({
                 "id": self.photo_id,
                 "recipe_id": self.recipe_id,
@@ -188,5 +214,5 @@ class AllRecipeAdapter(Adapter):
                 "created_at": datetime.now(),
                 "deleted_at": None
             })
-            self.photo_id += 1
+
         return photos

@@ -3,11 +3,11 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-from sqlalchemy import func
+from sqlalchemy import func, literal
 
 from src.crawler.Adapter import Adapter
 from src.models.database import db
-from src.models.models import Recipe, RecipeIngredient, Photo, Step
+from src.models.models import Recipe, RecipeIngredient, Photo, Step, Ingredient
 
 
 def url(page):
@@ -24,6 +24,17 @@ class AsianFoodNetworkAdapter(Adapter):
         self.recipe_ingredient_id = db.session.query(func.max(RecipeIngredient.id)).scalar()
         self.photo_id = db.session.query(func.max(Photo.id)).scalar()
         self.steps_id = db.session.query(func.max(Step.id)).scalar()
+        if self.recipe_id is None:
+            self.recipe_id = 0
+
+        if self.recipe_ingredient_id is None:
+            self.recipe_ingredient_id = 0
+
+        if self.photo_id is None:
+            self.photo_id = 0
+
+        if self.steps_id is None:
+            self.steps_id = 0
 
     def get_urls(self, page):
         json_text = requests.get(url(page)).text
@@ -97,10 +108,16 @@ class AsianFoodNetworkAdapter(Adapter):
         for ingredient in ingredients_text:
             if "for" not in ingredient.text and ingredient.text != '\xa0':
                 self.recipe_ingredient_id += 1
+                ingredient_name = ingredient.text.replace("  ", "").replace('\xa0', '')
+                ingredient_id = db.session.query(Ingredient.id). \
+                    filter(literal(ingredient_name.lower()).contains(Ingredient.name)) \
+                    .first()
+                if ingredient_id is not None:
+                    ingredient_id = ingredient_id[0]
                 ingredients.append({
                     "id": self.recipe_ingredient_id,
-                    "name": ingredient.text.replace("  ", "").replace('\xa0', ''),
-                    "ingredient_id": None,
+                    "name": ingredient_name,
+                    "ingredient_id": ingredient_id,
                     "measurement_id": None,
                     "amount": 0,
                     "recipe_id": self.recipe_id,

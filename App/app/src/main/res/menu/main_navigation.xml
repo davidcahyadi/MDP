@@ -7,7 +7,7 @@
         android:title="Catalog" />
     <item
         android:id="@+id/menu_my_review"
-        android:icon="@drawable/ic_baseline_search_24"
+        android:icon="@drawable/ic_baseline_description_24"
         android:title="My Reviews" />
     <item
         android:id="@+id/menu_placeholder"
@@ -18,6 +18,6 @@
         android:title="Bookmarks" />
     <item
         android:id="@+id/menu_my_recipe"
-        android:icon="@drawable/ic_sharp_info_24"
+        android:icon="@drawable/ic_baseline_restaurant_24"
         android:title="My Recipes" />
 </menu>
