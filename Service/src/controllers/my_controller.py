@@ -87,7 +87,7 @@ def rm_bookmark(user_id):
 @token_required
 def get_bookmark(user_id):
     return jsonify(iterateModel(db.session.query(Recipe)
-                                .filter_by(and_(Recipe.id == Bookmark.recipe_id, Bookmark.user_id == user_id))
+                                .filter(Recipe.id == Bookmark.recipe_id, Bookmark.user_id == user_id)
                                 .all()))
 
 
