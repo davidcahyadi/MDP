@@ -1,14 +1,8 @@
 package com.codeculator.foodlook.home;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentOnAttachListener;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentOnAttachListener;
@@ -19,12 +13,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityHomeBinding;
 import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
+import com.codeculator.foodlook.model.LoggedIn;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.recipes.ActivityAddIngredient;
 import com.google.android.material.navigation.NavigationBarView;
@@ -38,6 +36,11 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     ActivityHomeBinding binding;
     ResultLauncherHelper launcher;
 
+    NavigationView leftNav;
+    View header;
+    ImageView profilePic;
+    TextView tvNama, tvJoinFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,12 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         View view = binding.getRoot();
         setContentView(view);
         launcher = new ResultLauncherHelper(this);
+
+        leftNav = findViewById(R.id.leftNav);
+        header = leftNav.getHeaderView(0);
+        tvNama = (TextView) header.findViewById(R.id.tvNama);
+        tvJoinFrom = (TextView) header.findViewById(R.id.tvJoinFrom);
+        profilePic = (ImageView) header.findViewById(R.id.imageViewProfilePic);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -71,7 +80,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
         String search = getIntent().hasExtra("search") ? getIntent().getStringExtra("search") : "";
         if(!search.isEmpty()){
-            // todo : set option menu to send
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentFindRecipe()).commit();
         }
         else{
@@ -97,6 +105,12 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
+
+        PrefHelper prefHelper = new PrefHelper(this);
+        LoggedIn.user = LoggedIn.convertToUser(prefHelper.getUser());
+        tvNama.setText(LoggedIn.user.getName());
+        String[] created = LoggedIn.user.getCreated_at().split(" ");
+        tvJoinFrom.setText("Join From : " + created[1] + " " + created[2] + " " + created[3]);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -140,7 +154,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.item1){
+        if(item.getItemId() == R.id.item_profile){
             Toast.makeText(getBaseContext(), "Item 1", Toast.LENGTH_SHORT).show();
         }
         else if(item.getItemId() == R.id.sidebar_menu_logout){

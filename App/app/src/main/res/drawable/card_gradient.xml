@@ -15,7 +15,6 @@
     </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="20dp"/>
             <gradient
                 android:startColor="#EF6C00"
                 android:endColor="@color/yellow_500"

@@ -80,4 +80,20 @@ public class User implements Parcelable {
         parcel.writeString(created_at);
         parcel.writeString(updated_at);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                '}';
+    }
+
+    public String convertToString(){
+        return id+"|"+name+"|"+email+"|"+password+"|"+created_at+"|"+updated_at;
+    }
 }
