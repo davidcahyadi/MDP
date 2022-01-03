@@ -30,7 +30,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
     HTTPRequest httpRequest;
     FetchImage fetchImage;
 
-    public RecommendationAdapter(Context context,FragmentManager fm) {
+        public RecommendationAdapter(Context context,FragmentManager fm) {
         this.context = context;
         this.recipes = new ArrayList<>();
         httpRequest = new HTTPRequest((AppCompatActivity) context);
@@ -66,11 +66,11 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
 
         public RecommendationItemHolder(@NonNull View itemView) {
             super(itemView);
-            tvRecipeName2 = itemView.findViewById(R.id.tvRecipeName2);
+            tvRecipeName2 = itemView.findViewById(R.id.bookmarkNameTV);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvViewCount = itemView.findViewById(R.id.tvViewCount);
-            imageViewDisplayRecipe3 = itemView.findViewById(R.id.imageViewDisplayRecipe3);
+            imageViewDisplayRecipe3 = itemView.findViewById(R.id.bookmarkImageIV);
         }
 
         public void bind(Recipe r) {

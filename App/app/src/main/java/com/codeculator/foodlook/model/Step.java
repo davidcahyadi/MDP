@@ -2,6 +2,7 @@ package com.codeculator.foodlook.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "steps")
@@ -41,6 +42,7 @@ public class Step {
         this.duration = duration;
     }
 
+    @Ignore
     public Step(int id, int order ,int recipeId, String title, String url, String description, int duration){
         this.id = id;
         this.recipeId = recipeId;

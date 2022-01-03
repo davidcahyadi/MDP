@@ -57,4 +57,7 @@ public interface RecipeService {
 
     @POST("my/bookmark/remove")
     Call<BasicResponse> removeBookmark(@Query("recipe_id") int recipe_id, @Header("x-api-key") String token);
+
+    @POST("my/bookmark/all")
+    Call<ArrayList<Recipe>> getBookmarks(@Header("x-api-key") String token);
 }

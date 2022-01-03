@@ -1,4 +1,4 @@
-package com.codeculator.foodlook;
+package com.codeculator.foodlook.admin;
 
 import android.os.Bundle;
 
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.codeculator.foodlook.databinding.FragmentAdminReviewDetailBinding;
 import com.codeculator.foodlook.model.Review;
-import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.model.User;
 import com.codeculator.foodlook.services.RetrofitApi;
 

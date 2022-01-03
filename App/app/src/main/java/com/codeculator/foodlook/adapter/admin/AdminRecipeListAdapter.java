@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,7 @@ public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeList
                     listClickListener.moreButtonClick(recipe.id, recipeMoreButton);
                 }
             });
+            Picasso.get().load(recipe.photo).into(recipeImageIV);
         }
     }
 

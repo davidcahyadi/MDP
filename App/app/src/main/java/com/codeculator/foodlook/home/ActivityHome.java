@@ -167,7 +167,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
                 return true;
             case R.id.menu_bookmarks:
-                //TODO: implement Fragments
+                f = new FragmentMyBookmark();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
                 return true;
             case R.id.menu_my_recipe:
                 f = new FragmentMyRecipe();
