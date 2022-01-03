@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy import and_
+
 from src.constant.http_status_codes import HTTP_200_OK
 from src.helper.dictHelper import iterateModel
 from src.models.database import db
@@ -28,21 +30,23 @@ def save_recipe(user_id):
     req = request.json
     recipe = Recipe()
     recipe.make(user_id=user_id, title=req["title"], description=req["description"],
-                # TODO: ganti kalau sudah ada cook duration dan prep duration
-                cook_duration=10, prep_duration=5, serve_portion=3)
+                cook_duration=req["cook_duration"], prep_duration=req["prep_duration"],
+                serve_portion=req["serve_portion"])
 
     for photo_json in req["photos"]:
         photo = Photo().make(photo_json)
         recipe.photos.append(photo)
 
+    order = 0
     for step_json in req["steps"]:
+        order += 1
         if step_json["type_id"] == 0:
-            recipe.steps.append(Step().makeText(step_json["order"], step_json["title"], step_json["description"]))
+            recipe.steps.append(Step().makeText(order, step_json["title"], step_json["description"]))
         elif step_json["type_id"] == 1:
-            recipe.steps.append(Step().makePhoto(step_json["order"], step_json["title"], step_json["description"],
+            recipe.steps.append(Step().makePhoto(order, step_json["title"], step_json["description"],
                                                  step_json["url"]))
         elif step_json["type_id"] == 2:
-            recipe.steps.append(Step().makeTimer(step_json["order"], step_json["title"], step_json["description"],
+            recipe.steps.append(Step().makeTimer(order, step_json["title"], step_json["description"],
                                                  step_json["duration"]))
 
     for ingredient_json in req["ingredients"]:
@@ -83,7 +87,8 @@ def rm_bookmark(user_id):
 @token_required
 def get_bookmark(user_id):
     return jsonify(iterateModel(db.session.query(Recipe)
-                                .filter_by(Recipe.id == Bookmark.recipe_id, Bookmark.user_id == user_id).all()))
+                                .filter_by(and_(Recipe.id == Bookmark.recipe_id, Bookmark.user_id == user_id))
+                                .all()))
 
 
 @my.get("/bookmark/check")
