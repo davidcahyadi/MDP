@@ -11,6 +11,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
+import com.codeculator.foodlook.model.Step;
+import com.codeculator.foodlook.services.RetrofitApi;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityAddStep extends AppCompatActivity {
 
@@ -44,7 +50,21 @@ public class ActivityAddStep extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Step Countdown / Photo Url is missing", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            // todo masukkin ke retrofitnya
+                            int id = 1;
+                            int order = 1;
+                            String title = step_title.getText().toString();
+                            int duration = 1;
+                            String url = "";
+                            if(step_countdown.getHint().toString().equals("Step Countdown")){
+                                duration = Integer.parseInt(step_countdown.getText().toString());
+                            }
+                            else{
+                                url = step_countdown.getText().toString();
+                            }
+                            String desc = step_description.getText().toString();
+                            Step step = new Step(id,order,title,url,desc,duration);
+                            insertStep(step);
+                            finish();
                         }
                     }
                 }
@@ -65,6 +85,23 @@ public class ActivityAddStep extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 spinner_step.setSelection(0);
+            }
+        });
+    }
+
+    public void insertStep(Step step){
+        Call<Step> call = RetrofitApi.getInstance().getRecipeService().addStep(step);
+        call.enqueue(new Callback<Step>() {
+            @Override
+            public void onResponse(Call<Step> call, Response<Step> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Insert Step Successful", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Step> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Insert Step Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
