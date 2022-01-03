@@ -47,7 +47,7 @@ public class ActivityAddRecipe extends AppCompatActivity {
 
     EditText add_recipe_title, cook_duration, prep_duration, serve_portion, recipe_description;
     RecyclerView rc_ingredients, rc_steps;
-    Button b_add_ingredients, b_add_steps, btn_upload_image;
+    Button b_add_ingredients, b_add_steps, btn_upload_image, btn_choose_image;
     Button btnSave;
     IngredientBarAdapter ia;
     SummaryStepAdapter ssa;
@@ -151,6 +151,13 @@ public class ActivityAddRecipe extends AppCompatActivity {
 
         //btn upload image click
         btn_upload_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseUpload.save();
+            }
+        });
+
+        btn_choose_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 firebaseUpload.openFileChooserDialog(view);
