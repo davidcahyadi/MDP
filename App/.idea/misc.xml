@@ -41,9 +41,34 @@
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/menu/menu_search.xml" value="0.36666666666666664" />
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/menu/navigation_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/College/5th/MDP/PROJECT_Foodlook/MDP/App/app/src/main/res/menu/recipe_detail_menu.xml" value="0.36666666666666664" />
-        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/drawable/card_gradient.xml" value="0.3828125" />
-        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_change_profile.xml" value="0.3654891304347826" />
-        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_add_ingredient.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_add_recipe.xml" value="0.4" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_add_step.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_home.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_login.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_review.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_splash.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_submit.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/activity_temp.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/admin_component_crawler_list.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/admin_component_recipe_list.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/card_ingredient.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/card_summary.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_find_ingredient.xml" value="0.1" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_find_recipe.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_ingredient.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_my_recipe.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_review.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/component_search.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_admin_home.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_catalog_recommendation.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_my_recipe.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_picture_step.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_plain_text_step.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_recipe_detail.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_timer_step.xml" value="0.21195652173913043" />
+        <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/step_slider.xml" value="0.21195652173913043" />
+        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_home2.xml" value="0.360054347826087" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_welcome.xml" value="0.36666666666666664" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/card_ingredient.xml" value="0.36666666666666664" />
@@ -60,7 +85,6 @@
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/item_card.xml" value="0.36666666666666664" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/item_ingredient.xml" value="0.360054347826087" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/item_recipe.xml" value="0.360054347826087" />
-        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/sidebar_header.xml" value="0.3654891304347826" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/menu/left_nav.xml" value="0.36666666666666664" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/menu/main_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/menu/menu_find_recipe.xml" value="0.36666666666666664" />
@@ -90,7 +114,6 @@
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_admin_crawler.xml" value="0.27280701754385966" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_admin_list.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_catalog.xml" value="0.3333333333333333" />
-        <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_catalog_recommendation.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_my_recipe.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_recipe_detail.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/item_card.xml" value="0.28728070175438597" />

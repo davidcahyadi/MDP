@@ -40,5 +40,16 @@ public class Step {
         this.description = description;
         this.duration = duration;
     }
+
+    public Step(int id, int order ,int recipeId, String title, String url, String description, int duration){
+        this.id = id;
+        this.recipeId = recipeId;
+        this.order = order;
+        this.title = title;
+        if(url.equals("0")) this.url = "";
+        else this.url = url;
+        this.description = description;
+        this.duration = duration;
+    }
 }
 
