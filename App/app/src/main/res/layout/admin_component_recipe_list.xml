@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
             android:text="TextView"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -34,8 +35,9 @@
         <TextView
             android:id="@+id/recipeCreatorTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
             android:text="TextView"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
@@ -43,8 +45,9 @@
         <TextView
             android:id="@+id/recipeCreatedAtTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
             android:text="TextView"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />

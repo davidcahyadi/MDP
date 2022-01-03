@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.View;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.databinding.ActivityAdminHomeBinding;
 import com.codeculator.foodlook.helper.ResultLauncherHelper;
+import com.codeculator.foodlook.model.User;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -98,5 +100,10 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
             f.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_container, f).commit();
         }
+    }
+
+    public void logoutFromAdmin(){
+        setResult(99,new Intent());
+        finish();
     }
 }

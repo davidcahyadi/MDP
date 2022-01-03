@@ -13,9 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.Recipe;
+import com.codeculator.foodlook.model.User;
+import com.codeculator.foodlook.services.RetrofitApi;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeListAdapter.AdminListRecipeHolder>{
     ArrayList<Recipe> recipes;
@@ -63,7 +69,6 @@ public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeList
 
         public void bind(Recipe recipe, int idx){
             recipeNameTV.setText(recipe.title);
-            recipeCreatorTV.setText("By: Your Mom");
             recipeCreatedAtTV.setText("Created At: " + recipe.created_at);
             recipeMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,6 +77,27 @@ public class AdminRecipeListAdapter extends RecyclerView.Adapter<AdminRecipeList
                 }
             });
             Picasso.get().load(recipe.photo).into(recipeImageIV);
+            if(recipe.user_id == 0)
+                recipeCreatorTV.setText("Created By: SYSTEM");
+            else
+                requestCreator(recipe.user_id);
+        }
+
+        public void requestCreator(int userID){
+            Call<User> call = RetrofitApi.getInstance().getAdminService().getUserByID(userID);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if(response.isSuccessful()){
+                        recipeCreatorTV.setText("Created By: " + response.body().getName());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
+                }
+            });
         }
     }
 

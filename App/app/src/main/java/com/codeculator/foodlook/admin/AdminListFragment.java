@@ -122,7 +122,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     AlertDialog.Builder builder;
 
     EndlessRecyclerViewScrollListener scrollListener;
-    int page;
+    int scrollPage;
 
     public AdminListFragment() {
         // Required empty public constructor
@@ -158,11 +158,17 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
         listRV = view.findViewById(R.id.listRV);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listRV.setLayoutManager(linearLayoutManager);
+
+        users = new ArrayList<>();
+        recipes = new ArrayList<>();
+        reviews = new ArrayList<>();
+        this.scrollPage = 1;
+
         //Load by Scroll Props
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                page++;
+                scrollPage++;
                 loading.setVisibility(View.VISIBLE);
                 if(type.equalsIgnoreCase("users")) loadAllUsers();
                 else if(type.equalsIgnoreCase("recipes")) loadAllRecipes();
@@ -172,7 +178,7 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
         listRV.addOnScrollListener(scrollListener);
         //
         setHasOptionsMenu(true);
-        this.page = 1;
+
 
         if(type.equalsIgnoreCase("recipes"))
             loadAllRecipes();
@@ -238,8 +244,6 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
                     ArrayList<Review> searchedReviews = new ArrayList<>();
                     int idx = -1;
                     if(reviews != null){
-                        System.out.println("Reviews size: " + reviews.size());
-                        System.out.println("Items at adapter size: " + reviewsAdapter.reviews.size());
                         for(Review r : reviews){
                             idx++;
                             if(s.equalsIgnoreCase("") ||
@@ -259,18 +263,23 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void loadAllRecipes(){
-        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getAdminService().getRecipes(page);
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getAdminService().getRecipes(scrollPage);
         call.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
-                if(response.isSuccessful()){
-                    recipes = new ArrayList<>();
+                if(response.isSuccessful() && response.body().size() > 0){
+                    int newIndex = recipes.size();
                     recipes.addAll(response.body());
-                    recipesAdapter = new AdminRecipeListAdapter(response.body(), getContext());
-                    setRecipesAdapterInterface();
-                    listRV.setAdapter(recipesAdapter);
-                    loading.setVisibility(View.INVISIBLE);
+                    if(recipesAdapter == null || recipesAdapter.getItemCount() == 0) {
+                        recipesAdapter = new AdminRecipeListAdapter(recipes, getContext());
+                        setRecipesAdapterInterface();
+                        listRV.setAdapter(recipesAdapter);
+                    }
+                    else {
+                        recipesAdapter.notifyItemRangeInserted(newIndex, response.body().size());
+                    }
                 }
+                loading.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
@@ -280,18 +289,21 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
     }
 
     public void loadAllUsers(){
-        Call<ArrayList<User>> call = RetrofitApi.getInstance().getAdminService().getUsers(page);
+        Call<ArrayList<User>> call = RetrofitApi.getInstance().getAdminService().getUsers(scrollPage);
         call.enqueue((new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if(response.isSuccessful()){
-                    users = new ArrayList<>();
+                if(response.isSuccessful() && response.body().size() > 0){
+                    int newIndex = users.size();
                     users.addAll(response.body());
-                    usersAdapter = new AdminUserListAdapter(users, getContext());
-                    setUsersAdapterInterface();
-                    listRV.setAdapter(usersAdapter);
-                    loading.setVisibility(View.INVISIBLE);
+                    if(usersAdapter == null || usersAdapter.getItemCount() == 0) {
+                        usersAdapter = new AdminUserListAdapter(users, getContext());
+                        setUsersAdapterInterface();
+                        listRV.setAdapter(usersAdapter);
+                    }else
+                        usersAdapter.notifyItemRangeInserted(newIndex, response.body().size());
                 }
+                loading.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
@@ -302,18 +314,21 @@ public class AdminListFragment extends Fragment implements PopupMenu.OnMenuItemC
 
 
     public void loadAllReviews(){
-        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getAdminService().getReviews(page);
+        Call<ArrayList<Review>> call = RetrofitApi.getInstance().getAdminService().getReviews(scrollPage);
         call.enqueue(new Callback<ArrayList<Review>>() {
             @Override
             public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
-                if(response.isSuccessful()){
-                    reviews = new ArrayList<>();
+                if(response.isSuccessful() && response.body().size() > 0){
+                    int newIndex = users.size();
                     reviews.addAll(response.body());
-                    reviewsAdapter = new AdminReviewListAdapter(reviews, getContext());
-                    setReviewsAdapterInterface();
-                    listRV.setAdapter(reviewsAdapter);
-                    loading.setVisibility(View.INVISIBLE);
+                    if(reviewsAdapter == null || reviewsAdapter.getItemCount() == 0) {
+                        reviewsAdapter = new AdminReviewListAdapter(reviews, getContext());
+                        setReviewsAdapterInterface();
+                        listRV.setAdapter(reviewsAdapter);
+                    }else
+                        reviewsAdapter.notifyItemRangeInserted(newIndex, response.body().size());
                 }
+                loading.setVisibility(View.INVISIBLE);
             }
 
             @Override

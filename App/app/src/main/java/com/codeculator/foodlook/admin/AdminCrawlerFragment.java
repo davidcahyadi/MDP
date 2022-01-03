@@ -1,5 +1,6 @@
 package com.codeculator.foodlook.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.codeculator.foodlook.local.FetchCallback;
 import com.codeculator.foodlook.local.LoadCrawler;
 import com.codeculator.foodlook.local.StoreCallback;
 import com.codeculator.foodlook.model.Crawler;
+import com.codeculator.foodlook.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +71,13 @@ public class AdminCrawlerFragment extends Fragment {
 
         adapter = new AdminCrawlerListAdapter(crawlers,this);
         binding.crawlerRecyclerView.setAdapter(adapter);
+
+        binding.adminBtnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AdminHomeActivity) getActivity()).logoutFromAdmin();
+            }
+        });
     }
 
     public void createData(){

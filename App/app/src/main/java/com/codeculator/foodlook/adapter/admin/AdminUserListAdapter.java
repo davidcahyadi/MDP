@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.L;
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
