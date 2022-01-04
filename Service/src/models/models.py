@@ -210,6 +210,7 @@ class Review(db.Model):
             "user_id": self.user_id,
             "rate": self.rate,
             "description": self.description,
+            "recipe_id": self.recipe_id,
             "review_id": self.review_id,
             "created_at": self.created_at,
             "deleted_at": self.deleted_at,
