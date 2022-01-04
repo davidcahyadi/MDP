@@ -187,6 +187,7 @@ class Review(db.Model):
     review_id = db.Column(db.Integer(), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now())
     deleted_at = db.Column(db.DateTime, nullable=True)
+    user_ = db.relationship("User", backref="user")
 
     def make(self, user_id, rate, description, recipe_id=None, review_id=None):
         self.user_id = user_id
@@ -207,6 +208,7 @@ class Review(db.Model):
     def raw(self):
         return {
             "id": self.id,
+            "name": self.user_.name,
             "user_id": self.user_id,
             "rate": self.rate,
             "description": self.description,

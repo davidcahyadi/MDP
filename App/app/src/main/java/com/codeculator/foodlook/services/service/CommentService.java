@@ -1,6 +1,8 @@
 package com.codeculator.foodlook.services.service;
 
 import com.codeculator.foodlook.model.Comment;
+import com.codeculator.foodlook.model.Review;
+import com.codeculator.foodlook.services.response.BasicResponse;
 
 import java.util.ArrayList;
 
@@ -16,9 +18,9 @@ import retrofit2.http.Query;
 public interface CommentService {
 
     @FormUrlEncoded
-    @POST("recipe/{id_recipe}/replies/add")
-    Call<String> addComment(@Path("id_recipe") int id_recipe,@Field("description") String c,@Header("x-api-key") String key);
+    @POST("review/replies/add")
+    Call<BasicResponse> addComment(@Field("review_id") int review_id, @Field("description") String c, @Header("x-api-key") String key);
 
-    @GET("recipe/{id_recipe}/replies")
-    Call<ArrayList<Comment>> getAllComment(@Path("id_recipe") int id_recipe);
+    @GET("review/{id_review}/replies")
+    Call<ArrayList<Review>> getAllComment(@Path("id_review") int id_review);
 }

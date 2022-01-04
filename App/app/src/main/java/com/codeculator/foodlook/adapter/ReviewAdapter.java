@@ -68,6 +68,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ListViewHo
 
         public void bind(Review review){
             reviewContentTv.setText(review.description);
+            displayNameTv.setText(review.name);
             countCommentsTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

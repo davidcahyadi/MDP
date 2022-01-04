@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
 import com.codeculator.foodlook.adapter.MyRecipeAdapter;
+import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.Recipe;
 import com.codeculator.foodlook.services.HTTPRequest;
+import com.codeculator.foodlook.services.RetrofitApi;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +33,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentMyRecipe#newInstance} factory method to
@@ -38,17 +44,12 @@ import java.util.HashMap;
  */
 public class FragmentMyRecipe extends Fragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     ArrayList<Recipe> recipes;
-    HTTPRequest httpRequest;
 
     public FragmentMyRecipe() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static FragmentMyRecipe newInstance(ArrayList<Recipe> recipes) {
         FragmentMyRecipe fragment = new FragmentMyRecipe();
         Bundle args = new Bundle();
@@ -85,7 +86,9 @@ public class FragmentMyRecipe extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recipes = new ArrayList<>();
-        httpRequest = new HTTPRequest((AppCompatActivity) getActivity());
+        PrefHelper prefHelper = new PrefHelper((AppCompatActivity) getActivity());
+        Call<ArrayList<Recipe>> call = RetrofitApi.getInstance().getRecipeService().myAllRecipes(prefHelper.getAccess());
+
         recyclerViewMyRecipe = view.findViewById(R.id.recyclerViewMyRecipe);
         // get recipes catalog
         HTTPRequest.Response<String> recipeResponse = new HTTPRequest.Response<String>();
@@ -94,49 +97,23 @@ public class FragmentMyRecipe extends Fragment {
             Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         });
 
-        recipeResponse.onSuccess(res-> {
-            try{
-                ArrayList<Recipe> recipes = new ArrayList<>();
-                JSONObject obj = new JSONObject(res);
-                Recipe recipe = new Recipe(obj);
-                System.out.println(recipe.toString());
-//                JSONArray arr = new JSONArray(res);
-//                int i = 0;
-//                while(!arr.isNull(i)){
-//                    JSONObject obj = arr.getJSONObject(i);
-//
-//                    Recipe recipe = new Recipe(
-//                            obj.getInt("id"),
-//                            obj.getString("title"),
-//                            obj.getInt("user_id"),
-//                            (float) obj.getDouble("rate"),
-//                            obj.getInt("view"),
-//                            obj.getInt("like"),
-//                            obj.getInt("cook_duration"),
-//                            obj.getInt("prep_duration"),
-//                            obj.getInt("serve_portion"),
-//                            obj.getString("description"),
-//                            (obj.getString("created_at")),
-//                            (obj.getString("updated_at")),
-//                            obj.getString("photo")
-//                    );
-//                    recipes.add(recipe);
-//                    i++;
-//                }
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+                if(response.isSuccessful()){
+                    recipes.addAll(response.body());
 
-                recipes.add(recipe);
-                System.out.println(recipes.size());
-                MyRecipeAdapter adapter = new MyRecipeAdapter(recipes, getContext());
-                recyclerViewMyRecipe.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerViewMyRecipe.setAdapter(adapter);
+                    MyRecipeAdapter adapter = new MyRecipeAdapter(recipes, getContext());
+                    recyclerViewMyRecipe.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerViewMyRecipe.setAdapter(adapter);
+                }
             }
-            catch (Exception e){
-                Log.e("ERROR",e.getMessage());
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+
             }
         });
-
-        httpRequest.get(getString(R.string.APP_URL)+"/recipe/1/details",new HashMap<>(),
-                recipeResponse);
     }
 
 

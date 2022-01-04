@@ -8,6 +8,7 @@ import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.services.response.BasicResponse;
 import com.codeculator.foodlook.services.response.BookmarkCheckResponse;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,9 @@ public interface RecipeService {
 
     @GET("recipe/{id}/view")
     Call<BasicResponse> addRecipeView(@Path("id") int id);
+
+    @POST("my/recipes")
+    Call<ArrayList<Recipe>> myAllRecipes(@Header("x-api-key") String token);
 
     @POST("my/recipe/save")
     Call<BasicResponse> saveRecipe(@Body Recipe recipe,@Header("x-api-key") String token);

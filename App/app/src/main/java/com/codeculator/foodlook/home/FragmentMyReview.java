@@ -74,16 +74,9 @@ public class FragmentMyReview extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         review_recylerview = view.findViewById(R.id.review_recylerview);
-        review_recylerview.setLayoutManager(new LinearLayoutManager(getContext()));
-        reviews = new ArrayList<>();
+        review_recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         getReviews();
-        reviewAdapter = new ReviewAdapter(reviews);
-        reviewAdapter.setReviewListener(v -> {
-            Intent i = new Intent(getContext(), ActivityReview.class);
-            i.putExtra("review", v);
-            startActivity(i);
-        });
-        review_recylerview.setAdapter(reviewAdapter);
     }
 
     public void getReviews(){
@@ -94,6 +87,14 @@ public class FragmentMyReview extends Fragment {
             public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
                 if(response.isSuccessful()){
                     reviews = response.body();
+                    reviewAdapter = new ReviewAdapter(reviews);
+
+                    reviewAdapter.setReviewListener(v -> {
+                        Intent i = new Intent(getContext(), ActivityReview.class);
+                        i.putExtra("review", v);
+                        startActivity(i);
+                    });
+                    review_recylerview.setAdapter(reviewAdapter);
                 }
             }
 

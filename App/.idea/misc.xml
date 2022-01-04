@@ -69,7 +69,6 @@
         <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_recipe_detail.xml" value="0.21195652173913043" />
         <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/fragment_timer_step.xml" value="0.21195652173913043" />
         <entry key="..\:/KULIAH/SEMESTER-5/MDP/Proyek/MDP/MDP/App/app/src/main/res/layout/step_slider.xml" value="0.21195652173913043" />
-        <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_add_recipe.xml" value="0.36141304347826086" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_home2.xml" value="0.360054347826087" />
         <entry key="..\:/Kuliah/Semester5/MDP/ProjectMDP/App/app/src/main/res/layout/activity_welcome.xml" value="0.36666666666666664" />
@@ -115,6 +114,7 @@
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/card_review.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/card_summary.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/component_find_ingredient.xml" value="0.28728070175438597" />
+        <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/component_my_recipe.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/component_review.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_admin_crawler.xml" value="0.27280701754385966" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_admin_list.xml" value="0.28728070175438597" />
@@ -123,6 +123,7 @@
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_my_recipe.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/fragment_recipe_detail.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/item_card.xml" value="0.28728070175438597" />
+        <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/item_comment.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/item_recipe.xml" value="0.28728070175438597" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/sidebar_header.xml" value="0.25" />
         <entry key="..\:/Project/MDP/Proyek/Foodlook/App/app/src/main/res/layout/spinner_colored.xml" value="0.28728070175438597" />

@@ -26,14 +26,15 @@ def add_review(user_id):
     return jsonify({"message": "OK"}), HTTP_200_OK
 
 
-@review.post("/<id>/replies/add")
+@review.post("/replies/add")
 @token_required
-def replies_add(id,user_id):
+def replies_add(user_id):
+    review_id = request.form.get("review_id")
     description = request.form.get("description")
-    r = Review().make(user_id=user_id, review_id=id, rate=None, description=description)
+    r = Review().make(user_id=user_id, review_id=review_id, rate=None, description=description)
     db.session.add(r)
     db.session.commit()
-    return jsonify("OK"), HTTP_200_OK
+    return jsonify({"message": "OK"}), HTTP_200_OK
 
 
 @review.get("/<id>/replies")

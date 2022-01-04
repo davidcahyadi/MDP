@@ -27,7 +27,10 @@ public class Review implements Parcelable {
     @ColumnInfo(name = "deleted_at")
     public String deleted_at;
 
-    public Review(int id, int user_id, int recipe_id, int rate, String description, int review_id, String created_at, String deleted_at) {
+    @ColumnInfo(name= "name")
+    public String name;
+
+    public Review(int id, int user_id, int recipe_id, int rate, String description, int review_id, String created_at, String deleted_at, String name) {
         this.id = id;
         this.user_id = user_id;
         this.recipe_id = recipe_id;
@@ -36,6 +39,7 @@ public class Review implements Parcelable {
         this.review_id = review_id;
         this.created_at = created_at;
         this.deleted_at = deleted_at;
+        this.name = name;
     }
 
     protected Review(Parcel in) {
@@ -47,6 +51,25 @@ public class Review implements Parcelable {
         review_id = in.readInt();
         created_at = in.readString();
         deleted_at = in.readString();
+        name = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(user_id);
+        dest.writeInt(recipe_id);
+        dest.writeInt(rate);
+        dest.writeString(description);
+        dest.writeInt(review_id);
+        dest.writeString(created_at);
+        dest.writeString(deleted_at);
+        dest.writeString(name);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Review> CREATOR = new Creator<Review>() {
@@ -60,21 +83,4 @@ public class Review implements Parcelable {
             return new Review[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeInt(user_id);
-        parcel.writeInt(recipe_id);
-        parcel.writeInt(rate);
-        parcel.writeString(description);
-        parcel.writeInt(review_id);
-        parcel.writeString(created_at);
-        parcel.writeString(deleted_at);
-    }
 }
