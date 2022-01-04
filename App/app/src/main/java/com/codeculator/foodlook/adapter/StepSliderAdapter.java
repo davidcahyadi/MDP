@@ -35,6 +35,7 @@ import com.codeculator.foodlook.model.Step;
 import com.codeculator.foodlook.steps.AlarmReceiver;
 import com.codeculator.foodlook.steps.DatePickerFragment;
 import com.codeculator.foodlook.steps.TimePickerFragment;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -137,6 +138,9 @@ public class StepSliderAdapter extends PagerAdapter{
             Random rand = new Random();
             int doRand = rand.nextInt(3);
             stepImage.setImageResource(randomIcon[doRand]);
+        }else{
+            stepImage.setVisibility(View.VISIBLE);
+            Picasso.get().load(steps.get(position).url).into(stepImage);
         }
 
         container.addView(view);
