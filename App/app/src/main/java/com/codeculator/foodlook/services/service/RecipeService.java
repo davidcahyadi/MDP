@@ -26,7 +26,7 @@ public interface RecipeService {
     @GET("recipe/{id}/summary")
     Call<ArrayList<Step>> getRecipeSummary(@Path("id") int id);
 
-    @GET("ingredient/types")
+    @GET("ingredient/all")
     Call<ArrayList<Ingredient>> getIngredients();
 
     @GET("recipe/{id}/ingredients")

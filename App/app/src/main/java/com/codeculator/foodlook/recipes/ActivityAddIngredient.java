@@ -12,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
-import com.codeculator.foodlook.helper.PrefHelper;
 import com.codeculator.foodlook.model.Ingredient;
 import com.codeculator.foodlook.model.RecipeIngredient;
 import com.codeculator.foodlook.services.RetrofitApi;
@@ -30,7 +29,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
     Spinner ingredient_spinner, measurement_spinner;
     ArrayList<String> types;
     ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
-
+    ArrayAdapter<String> ingredientAdapter;
     public static final int CODE = 112;
 
     @Override
@@ -47,11 +46,11 @@ public class ActivityAddIngredient extends AppCompatActivity {
 
 
         getTypes();
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>
-                (getApplicationContext(), android.R.layout.simple_spinner_item, types);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
+        ingredientAdapter = new ArrayAdapter<>
+                (getApplicationContext(), R.layout.spinner_colored, types);
+        ingredientAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
-        ingredient_spinner.setAdapter(spinnerArrayAdapter);
+        ingredient_spinner.setAdapter(ingredientAdapter);
 
         ArrayList<String> measurementType = new ArrayList<>();
         measurementType.add("Cups");
@@ -63,7 +62,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
         measurementType.add("Spoon");
 
         ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<>
-                (getApplicationContext(), android.R.layout.simple_spinner_item, measurementType);
+                (getApplicationContext(),  R.layout.spinner_colored, measurementType);
         spinnerArrayAdapter2.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         measurement_spinner.setAdapter(spinnerArrayAdapter2);
@@ -110,6 +109,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
                                 ingredientArrayList) {
                             types.add(i.name);
                         }
+                        ingredientAdapter.notifyDataSetChanged();
                     }
                 }
             }

@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codeculator.foodlook.R;
@@ -34,6 +37,7 @@ import com.codeculator.foodlook.services.RetrofitApi;
 import com.codeculator.foodlook.services.response.BasicResponse;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -49,10 +53,9 @@ public class ActivityAddRecipe extends AppCompatActivity {
     RecyclerView rc_ingredients, rc_steps;
     Button b_add_ingredients, b_add_steps, btn_upload_image, btn_choose_image;
     Button btnSave;
+    ImageView iv;
     IngredientBarAdapter ia;
     SummaryStepAdapter ssa;
-
-    final int RECIPE_ID = 1;
 
     FirebaseUpload<Upload> firebaseUpload;
 
@@ -72,13 +75,17 @@ public class ActivityAddRecipe extends AppCompatActivity {
         rc_steps = findViewById(R.id.rc_steps);
         b_add_ingredients = findViewById(R.id.b_add_ingredients);
         b_add_steps = findViewById(R.id.b_add_steps);
-        btn_upload_image = findViewById(R.id.btn_upload_image);
+//        btn_upload_image = findViewById(R.id.btn_upload_image);
 
         cook_duration = findViewById(R.id.cook_duration);
         prep_duration = findViewById(R.id.prep_duration);
         serve_portion = findViewById(R.id.serve_portion);
         recipe_description = findViewById(R.id.recipe_description);
+        btn_choose_image = findViewById(R.id.btn_choose_image);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+
+        iv = findViewById(R.id.preview);
+        iv.setVisibility(View.GONE);
 
         launcher = new ResultLauncherHelper(this);
         launcher.addListener(ActivityAddStep.CODE,l ->{
@@ -93,6 +100,8 @@ public class ActivityAddRecipe extends AppCompatActivity {
             Toast.makeText(ActivityAddRecipe.this, "Success add ingredient !", Toast.LENGTH_SHORT).show();
             ia.notifyDataSetChanged();
         });
+
+
 
         //onclick ingredients
         b_add_ingredients.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +145,8 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 photos = uri.toString();
                 recipe.photo = photos;
                 firebaseUpload.setObj(upload);
+                addRecipe(recipe);
+
             }
 
             @Override
@@ -145,22 +156,31 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 if(data != null){
                     Uri imageUri = data.getData();
                     firebaseUpload.setImageUri(imageUri);
+
+
+                    try {
+                        iv.setImageBitmap(MediaStore.Images.Media.getBitmap(ActivityAddRecipe.this.getContentResolver(), firebaseUpload.getImageUri()));
+                        iv.setVisibility(View.VISIBLE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    };
                 }
             }
         };
 
         //btn upload image click
-        btn_upload_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseUpload.save();
-            }
-        });
+//        btn_upload_image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                firebaseUpload.save();
+//            }
+//        });
 
         btn_choose_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 firebaseUpload.openFileChooserDialog(view);
+
             }
         });
 
@@ -168,21 +188,13 @@ public class ActivityAddRecipe extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                recipe.title = add_recipe_title.getText().toString();
+                recipe.cook_duration= Integer.parseInt(cook_duration.getText().toString());
+                recipe.prep_duration = Integer.parseInt(prep_duration.getText().toString());
+                recipe.serve_portion = Integer.parseInt(serve_portion.getText().toString());
+                recipe.description = recipe_description.getText().toString();
+                firebaseUpload.save();
 
-                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
-                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
-                recipe.ingredients.add(new RecipeIngredient(0,12,"Test Ingredient",2,3,2));
-                recipe.steps.add(new Step(0,0,"Step 1","","Test 1",20));
-                recipe.steps.add(new Step(0,0,"Step 2","","Test 2",20));
-                recipe.steps.add(new Step(0,0,"Step 3","","Test 3",20));
-                recipe.title = "Testing add recipe";
-                recipe.cook_duration= 120;
-                recipe.prep_duration = 30;
-                recipe.serve_portion = 4;
-                recipe.description = "Lorem ipsum dolar set amet";
-
-                System.out.println("CLICKED");
-                addRecipe(recipe);
             }
         });
     }
