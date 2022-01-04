@@ -13,7 +13,7 @@ my = Blueprint("my", __name__, url_prefix="/api/v1/my")
 @my.get("/reviews")
 @token_required
 def my_reviews(user_id):
-    reviews = Review.query.filter(Review.user_id == user_id, Review.review_id is None).all()
+    reviews = Review.query.filter(Review.user_id == user_id, Review.review_id == None).all()
     return jsonify(iterateModel(reviews))
 
 
