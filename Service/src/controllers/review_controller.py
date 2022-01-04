@@ -28,7 +28,7 @@ def add_review(user_id):
 
 @review.post("/<id>/replies/add")
 @token_required
-def replies_add(user_id, id):
+def replies_add(id,user_id):
     description = request.form.get("description")
     r = Review().make(user_id=user_id, review_id=id, rate=None, description=description)
     db.session.add(r)

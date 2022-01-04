@@ -10,14 +10,15 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CommentService {
 
     @FormUrlEncoded
     @POST("recipe/{id_recipe}/replies/add")
-    Call<String> addComment(int id_recipe, Comment c,@Header("x-api-key") String key);
+    Call<String> addComment(@Path("id_recipe") int id_recipe,@Field("description") String c,@Header("x-api-key") String key);
 
     @GET("recipe/{id_recipe}/replies")
-    Call<ArrayList<Comment>> getAllComment(int id_recipe);
+    Call<ArrayList<Comment>> getAllComment(@Path("id_recipe") int id_recipe);
 }

@@ -193,7 +193,13 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 recipe.prep_duration = Integer.parseInt(prep_duration.getText().toString());
                 recipe.serve_portion = Integer.parseInt(serve_portion.getText().toString());
                 recipe.description = recipe_description.getText().toString();
-                firebaseUpload.save();
+                if(iv.getVisibility() == View.VISIBLE){
+                    firebaseUpload.save();
+                }
+                else{
+                    addRecipe(recipe);
+                }
+
 
             }
         });

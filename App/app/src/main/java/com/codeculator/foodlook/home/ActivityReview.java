@@ -68,7 +68,7 @@ public class ActivityReview extends AppCompatActivity {
                 int id = ((Review) getIntent().getParcelableExtra("review")).id;
                 Comment c = new Comment(et_comments.getText().toString(), user_id);
                 PrefHelper helper = new PrefHelper(this);
-                Call<String> call = RetrofitApi.getInstance().getCommentService().addComment(id, c,helper.getAccess());
+                Call<String> call = RetrofitApi.getInstance().getCommentService().addComment(id, et_comments.getText().toString(),helper.getAccess());
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -87,6 +87,7 @@ public class ActivityReview extends AppCompatActivity {
     }
 
     public void getComments(int recipe_id){
+        System.out.println(recipe_id);
         Call<ArrayList<Comment>> call = RetrofitApi.getInstance().getCommentService().getAllComment(recipe_id);
         call.enqueue(new Callback<ArrayList<Comment>>() {
             @Override

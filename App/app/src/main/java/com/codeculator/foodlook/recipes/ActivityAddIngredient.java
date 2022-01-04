@@ -85,8 +85,8 @@ public class ActivityAddIngredient extends AppCompatActivity {
                         double amount = Double.parseDouble(ingredient_amount.getText().toString());
                         String title = ingredient_name.getText().toString();
                         int recipe_id = 0;
-                        int ingredient_id = ingredient_spinner.getSelectedItemPosition();
-                        int measurement_id = measurement_spinner.getSelectedItemPosition();
+                        int ingredient_id = ingredient_spinner.getSelectedItemPosition()+1;
+                        int measurement_id = measurement_spinner.getSelectedItemPosition()+1;
                         RecipeIngredient ri = new RecipeIngredient(id, amount, title, recipe_id, ingredient_id, measurement_id);
                         insertIngredient(ri);
 
