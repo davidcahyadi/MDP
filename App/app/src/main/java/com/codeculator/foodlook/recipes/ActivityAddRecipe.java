@@ -156,14 +156,15 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 if(data != null){
                     Uri imageUri = data.getData();
                     firebaseUpload.setImageUri(imageUri);
+                    iv.setVisibility(View.VISIBLE);
+                    Picasso.get().load(imageUri).into(iv);
 
-
-                    try {
-                        iv.setImageBitmap(MediaStore.Images.Media.getBitmap(ActivityAddRecipe.this.getContentResolver(), firebaseUpload.getImageUri()));
-                        iv.setVisibility(View.VISIBLE);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    };
+//                    try {
+//                        iv.setImageBitmap(MediaStore.Images.Media.getBitmap(ActivityAddRecipe.this.getContentResolver(), firebaseUpload.getImageUri()));
+//                        iv.setVisibility(View.VISIBLE);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    };
                 }
             }
         };
@@ -194,7 +195,6 @@ public class ActivityAddRecipe extends AppCompatActivity {
                 recipe.serve_portion = Integer.parseInt(serve_portion.getText().toString());
                 recipe.description = recipe_description.getText().toString();
                 firebaseUpload.save();
-
             }
         });
     }
